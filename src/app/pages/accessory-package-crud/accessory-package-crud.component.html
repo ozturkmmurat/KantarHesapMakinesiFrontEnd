@@ -1,0 +1,208 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+    </div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0">Aksesuar Tablosu</h3>
+        </div>
+        <form _ngcontent-bti-c110=""
+        class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+        <div _ngcontent-bti-c110="" class="form-group mb-2" ng-reflect-ng-class="[object Object]">
+          <div style="border-color:rgb(181 171 171 / 60%);" _ngcontent-bti-c110=""
+            class="input-group input-group-alternative">
+            <div _ngcontent-bti-c110="" class="input-group-prepend"><span _ngcontent-bti-c110=""
+                class="input-group-text"><i style="color:black;" _ngcontent-bti-c110=""
+                  class="fas fa-search"></i></span></div>
+            <input style="color:black;" _ngcontent-bti-c110="" placeholder="Search" type="text" class="form-control"
+              name="filterText" [(ngModel)]="filterText">
+          </div>
+        </div>
+      </form>
+      <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2"
+      [rows]="accessoryPackageList | filter:filterText" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50"
+      [limit]="5" [footerHeight]="50" [rowHeight]="60">
+      <ngx-datatable-column name="ID" prop="id">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Aksesuar Paket Adı" prop="accessoryPackageName">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="İşlemler" [sortable]="false">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <ng-container>
+                    <div container="body" ngbDropdown placement="bottom-right">
+                      <a
+                        class="btn btn-sm btn-icon-only text-light"
+                        ngbDropdownToggle
+                      >
+                        <i class="fas fa-ellipsis-v"></i>
+                      </a>
+                      <div
+                        ngbDropdownMenu
+                        class="dropdown-menu-right dropdown-menu-arrow"
+                      >
+                        <a
+                          class="dropdown-item"
+                          href="javascript:void(0)"
+                          (click)="deleteAccessoryPackage(row)"
+                          >Sil</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="javascript:void(0)"
+                          (click)="openLg(updateAccessoryPackagePopup)"
+                          (click)="writeAccessoryPackage(row)"
+                          >Güncelle</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="javascript:void(0)"
+                          (click)="openXl(accessoryPackageDetail)"
+                          (click)="writeAccessoryPackage(row)"
+                          (click)="
+                            writeAddAccessoryPackagaDetail(row)
+                          "
+                          >Paket Aksesuar Detayları</a
+                        >
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+
+        <div class="card-footer py-4">
+          <div _ngcontent-icv-c119="" class="d-flex justify-content-between">
+            <a
+              _ngcontent-icv-c119=""
+              href="javascript:void(0)"
+              class="btn btn-sm btn-info mr-4"
+              (click)="openLg(accessoryPackagePopup)"
+              >Aksesuar Paketi Ekle</a
+            >
+          </div>
+        </div>
+
+        <form [formGroup]="_addAccessoryPackageForm">
+          <ng-template #accessoryPackagePopup let-modal>
+            <div class="modal-header popUpTitle">
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <div class="mb-3">
+                <div class="form-group">
+                  <div _ngcontent-bya-c115="" class="col-lg-12">
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Aksesuar Paket Adı</label
+                      >
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="text"
+                        id="input-username"
+                        id="accessoryPackageName"
+                        formControlName="accessoryPackageName"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-dark"
+                (click)="addAccessoryPackage()"
+              >
+                Oluştur
+              </button>
+            </div>
+          </ng-template>
+        </form>
+
+        <form [formGroup]="_updateAccessoryPackageForm">
+          <ng-template #updateAccessoryPackagePopup let-modal>
+            <div class="modal-header popUpTitle">
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <div class="mb-3">
+                <div class="form-group">
+                  <div _ngcontent-bya-c115="" class="col-lg-12">
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Aksesuar Paket Adı</label
+                      >
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="text"
+                        id="input-username"
+                        id="accessoryPackageName"
+                        formControlName="accessoryPackageName"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-dark"
+                (click)="updateAccessoryPackage()"
+              >
+                Güncelle
+              </button>
+            </div>
+          </ng-template>
+        </form>
+
+        <ng-template #accessoryPackageDetail let-modal>
+          <div class="modal-header popUpTitle">
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <app-package-accesories-modal></app-package-accesories-modal>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

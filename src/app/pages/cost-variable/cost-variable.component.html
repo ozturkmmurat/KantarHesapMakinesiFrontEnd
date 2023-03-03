@@ -1,0 +1,297 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+      <div class="header-body">
+        <!-- Card stats -->
+      </div>
+    </div>
+  </div>
+  <!-- Page content -->
+  <div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-header border-0">
+            <h3 class="mb-0">Maliyet Değişkenleri</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th>ID</th>
+                  <th scope="col">Saç € Değişkenleri</th>
+                  <th scope="col">I Profil Değişkenleri</th>
+                  <th scope="col">Fireli Saç ve I Profil Ağırlığı Yüzdesi</th>
+                  <th scope="col">Fireli Toplam Ağırlık Yüzdesi</th>
+                  <th scope="col">Fire Yüzdesi</th>
+                  <th scope="col">İşlemler</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                <ng-container *ngFor="let costVariable of costVariableList | paginate : {itemsPerPage:10, currentPage:p}">
+                <tr>
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
+                        <span class="mb-0 text-sm">{{costVariable.id}}</span>
+                      </a>
+                      
+                    </div>
+                  </th>
+                  <td>
+                    {{costVariable.iProfile | number :'1.2-5'}}
+                  </td>
+                  <td>
+                    <span class="badge badge-dot mr-4">
+                      {{costVariable.shateIron | number:'1.2-5'}}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge badge-dot mr-4">
+                        {{costVariable.fireShateIronAndIProfilePercentage | number:'1.2-5'}}
+                      </span>
+                  </td>
+                  <td>
+                    <span class="badge badge-dot mr-4">
+                        {{costVariable.fireTotalPercentAge | number:'1.2-5'}}
+                      </span>
+                  </td>
+                  <td>
+                    <span class="badge badge-dot mr-4">
+                        {{costVariable.firePercentAge | number:'1.2-5'}}
+                      </span>
+                  </td>
+                  <td class="text-right">
+                    <div ngbDropdown placement="bottom-right">
+                      <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
+                        <i class="fas fa-ellipsis-v"></i>
+                      </a>
+                      <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="deleteCostVariable(costVariable)">Sil</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="writeUpdateCostVariableForm(costVariable)"  (click)="openLg(updateCostVariableModal)">Güncelle</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer py-4">
+            <div _ngcontent-icv-c119="" class="d-flex justify-content-between">
+              <a _ngcontent-icv-c119="" (click)="openLg(addCostVariableModal)" href="javascript:void(0)" class="btn btn-sm btn-info mr-4" >Maliyet Değişkeni Oluştur</a>
+            </div>
+            <pagination-controls  class="float-right"
+            (pageChange)="p = $event"
+            nextLabel=""
+            previousLabel="">
+            </pagination-controls>
+          </div>
+
+          <!--  Add Installation Cost Modal İçeriği -->
+          <form [formGroup]="_addCostVariableForm">
+            <ng-template #addCostVariableModal let-modal>
+              <div class="modal-header popUpTitle">
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+  
+              <div class="modal-body">
+                <div class="mb-3">
+                  <div class="form-group">
+                    <div class=row>
+                      <div class="alert alert-light col-sm-12" role="alert">
+                        Saç değişkenini oluşturmak için X değeri ve Y değeri giriniz.
+                        <br>
+                        Örnek işlem: <a href="#" class="alert-link" style="color:black">0,805/1,075  Sonuç = 0.75€</a> 
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-6">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label" >Saç X Değeri</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="xValue" placeholder="0,805"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-6">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label" >Saç Y Değeri</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="yValue" placeholder="1,075"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">I Profil Değişkeni</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice"  formControlName="iProfile" placeholder="0,935"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fireli Saç ve Fireli I Profil Değişkeni</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="fireShateIronAndIProfilePercentage" placeholder="5,00"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fireli Toplam Ağırlık</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="fireTotalPercentAge" placeholder="1,0513"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fire Yüzdesi</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="firePercentAge" placeholder="5,13"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div class="alert alert-success col-sm-12" role="alert">
+                        <h4>Açıklama :</h4>
+                        <br>
+                        <a href="#" class="alert-link" style="color:black">I € Değişkeni :</a> Excell de I € Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                        <br>
+                        Örnek Değişken Excell'de M3 alanı.
+                        <br>
+                        <br>
+                        <a href="#" class="alert-link" style="color:black">Saç € Değişkeni :</a> Excell de Saç € Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                        <br>
+                        Örnek Değişken Excell'de M4 alanı.
+                        <br>
+                        <br>
+                        <a href="#" class="alert-link" style="color:black">Fireli Saç ve Fireli I Profil Değişkeni :</a> Excell de Fireli Saç Ağırlığı ve Fireli I Profil Ağırlığı Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                        <br>
+                        Örnek Değişken Excell'de F51 ve G51 alanı.
+                        <br>
+                        <br>
+                        <a href="#" class="alert-link" style="color:black">Fireli Toplam Ağırlık Değişkeni :</a> Excell de Fireli Toplam Ağırlık Sütunu hesaplanırken kullanılan 
+                        <br>
+                        değişkenler oluşturuluyor.
+                        <br>
+                        Örnek Değişken Excell'de H51 alanı.
+                        <br>
+                        <br>
+                        <a href="#" class="alert-link" style="color:black">Fire Değişkeni :</a> Excell de Fire Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                        <br>
+                        Örnek Değişken Excell'de C4 alanı.
+                      </div>
+                    </div>
+                  
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="addCostVariable()">Oluştur</button>
+              </div>
+            </ng-template>
+          </form>
+
+          <!--  Update Cost Variable Modal İçeriği -->
+          <form [formGroup]="_updateCostVariableForm">
+            <ng-template #updateCostVariableModal let-modal>
+              <div class="modal-header popUpTitle">
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+  
+              <div class="modal-body">
+                <div class="mb-3">
+                  <div class="form-group"> <div class=row>
+                    <div class="alert alert-light col-sm-12" role="alert">
+                      Saç değişkenini oluşturmak için X değeri ve Y değeri giriniz.
+                      <br>
+                      Örnek işlem: <a href="#" class="alert-link" style="color:black">0,805/1,075  Sonuç = 0.75€</a> 
+                    </div>
+                    <div _ngcontent-bya-c115="" class="col-lg-6">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label" >Saç X Değeri</label>
+                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="xValue" placeholder="0,805"
+                          class="form-control form-control-alternative">
+                      </div>
+                    </div>
+                    <div _ngcontent-bya-c115="" class="col-lg-6">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label" >Saç Y Değeri</label>
+                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="yValue" placeholder="1,075"
+                          class="form-control form-control-alternative">
+                      </div>
+                    </div>
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">I Profil Değişkeni</label>
+                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice"  formControlName="iProfile" placeholder="0,935"
+                          class="form-control form-control-alternative">
+                      </div>
+                    </div>
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fireli Saç ve Fireli I Profil Değişkeni</label>
+                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="fireShateIronAndIProfilePercentage" placeholder="5,00"
+                          class="form-control form-control-alternative">
+                      </div>
+                    </div>
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fireli Toplam Ağırlık</label>
+                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="fireTotalPercentAge" placeholder="1,0513"
+                          class="form-control form-control-alternative">
+                      </div>
+                    </div>
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fire Yüzdesi</label>
+                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="firePercentAge" placeholder="5,13"
+                          class="form-control form-control-alternative">
+                      </div>
+                    </div>
+                    <div class="alert alert-success col-sm-12" role="alert">
+                      <h4>Açıklama :</h4>
+                      <br>
+                      <a href="#" class="alert-link" style="color:black">I € Değişkeni :</a> Excell de I € Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                      <br>
+                      Örnek Değişken Excell'de M3 alanı.
+                      <br>
+                      <br>
+                      <a href="#" class="alert-link" style="color:black">Saç € Değişkeni :</a> Excell de Saç € Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                      <br>
+                      Örnek Değişken Excell'de M4 alanı.
+                      <br>
+                      <br>
+                      <a href="#" class="alert-link" style="color:black">Fireli Saç ve Fireli I Profil Değişkeni :</a> Excell de Fireli Saç Ağırlığı ve Fireli I Profil Ağırlığı Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                      <br>
+                      Örnek Değişken Excell'de F51 ve G51 alanı.
+                      <br>
+                      <br>
+                      <a href="#" class="alert-link" style="color:black">Fireli Toplam Ağırlık Değişkeni :</a> Excell de Fireli Toplam Ağırlık Sütunu hesaplanırken kullanılan 
+                      <br>
+                      değişkenler oluşturuluyor.
+                      <br>
+                      Örnek Değişken Excell'de H51 alanı.
+                      <br>
+                      <br>
+                      <a href="#" class="alert-link" style="color:black">Fire Değişkeni :</a> Excell de Fire Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                      <br>
+                      Örnek Değişken Excell'de C4 alanı.
+                    </div>
+                  </div>
+  
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="updateCostVariable()">Güncelle</button>
+              </div>
+            </ng-template>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  

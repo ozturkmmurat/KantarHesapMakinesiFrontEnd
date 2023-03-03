@@ -1,0 +1,627 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+    </div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+<!-- Data Table -->
+
+
+  <!-- Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0">Ürün Tablosu</h3>
+        </div>
+        <form _ngcontent-bti-c110="" 
+        class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+        <div _ngcontent-bti-c110="" class="form-group mb-2" ng-reflect-ng-class="[object Object]">
+            <div style="border-color:rgb(181 171 171 / 60%);" _ngcontent-bti-c110="" class="input-group input-group-alternative">
+                <div _ngcontent-bti-c110="" class="input-group-prepend"><span _ngcontent-bti-c110=""
+                        class="input-group-text"><i style="color:black;" _ngcontent-bti-c110="" class="fas fa-search"></i></span></div>
+                <input style="color:black;"  _ngcontent-bti-c110=""  placeholder="Search" type="text" class="form-control" name="filterText" [(ngModel)]="filterText">
+            </div>
+        </div>
+    </form>
+       
+
+
+
+
+
+    <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2" 
+    [rows]="modelList | filter:filterText" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50" [limit]="5"
+    [footerHeight]="50" [rowHeight]="60"  >
+    <ngx-datatable-column name="ID" prop="id">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Model En Boy" prop="mostSizeKg">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Net Ağırlık" prop="netWeight">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Fire" prop="fire">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Saç Ağırlığı" prop="shateIronWeight">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="I Profil Ağırlığı" prop="iProfilWeight">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Fireli Saç Ağırlığı" prop="fireShateIronWeight">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Fireli I Profil Ağırlığı" prop="fireIProfileWeight">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Fireli Toplam Ağırlık" prop="fireTotalWeight">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Kantar Kapı Ağırlığı" prop="gateWeight">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Üretim Süresi" prop="productionTime">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="İşlemler"  [sortable]="false">
+      <ng-template let-row="row"  ngx-datatable-cell-template>
+          <ng-container>
+                    <div container="body" ngbDropdown placement="bottom-right">
+                      <a class="btn btn-sm btn-icon-only text-light" ngbDropdownToggle>
+                        <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                      <div
+                        ngbDropdownMenu
+                        class="dropdown-menu-right dropdown-menu-arrow"
+                      >
+                      <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      >Test</a
+                    >
+                        <a
+                          class="dropdown-item"
+                          href="javascript:void(0)"
+                          (click)="deleteModel(row)"
+                          >Sil</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="javascript:void(0)"
+                          (click)="writeModel(row)"
+                          (click)="openLg(modelUpdatePopup)"
+                          >Güncelle</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="javascript:void(0)"
+                          (click)="openLg(modelAddAccessoryPopup)" (click)="writeAddModelAccessoryDetail(row)"
+                          >Modele Aksesuar Ekle</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="javascript:void(0)"
+                          (click)="openLg(modelUpdateAccessoryPopup)"
+                          (click)="writeUpdateModelAccessoryDetail(row)"
+                          >Model Aksesuar Güncelle</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="javascript:void(0)"
+                          (click)="edit(row)"
+                        >
+                          Modle Elektronik Deteay
+                        </a>
+                      </div>
+                    </div>
+              </ng-container>
+            </ng-template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+
+
+
+
+        <div class="card-footer py-4">
+          <div _ngcontent-icv-c119="" class="d-flex justify-content-between">
+            <a
+              _ngcontent-icv-c119=""
+              href="javascript:void(0)"
+              class="btn btn-sm btn-info mr-4"
+              (click)="openLg(modelAddPopup)"
+              >Model Ekle</a
+            >
+          </div>
+          <pagination-controls
+            class="float-right"
+            (pageChange)="p = $event"
+            nextLabel=""
+            previousLabel=""
+          >
+          </pagination-controls>
+        </div>
+        <!-- Model Ekleme Bölümü  -->
+        <form [formGroup]="_addModelForm">
+          <ng-template #modelAddPopup let-modal>
+            <div class="modal-header popUpTitle">
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <div class="mb-3">
+                <div class="form-group">
+
+                  <div _ngcontent-bya-c115="" class="col-lg-12">
+                    <label for="inputState">Maliyet Değişkeni</label>
+                    <select
+                     
+                      id="costVariableId"
+                      name="costVariableId"
+                      class="form-control"
+                      formControlName="costVariableId"
+                    >
+                      <option selected disabled value="" >
+                        Maliyet Değişkeni Seçiniz
+                      </option>
+                      <option  
+                        *ngFor="let costVariable of costVariableList"
+                        [ngValue]="costVariable.id"
+                        selected
+                      >
+                        {{ costVariable.costVariableName }}
+                      </option>
+                    </select>
+                  </div>
+
+
+
+
+
+
+                  <div _ngcontent-bya-c115="" class="col-lg-12">
+                    <label for="inputState">ÜRÜN</label>
+                    <select
+                     
+                      id="modelProductId"
+                      name="modelProductId"
+                      class="form-control"
+                      formControlName="modelProductId"
+                      (change)="onSelected(_addModelForm)"
+                    >
+                      <option selected disabled value="" >
+                        Ürün Seçiniz
+                      </option>
+                      <option  
+                        *ngFor="let product of productList"
+                        [ngValue]="product.productId"
+                        selected
+                      >
+                        {{ product.productName }}
+                      </option>
+                    </select>
+                  </div>
+                  <div _ngcontent-bya-c115="" class="col-lg-12">
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Model En Boy Ağırlık</label
+                      >
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="text"
+                        id="input-username"
+                        id="modelMostSizeKg"
+                        formControlName="modelMostSizeKg"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Model Net Ağırlık
+                      </label>
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="number"
+                        id="input-username"
+                        id="modelNetWeight"
+                        formControlName="modelNetWeight"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Kapı Ağırlığı</label
+                      >
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="number"
+                        id="input-username"
+                        id="modelGateWeight"
+                        formControlName="modelGateWeight"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Üretim Süresi</label
+                      >
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="number"
+                        id="input-username"
+                        id="modelProductionTime"
+                        formControlName="modelProductionTime"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Saç Ağırlığı</label
+                      >
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="number"
+                        id="input-username"
+                        id="modelShateIronWeight"
+                        formControlName="modelShateIronWeight"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                      >
+                        I Profil Ağırlığı
+                      </label>
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="number"
+                        id="input-username"
+                        id="modelIProfilWeight"
+                        formControlName="modelIProfilWeight"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-success"
+                (click)="addModel()"
+              >
+                Oluştur
+              </button>
+            </div>
+          </ng-template>
+        </form>
+
+        <!-- Model Güncelleme Bölümü -->
+        <form [formGroup]="_updateModelForm">
+          <ng-template #modelUpdatePopup let-modal>
+            <div class="modal-header popUpTitle">
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <div class="mb-3">
+                <div class="form-group">
+                  <div _ngcontent-bya-c115="" class="col-lg-12">
+                    <label for="inputState">Maliyet Değişkeni</label>
+                    <select
+                     
+                      id="costVariableId"
+                      name="costVariableId"
+                      class="form-control"
+                      formControlName="costVariableId"
+                    >
+                      <option selected disabled value="" >
+                        Maliyet Değişkeni Seçiniz
+                      </option>
+                      <option  
+                        *ngFor="let costVariable of costVariableList"
+                        [ngValue]="costVariable.id"
+                        selected
+                      >
+                        {{ costVariable.costVariableName }}
+                      </option>
+                    </select>
+                  </div>
+
+
+                  <div _ngcontent-bya-c115="" class="col-lg-12">
+                    <label for="inputState">ÜRÜN</label>
+                    <select
+                     
+                    id="modelProductId"
+                    name="modelProductId"
+                    class="form-control"
+                    formControlName="modelProductId"
+                    (change)="onSelected(_updateModelForm)"
+                  >
+                    <option selected disabled value="" >
+                      Ürün Seçiniz
+                    </option>
+                    <option  
+                      *ngFor="let product of productList"
+                      [ngValue]="product.productId"
+                      selected
+                    >
+                      {{ product.productName }}
+                    </option>
+                  </select>
+                  </div>
+                  <div _ngcontent-bya-c115="" class="col-lg-12">
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Model En Boy Ağırlık</label
+                      >
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="text"
+                        id="input-username"
+                        id="modelMostSizeKg"
+                        formControlName="modelMostSizeKg"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Model Net Ağırlık
+                      </label>
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="number"
+                        id="input-username"
+                        id="modelNetWeight"
+                        formControlName="modelNetWeight"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Kapı Ağırlığı</label
+                      >
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="number"
+                        id="input-username"
+                        id="modelGateWeight"
+                        formControlName="modelGateWeight"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Üretim Süresi</label
+                      >
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="number"
+                        id="input-username"
+                        id="modelProductionTime"
+                        formControlName="modelProductionTime"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                        >Saç Ağırlığı</label
+                      >
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="number"
+                        id="input-username"
+                        id="modelShateIronWeight"
+                        formControlName="modelShateIronWeight"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+
+                    <div _ngcontent-bya-c115="" class="form-group">
+                      <label
+                        _ngcontent-bya-c115=""
+                        for="input-username"
+                        class="form-control-label"
+                      >
+                        I Profil Ağırlığı
+                      </label>
+                      <input
+                        _ngcontent-bya-c115=""
+                        type="number"
+                        id="input-username"
+                        id="modelIProfilWeight"
+                        formControlName="modelIProfilWeight"
+                        class="form-control form-control-alternative"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-dark" (click)="updateModel()">
+                Güncelle
+              </button>
+            </div>
+          </ng-template>
+        </form>
+
+        <!-- Aksesuar Ekleme Bolumu -->
+        <form [formGroup]="_addModelAccesoryDetail">
+          <ng-template #modelAddAccessoryPopup let-modal>
+            <div class="modal-header popUpTitle">
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <div class="mb-3">
+                <div class="form-group">
+                  <div class="row">
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <label for="inputState">Aksesuar Paketi Ekle</label>
+                      <select
+                        #selectedList
+                        id="accessoryPackageDetailId"
+                        name="accessoryPackageDetailId"
+                        class="form-control"
+                        formControlName="accessoryPackageDetailId"
+                      >
+                        <option selected disabled value="">
+                          Aksesuar Paketi Seçiniz
+                        </option>
+                        <option
+                          *ngFor="let accesoryPackage of accessoryPackageList"
+                          [ngValue]="accesoryPackage.id"
+                          selected
+                        >
+                          Paket Adı: {{ accesoryPackage.accessoryPackageName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-dark"
+                (click)="addModelAccessoryDetail()"
+              >
+                Oluştur
+              </button>
+            </div>
+          </ng-template>
+        </form>
+        <!-- Aksesuar Guncelleme Bolumu -->
+        <form [formGroup]="_updateModelAccessoryDetail">
+          <ng-template #modelUpdateAccessoryPopup let-modal>
+            <div class="modal-header popUpTitle">
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <div class="mb-3">
+                <div class="form-group">
+                  <div class="row">
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <label for="inputState">Aksesuar Paketi Ekle</label>
+                      <select
+                        #selectedList
+                        id="accessoryPackageDetailId"
+                        name="accessoryPackageDetailId"
+                        class="form-control"
+                        formControlName="accessoryPackageDetailId"
+                      >
+                      <option selected disabled value="">Ürün Seçiniz</option>
+                      <option
+                        *ngFor="let accessoryPackage of accessoryPackageList"
+                        [ngValue]="accessoryPackage.id"
+                        selected
+                      >
+                        {{ accessoryPackage.accessoryPackageName }}
+                      </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-dark"
+                (click)="updateModelAccessoryDetail()"
+              >
+                Güncelle
+              </button>
+            </div>
+          </ng-template>
+        </form>
+
+        <!-- Elektronik Ekleme Bolumu -->
+        <ng-template #modelElectronicDetail let-modal>
+          <div class="modal-header popUpTitle">
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <app-model-electronic-detail-modal
+            [model]="selectedModel"
+          ></app-model-electronic-detail-modal>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <!-- Card stats -->
+        </div>
+    </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+    <!-- Data Table -->
+    <div class="card shadow">
+        <div class="card-header border-0">
+            <h3 class="mb-0">Ürün Tablosu</h3>
+        </div>
+
+        <form _ngcontent-bti-c110="" 
+            class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+            <div _ngcontent-bti-c110="" class="form-group mb-2" ng-reflect-ng-class="[object Object]">
+                <div style="border-color:rgb(181 171 171 / 60%);" _ngcontent-bti-c110="" class="input-group input-group-alternative">
+                    <div _ngcontent-bti-c110="" class="input-group-prepend"><span _ngcontent-bti-c110=""
+                            class="input-group-text"><i style="color:black;" _ngcontent-bti-c110="" class="fas fa-search"></i></span></div>
+                    <input style="color:black;"  _ngcontent-bti-c110=""  placeholder="Search" type="text" class="form-control" name="filterText" [(ngModel)]="filterText">
+                </div>
+            </div>
+        </form>
+
+
+
+
+        <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2" 
+            [rows]="modelList | filter:filterText" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50" [limit]="5"
+            [footerHeight]="50" [rowHeight]="60"  >
+            <ngx-datatable-column name="ID" prop="id">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Model En Boy" prop="mostSizeKg">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Net Ağırlık" prop="netWeight">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Fire" prop="fire">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Saç Ağırlığı" prop="shateIronWeight">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="I Profil Ağırlığı" prop="iProfilWeight">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Fireli Saç Ağırlığı" prop="fireShateIronWeight">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Fireli I Profil Ağırlığı" prop="fireIProfileWeight">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Fireli Toplam Ağırlık" prop="fireTotalWeight">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Kantar Kapı Ağırlığı" prop="gateWeight">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Üretim Süresi" prop="productionTime">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="İşlemler" [sortable]="false">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <ng-container>
+                        <div container="body" ngbDropdown placement="bottom-right">
+                            <a class="btn btn-sm btn-icon-only text-light" ngbDropdownToggle>
+                                <i class="fas fa-ellipsis-v"></i>
+                            </a>
+
+                            <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item" href="javascript:void(0)">Sil</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Güncelle</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Modele Aksesuar Ekle</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Model Aksesuar
+                                    Güncelle</a>
+                                <a class="dropdown-item" href="javascript:void(0)">
+                                    Modle Elektronik Deteay
+                                </a>
+                            </div>
+
+                        </div>
+                        </ng-container>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+
+</div>

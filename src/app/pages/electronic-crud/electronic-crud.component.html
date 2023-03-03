@@ -1,0 +1,158 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+      <div class="header-body">
+        <!-- Card stats -->
+      </div>
+    </div>
+  </div>
+  <!-- Page content -->
+  <div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-header border-0">
+            <h3 class="mb-0">Elektronik Tablosu</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Elektronik Adı</th>
+                  <th scope="col">Elektronik TL Fiyatı</th>
+                  <th scope="col">Elektronik EURO Fiyatı</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let electronic of electronicList | paginate : {itemsPerPage:10, currentPage:p}">
+                <tr>
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
+                        <span class="mb-0 text-sm">{{electronic.id}}</span>
+                      </a>
+                      
+                    </div>
+                  </th>
+                  <td>
+                    {{electronic.electronicName}}
+                  </td>
+                  <td>
+                    <span class="badge badge-dot mr-4">
+                      {{electronic.electronicTlPrice | number:'1.2-2'}}  <b>₺</b>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge badge-dot mr-4">
+                      {{electronic.electronicEuroPrice | number:'1.2-2'}} <b>$</b>
+                    </span>
+                  </td>
+                  <td class="text-right">
+                    <div ngbDropdown placement="bottom-right">
+                      <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
+                        <i class="fas fa-ellipsis-v"></i>
+                      </a>
+                      <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="deleteElectronic(electronic)">Sil</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="writeElectronic(electronic)" (click)="openLg(electronicUpdatePopup)" >Güncelle</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer py-4">
+            <div _ngcontent-icv-c119="" class="d-flex justify-content-between">
+              <a _ngcontent-icv-c119=""  href="javascript:void(0)" class="btn btn-sm btn-info mr-4" (click)="openLg(electronicAddPopup)" >Elektronik Ekle</a>
+            </div>
+            <pagination-controls  class="float-right"
+            (pageChange)="p = $event"
+            nextLabel=""
+            previousLabel="">
+            </pagination-controls>
+          </div>
+
+          <form [formGroup]="_addElectronicForm">
+            <ng-template #electronicAddPopup let-modal>
+              <div class="modal-header popUpTitle">
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+  
+              <div class="modal-body">
+                <div class="mb-3">
+                  <div class="form-group">
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Elektronik Adı</label>
+                        <input _ngcontent-bya-c115="" type="text" id="input-username" id="electronicName"
+                          formControlName="electronicName" class="form-control form-control-alternative">
+                      </div>
+                    </div>
+  
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Elektronik Euro Fiyatı
+                            </label>
+                          <input _ngcontent-bya-c115="" type="number" id="input-username" id="electronicEuroPrice"
+                            formControlName="electronicEuroPrice" class="form-control form-control-alternative">
+                        </div>
+                      </div>
+  
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="addElectronic()" >Oluştur</button>
+              </div>
+            </ng-template>
+          </form>
+
+
+          <form [formGroup]="_updateElectronicForm">
+            <ng-template #electronicUpdatePopup let-modal>
+                <div class="modal-header popUpTitle">
+                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+      
+                  <div class="modal-body">
+                    <div class="mb-3">
+                      <div class="form-group">
+                        <div _ngcontent-bya-c115="" class="col-lg-12">
+                          <div _ngcontent-bya-c115="" class="form-group">
+                            <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Elektronik Adı</label>
+                            <input _ngcontent-bya-c115="" type="text" id="input-username" id="electronicName"
+                              formControlName="electronicName" class="form-control form-control-alternative">
+                          </div>
+                        </div>
+      
+                        <div _ngcontent-bya-c115="" class="col-lg-12">
+                            <div _ngcontent-bya-c115="" class="form-group">
+                              <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Elektronik Euro Fiyatı
+                                </label>
+                              <input _ngcontent-bya-c115="" type="number" id="input-username" id="electronicEuroPrice"
+                                formControlName="electronicEuroPrice" class="form-control form-control-alternative">
+                            </div>
+                          </div>
+      
+                      </div>
+                    </div>
+                  </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="updateElectronic()">Güncelle</button>
+              </div>
+            </ng-template>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
