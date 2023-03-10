@@ -8,6 +8,7 @@ import { Electronic } from 'src/app/models/electronic';
 import { Model } from 'src/app/models/model';
 import { ModelElectronicDetail } from 'src/app/models/modelElectronicDetail';
 import { ElectronicService } from 'src/app/services/electronicService/electronic.service';
+import { ErrorService } from 'src/app/services/errorService/error.service';
 import { ModelElectronicDetailService } from 'src/app/services/modelElectronicDetailService/model-electronic-detail.service';
 
 const { required } = Validators;
@@ -21,14 +22,13 @@ export class ModelElectronicDetailModalComponent implements OnInit {
   private readonly detailService = inject(ModelElectronicDetailService);
   private readonly electronicService = inject(ElectronicService);
   private readonly toastrService = inject(ToastrService);
+  private readonly errorService = inject(ErrorService);
   //#endregion
 
   //#region Fields
   electronicList: Electronic[] = [];
   electronicDetailForm: FormGroup;
 
-  _electronicDetailForm: FormGroup;
-  _addModelElectronicDetailForm: FormGroup;
 
   @Input() model: Model;
   //#endregion
@@ -92,11 +92,7 @@ export class ModelElectronicDetailModalComponent implements OnInit {
     this.detailService.add(input)
       .pipe(
         catchError((err: HttpErrorResponse) => {
-          if (err.error.Errors.length > 0) {
-            for (let i = 0; i < err.error.Errors.length; i++) {
-              this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-            }
-          }
+        this.errorService.checkError(err)
           return EMPTY;
         })
       )
@@ -135,12 +131,7 @@ export class ModelElectronicDetailModalComponent implements OnInit {
     }
     this.detailService.update(input).pipe(
       catchError((err: HttpErrorResponse) => {
-        console.log("update error",err)
-        if (err.error.Errors.length > 0) {
-          for (let i = 0; i < err.error.Errors.length; i++) {
-            this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-          }
-        }
+        this.errorService.checkError(err)
         return of();
       }))
       .subscribe(response => {
@@ -158,11 +149,7 @@ export class ModelElectronicDetailModalComponent implements OnInit {
     }
     this.detailService.delete(input).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (err.error.Errors.length > 0) {
-          for (let i = 0; i < err.error.Errors.length; i++) {
-            this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-          }
-        }
+        this.errorService.checkError(err)
         return EMPTY;
       }))
       .subscribe(response => {

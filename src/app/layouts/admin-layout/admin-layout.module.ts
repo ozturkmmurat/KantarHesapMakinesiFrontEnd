@@ -28,6 +28,7 @@ import { AuthInterceptor } from 'src/app/interceptors/auth/auth.interceptor';
 import { DataTableTestComponent } from 'src/app/pages/data-table-test/data-table-test.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FilterPipe } from 'src/app/pipes/filterPipe/filter.pipe';
+import { UserListComponent } from 'src/app/pages/user-list/user-list.component';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -47,7 +48,8 @@ import { FilterPipe } from 'src/app/pipes/filterPipe/filter.pipe';
         ProductModelCostComponent,
         CostVariableComponent,
         DataTableTestComponent,
-        FilterPipe
+        FilterPipe,
+        UserListComponent
     ],
     imports: [
         CommonModule,

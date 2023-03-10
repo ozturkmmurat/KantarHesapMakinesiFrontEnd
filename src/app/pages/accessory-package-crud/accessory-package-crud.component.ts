@@ -1,6 +1,6 @@
 import { group } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, of } from 'rxjs';
@@ -11,6 +11,7 @@ import { AccessoryPackageDetailDto } from 'src/app/models/Dtos/accessoryPackageD
 import { AccessoryPackageDetailService } from 'src/app/services/accessoryPackageDetailService/accessory-package-detail.service';
 import { AccessoryPackageService } from 'src/app/services/accessoryPackageService/accessory-package.service';
 import { AccessoryService } from 'src/app/services/accessoryService/accessory.service';
+import { ErrorService } from 'src/app/services/errorService/error.service';
 import { ModalService } from 'src/app/services/modalService/modal.service';
 import { PackageAccesoriesModalComponent } from './package-accesories-modal/package-accesories-modal.component';
 
@@ -20,7 +21,8 @@ import { PackageAccesoriesModalComponent } from './package-accesories-modal/pack
   styleUrls: ['./accessory-package-crud.component.scss']
 })
 export class AccessoryPackageCrudComponent implements OnInit {
-  
+
+  //Model Start
   accessoryPackageList: AccessoryPackage[] = [];
   accessoryPackageDetailDtoList: AccessoryPackageDetailDto[] = [];
   accessoryPackageDetailDto: AccessoryPackageDetailDto
@@ -28,18 +30,30 @@ export class AccessoryPackageCrudComponent implements OnInit {
   accessoryPackageDetail: AccessoryPackageDetail
   accessoryList: Accessory[] = []
   accessory: Accessory
-  accessorySelected: string
+  //Model End
+
+  //Form Start
   _addAccessoryPackageForm: FormGroup;
   _updateAccessoryPackageForm: FormGroup;
   _accessoryPackageDetailForm: FormGroup;
+  //Form End
+
+  accessorySelected: string
+
   filterText: any
+
+
   constructor(
+    //Service Start
     private accessoryPackageService: AccessoryPackageService,
-    private formBuilder: FormBuilder,
     private toastrService: ToastrService,
     private modalService: ModalService,
     private accessoryPackageDetailService: AccessoryPackageDetailService,
-    private accessoryService: AccessoryService) { }
+    private accessoryService: AccessoryService,
+    private errorService: ErrorService,
+    //Service End
+    private formBuilder: FormBuilder,
+  ) { }
 
   ngOnInit(): void {
     this.getAllAccessoryPackage()
@@ -62,62 +76,27 @@ export class AccessoryPackageCrudComponent implements OnInit {
     })
   }
 
-  get accessoryPackageDetailFormArray() {
-    console.log("Giriş yapıldı")
-    console.log("Test", this.accessoryPackageDetailService._accessoryPackageDetailForm.get('accessoryPackageDetailArray') as FormArray)
-    return this.accessoryPackageDetailService.accessoryPackageDetailFormArray
-  }
-
   openLg(content: any): void {
     this.modalService.openLg(content);
   }
 
-  openXl(content: any): void {
-
-    this.modalService.openXl(content).dismissed.subscribe(() => {
-      console.log("kapandı");
-      (this.accessoryPackageDetailService._accessoryPackageDetailForm.get('accessoryPackageDetailArray') as FormArray).clear()
-    })
-  }
-  writeAccessoryPackage(accesoryPackage: AccessoryPackage) {
-    this.accessoryPackageDetailService.writeAccessoryPackage(accesoryPackage.id)
+  @ViewChild('accessoryPackageDetail') accessoryPackageDetailChild: any;
+  selectedModel: AccessoryPackage;
+  private openModal(): void {
+    this.modalService
+      .openXl(this.accessoryPackageDetailChild)
+      .dismissed
+      .subscribe(() => { });
   }
 
-  writeAddAccessoryPackagaDetail(accesoryPackage: AccessoryPackage) {
-    this.accessoryPackageDetailService.writeAddAccessoryPackagaDetail(accesoryPackage)
+  add(): void {
+    this.selectedModel = {} as AccessoryPackage;
+    this.openModal()
   }
 
-  writeAccessoryChange(accessoryPackageDetail: AccessoryPackageDetailDto, target: any) {
-    if (accessoryPackageDetail.accessoryId != 0) {
-      for (let index = 0; index < this.accessoryPackageDetailDtoList.length; index++) {
-        if (this.accessoryPackageDetailDtoList[index].accessoryId == accessoryPackageDetail.accessoryId) {
-          this.selectedValue(target)
-          this.getAccessoryByName(this.selectedValue(target))
-          setTimeout(() => {
-            this.accessoryPackageDetailDtoList[index].accessoryEuroPrice = this.accessory.accessoryEuroPrice
-            this.accessoryPackageDetailDtoList[index].accessoryTlPrice = this.accessory.accessoryTlPrice
-            this._accessoryPackageDetailForm.patchValue({
-              accessoryId: accessoryPackageDetail.accessoryId, id: accessoryPackageDetail.accessoryPackageDetailId, accessoryPcs: accessoryPackageDetail.accessoryPackageDetailAccessoryPcs
-            })
-          }, 100);
-        }
-      }
-    }
-  }
-
-  editaAccessoryPackageDetail(accessoryPackageDetailDto: any) {
-    var result = this.accessoryPackageDetail = {
-      id: accessoryPackageDetailDto.accessoryPackageDetailId, accessoryId: parseInt(accessoryPackageDetailDto.accessoryPackageDetailAccessoryId),
-      accessoryPcs: accessoryPackageDetailDto.accessoryPackageDetailAccessoryPcs, accessoryPackageId: accessoryPackageDetailDto.accessoryPackageDetailAccessoryPackageId
-    }
-    return result
-  }
-
-  editAccessoryPackage(accesoryPackageDetailsDto: AccessoryPackageDetailDto) {
-    var editAccessoryPackage = this.accessoryPackage = {
-      id: accesoryPackageDetailsDto.accessoryPackageDetailAccessoryPackageId, accessoryPackageName: accesoryPackageDetailsDto.accessoryPackageName
-    }
-    return editAccessoryPackage
+  edit(model: AccessoryPackage): void {
+    this.selectedModel = model;
+    this.openModal()
   }
 
   selectedValue(value: any) {
@@ -166,16 +145,19 @@ export class AccessoryPackageCrudComponent implements OnInit {
     })
   }
 
+  writeAccessoryPackageForm(accesoryPackage: AccessoryPackage) {
+    this._updateAccessoryPackageForm.patchValue({
+      id: accesoryPackage.id, accessoryPackageName: accesoryPackage.accessoryPackageName
+    })
+  }
+
+
   addAccessoryPackage() {
     if (this._addAccessoryPackageForm.valid) {
       let accessoryPackageModel = Object.assign({}, this._addAccessoryPackageForm.value)
       this.accessoryPackageService.add(accessoryPackageModel).pipe(
         catchError((err: HttpErrorResponse) => {
-          if (err.error.Errors.length > 0) {
-            for (let i = 0; i < err.error.Errors.length; i++) {
-              this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-            }
-          }
+          this.errorService.checkError(err)
           return of();
         }))
         .subscribe(response => {
@@ -189,15 +171,12 @@ export class AccessoryPackageCrudComponent implements OnInit {
   }
 
   updateAccessoryPackage() {
+    console.log("Update Check", this._updateAccessoryPackageForm.value)
     if (this._updateAccessoryPackageForm.valid) {
       let accessoryPackageModel = Object.assign({}, this._updateAccessoryPackageForm.value)
       this.accessoryPackageService.update(accessoryPackageModel).pipe(
         catchError((err: HttpErrorResponse) => {
-          if (err.error.Errors.length > 0) {
-            for (let i = 0; i < err.error.Errors.length; i++) {
-              this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-            }
-          }
+          this.errorService.checkError(err)
           return of();
         }))
         .subscribe(response => {
@@ -213,11 +192,7 @@ export class AccessoryPackageCrudComponent implements OnInit {
   deleteAccessoryPackage(accesoryPackage: AccessoryPackage) {
     this.accessoryPackageService.delete(accesoryPackage).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (err.error.Errors.length > 0) {
-          for (let i = 0; i < err.error.Errors.length; i++) {
-            this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-          }
-        }
+        this.errorService.checkError(err)
         return of();
       }))
       .subscribe(response => {

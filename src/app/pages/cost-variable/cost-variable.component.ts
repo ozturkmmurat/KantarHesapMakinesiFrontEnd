@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, EMPTY } from 'rxjs';
 import { CostVariable } from 'src/app/models/costVariable';
 import { CostVariableService } from 'src/app/services/costVariableService/cost-variable.service';
+import { ErrorService } from 'src/app/services/errorService/error.service';
 import { ModalService } from 'src/app/services/modalService/modal.service';
 
 @Component({
@@ -15,25 +16,27 @@ import { ModalService } from 'src/app/services/modalService/modal.service';
 export class CostVariableComponent implements OnInit {
 
   //Model Start
-  costVariableList : CostVariable[] = [];
-  costVariable : CostVariable
+  costVariableList: CostVariable[] = [];
+  costVariable: CostVariable
   //Model End
 
   //Form Start
-  _addCostVariableForm : FormGroup;
-  _updateCostVariableForm : FormGroup
+  _addCostVariableForm: FormGroup;
+  _updateCostVariableForm: FormGroup
   //Form End
 
-  p:any
+  p: any
 
   constructor(
     //Service Start
-    private costVariableService:CostVariableService,
-    private toastrService : ToastrService,
-    private modalService : ModalService,
+    private costVariableService: CostVariableService,
+    private toastrService: ToastrService,
+    private modalService: ModalService,
+    private errorServie: ErrorService,
     //Service End
+
     //Form Start
-    private formBuilder : FormBuilder,
+    private formBuilder: FormBuilder,
     //Form End
   ) { }
 
@@ -43,104 +46,90 @@ export class CostVariableComponent implements OnInit {
     this.updateCostVariableForm()
   }
 
-  openLg(content : any){
+  openLg(content: any) {
     this.modalService.openLg(content)
   }
 
-  addCostVariableForm(){
+  addCostVariableForm() {
     this._addCostVariableForm = this.formBuilder.group({
-      iProfile:["", Validators.required],
-      xValue:["", Validators.required],
-      yValue:["",Validators.required],
-      fireShateIronAndIProfilePercentage:["",Validators.required],
-      fireTotalPercentAge:["",Validators.required],
-      firePercentAge:["",Validators.required]
+      iProfile: ["", Validators.required],
+      xValue: ["", Validators.required],
+      yValue: ["", Validators.required],
+      fireShateIronAndIProfilePercentage: ["", Validators.required],
+      fireTotalPercentAge: ["", Validators.required],
+      firePercentAge: ["", Validators.required]
     })
   }
 
-  updateCostVariableForm(){
+  updateCostVariableForm() {
     this._updateCostVariableForm = this.formBuilder.group({
-      id:["",Validators.required],
-      iProfile:["", Validators.required],
-      xValue:["", Validators.required],
-      yValue:["",Validators.required],
-      fireShateIronAndIProfilePercentage:["",Validators.required],
-      fireTotalPercentAge:["",Validators.required],
-      firePercentAge:["",Validators.required]
+      id: ["", Validators.required],
+      iProfile: ["", Validators.required],
+      xValue: ["", Validators.required],
+      yValue: ["", Validators.required],
+      fireShateIronAndIProfilePercentage: ["", Validators.required],
+      fireTotalPercentAge: ["", Validators.required],
+      firePercentAge: ["", Validators.required]
     })
   }
 
-  getAllCostVariable(){
+  getAllCostVariable() {
     this.costVariableService.getAllCostVariable().subscribe(response => {
       this.costVariableList = response.data
       console.log(response.data)
     })
   }
 
-  writeUpdateCostVariableForm(costVariable : CostVariable){
+  writeUpdateCostVariableForm(costVariable: CostVariable) {
     this._updateCostVariableForm.patchValue({
-      id:costVariable.id, iProfile:costVariable.iProfile, fireShateIronAndIProfilePercentage:costVariable.fireShateIronAndIProfilePercentage,
-      fireTotalPercentAge:costVariable.fireTotalPercentAge, firePercentAge:costVariable.firePercentAge
+      id: costVariable.id, iProfile: costVariable.iProfile, fireShateIronAndIProfilePercentage: costVariable.fireShateIronAndIProfilePercentage,
+      fireTotalPercentAge: costVariable.fireTotalPercentAge, firePercentAge: costVariable.firePercentAge
     })
   }
 
-  addCostVariable(){
+  addCostVariable() {
     console.log("Add costVariable check", this._addCostVariableForm.value)
-    if(this._addCostVariableForm.valid){
+    if (this._addCostVariableForm.valid) {
       let costVariableModel = Object.assign({}, this._addCostVariableForm.value)
-      console.log("Cost Variable Add", costVariableModel,this._addCostVariableForm.value.xValue,this._addCostVariableForm.value.yValue)
       this.costVariableService.add(costVariableModel).pipe(
-        catchError((err : HttpErrorResponse) => {
-          if(err.error.Errors.length >0){
-            for(let i = 0; i < err.error.Errors.length; i++){
-              this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-            }
-        }
-        return EMPTY;
+        catchError((err: HttpErrorResponse) => {
+          this.errorServie.checkError(err)
+          return EMPTY;
         }))
-        .subscribe(response =>  {
+        .subscribe(response => {
           this.toastrService.success(response.message, "Başarılı");
           this.getAllCostVariable()
         })
     }
-    else{
+    else {
       this.toastrService.error("Formu eksiksiz doldurun.", "Hata")
     }
   }
 
-  updateCostVariable(){
+  updateCostVariable() {
     console.log(this._updateCostVariableForm.value)
     if (this._updateCostVariableForm.valid) {
       let costVariableModel = Object.assign({}, this._updateCostVariableForm.value)
       this.costVariableService.update(costVariableModel).pipe(
-      catchError((err: HttpErrorResponse) => {
-        console.log("err", err)
-        if(err.error.Errors.length >0){
-          for(let i = 0; i < err.error.Errors.length; i++){
-            this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-          }
-      }
-      return EMPTY;
-      }))
-      .subscribe(response => {
-        this.toastrService.success(response.message, "Başarılı")
-        this.getAllCostVariable()
-      })
+        catchError((err: HttpErrorResponse) => {
+          this.errorServie.checkError(err)
+          return EMPTY;
+        }))
+        .subscribe(response => {
+          this.toastrService.success(response.message, "Başarılı")
+          this.getAllCostVariable()
+        })
     }
-    else{
+    else {
       this.toastrService.error("Formu eksiksiz doldurun.", "Hata")
     }
   }
 
-  deleteCostVariable(costVariable : CostVariable){
+  deleteCostVariable(costVariable: CostVariable) {
     this.costVariableService.delete(costVariable).pipe(
-      catchError((err : HttpErrorResponse) => {
-        if(err.error.Errors.length >0){
-          for(let i = 0; i < err.error.Errors.length; i++){
-            this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-          }
-        }
-          return EMPTY
+      catchError((err: HttpErrorResponse) => {
+        this.errorServie.checkError(err)
+        return EMPTY
       }))
       .subscribe(response => {
         this.toastrService.success(response.message, "Başarılı")

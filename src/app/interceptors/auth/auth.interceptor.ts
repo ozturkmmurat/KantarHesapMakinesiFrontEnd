@@ -32,6 +32,7 @@ export class AuthInterceptor implements HttpInterceptor {
         catchError((error) => {
           console.log(error)
           if (error.status === 403) {
+            console.log("Refresh token deneniyor")
             return this.refreshToken(newRequest, next)
           }
           if (error.status === 401) {
@@ -69,13 +70,11 @@ export class AuthInterceptor implements HttpInterceptor {
       if (refreshToken) {
         return this.authService.refreshTokenLogin(refreshToken).pipe(
           switchMap((token: any) => {
+            //Refresh token git
             this.isRefreshing = false;
             this.localStorageService.update("token", token.data.token)
-            console.log("Yeni Token  ", token.data.token)
             this.localStorageService.update("refreshToken", token.data.refreshToken)
             this.localStorageService.update("expiration", token.data.expiration);
-            console.log("REQUEST ", request)
-            console.log("TOKEN ", this.localStorageService.getToken())
             return next.handle(this.addTokenHeader(request, this.localStorageService.getToken()));
           }),
           catchError((err) => {

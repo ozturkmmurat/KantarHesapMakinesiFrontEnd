@@ -16,6 +16,7 @@ import { LocationService } from 'src/app/services/locationService/location.servi
 import { ModalService } from 'src/app/services/modalService/modal.service';
 import { ProductModelCostDetailService } from 'src/app/services/productModelCostDetailService/product-model-cost-detail.service';
 import { ProductModelCostService } from 'src/app/services/productModelCostService/product-model-cost.service';
+import { ErrorService } from 'src/app/services/errorService/error.service';
 
 @Component({
   selector: 'app-product-model-cost',
@@ -24,30 +25,34 @@ import { ProductModelCostService } from 'src/app/services/productModelCostServic
 })
 export class ProductModelCostComponent implements OnInit {
 
-  productModelCostDto:ProductModelCostDto;
-  productModelCostDetailDto : ProductModelCostDetailDto
-  productModelCostDetailDtoSelectList : ProductModelCostDetailSelectListDto[] = []
-  installationCostDtoList : InstallationCostDto[] = []
-  installationCost : InstallationCost
-  modelId : number
-  locationId:any = null
-  installationCostId:any = null
+  //Model Start
+  productModelCostDto: ProductModelCostDto;
+  productModelCostDetailDto: ProductModelCostDetailDto
+  productModelCostDetailDtoSelectList: ProductModelCostDetailSelectListDto[] = []
+  installationCostDtoList: InstallationCostDto[] = []
+  installationCost: InstallationCost
+  //Model End
+
+  modelId: number
+  locationId: any = null
+  installationCostId: any = null
 
   //Form Start
-  _productModelCostDtoForm : FormGroup;
-  _updateProductModelCostDtoForm : FormGroup;
+  _productModelCostDtoForm: FormGroup;
+  _updateProductModelCostDtoForm: FormGroup;
   // Form End
 
   constructor(
-    //Model Service  Start
-    private productModelCostService : ProductModelCostService,
-    private productModelCostDetailService : ProductModelCostDetailService,
-    private installationCostService : InstallationCostService,
-    //Model Service End
-    private activatedRoute:ActivatedRoute,
-    private formBuilder : FormBuilder,
-    private toastrService : ToastrService,
-    private modalService : ModalService
+    //Service  Start
+    private productModelCostService: ProductModelCostService,
+    private productModelCostDetailService: ProductModelCostDetailService,
+    private installationCostService: InstallationCostService,
+    private modalService: ModalService,
+    private toastrService: ToastrService,
+    private errorService: ErrorService,
+    //Service End
+    private activatedRoute: ActivatedRoute,
+    private formBuilder: FormBuilder,
   ) { }
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -62,54 +67,54 @@ export class ProductModelCostComponent implements OnInit {
     })
   }
 
-  addProductModelCostDtoForm(){
+  addProductModelCostDtoForm() {
     this._productModelCostDtoForm = this.formBuilder.group({
-      modelId:[Number(this.modelId)],
-      productModelCostOverheadPercentage:[17,Validators.required],
-      installationCostLocationId:["",Validators.required],
-      productModelCostLaborCostPerHour:[0,Validators.required],
-      productModelCostDetailProfitPercentage:[0,Validators.required],
-      productModelCostDetailTurkeySalesDiscount:[0,Validators.required],
-      productModelCostDetailExportFinalDiscount:[0,Validators.required]
+      modelId: [Number(this.modelId)],
+      productModelCostOverheadPercentage: [17, Validators.required],
+      installationCostLocationId: ["", Validators.required],
+      productModelCostLaborCostPerHour: [0, Validators.required],
+      productModelCostDetailProfitPercentage: [0, Validators.required],
+      productModelCostDetailTurkeySalesDiscount: [0, Validators.required],
+      productModelCostDetailExportFinalDiscount: [0, Validators.required]
     })
   }
 
-  updateProductModelCostDtoForm(){
+  updateProductModelCostDtoForm() {
     this._updateProductModelCostDtoForm = this.formBuilder.group({
-      productModelCostDetailId:[0,Validators.required],
-      modelId:[0],
-      installationCostId:[0,Validators.required],
-      productModelCostOverheadPercentage:[0,Validators.required],
-      installationCostLocationId:[null,Validators.required],
-      productModelCostLaborCostPerHour:["",Validators.required],
-      productModelCostDetailProfitPercentage:[1,Validators.required],
-      productModelCostDetailTurkeySalesDiscount:[1,Validators.required],
-      productModelCostDetailExportFinalDiscount:[1,Validators.required]
+      productModelCostDetailId: [0, Validators.required],
+      modelId: [0],
+      installationCostId: [0, Validators.required],
+      productModelCostOverheadPercentage: [0, Validators.required],
+      installationCostLocationId: [null, Validators.required],
+      productModelCostLaborCostPerHour: ["", Validators.required],
+      productModelCostDetailProfitPercentage: [1, Validators.required],
+      productModelCostDetailTurkeySalesDiscount: [1, Validators.required],
+      productModelCostDetailExportFinalDiscount: [1, Validators.required]
     })
   }
 
-  writeProductModelCostForm(){
+  writeProductModelCostForm() {
     this._updateProductModelCostDtoForm.patchValue({
-      productModelCostDetailId:this.productModelCostDetailDto.productModelCostDetailId, modelId:this.productModelCostDetailDto.productModelCostDetailProductModelCostId,
-      installationCostId : this.productModelCostDetailDto.installationCostId, installationCostLocationId : this.productModelCostDetailDto.installationCostLocationId,
-      productModelCostOverheadPercentage : this.productModelCostDto.productModelCostOverheadPercentage,
-      productModelCostDetailProfitPercentage:this.productModelCostDetailDto.productModelCostDetailProfitPercentage,
+      productModelCostDetailId: this.productModelCostDetailDto.productModelCostDetailId, modelId: this.productModelCostDetailDto.productModelCostDetailProductModelCostId,
+      installationCostId: this.productModelCostDetailDto.installationCostId, installationCostLocationId: this.productModelCostDetailDto.installationCostLocationId,
+      productModelCostOverheadPercentage: this.productModelCostDto.productModelCostOverheadPercentage,
+      productModelCostDetailProfitPercentage: this.productModelCostDetailDto.productModelCostDetailProfitPercentage,
       productModelCostDetailTurkeySalesDiscount: this.productModelCostDetailDto.productModelCostDetailTurkeySalesDiscount,
       productModelCostDetailExportFinalDiscount: this.productModelCostDetailDto.productModelCostDetailExportFinalDiscount
     })
   }
 
-  getProductModelCostDtoByModelId(modelId : number){
+  getProductModelCostDtoByModelId(modelId: number) {
 
     console.log("Byıd başladı")
     console.log("ById modelId kontrol", modelId)
     this.productModelCostService.getProductModelCostDtoByModelId(modelId).subscribe(response => {
       this.productModelCostDto = response.data
-      console.log("Veri kontrol",this.productModelCostDto.productModelCostShateIronEuroPrice)
+      console.log("Veri kontrol", this.productModelCostDto.productModelCostShateIronEuroPrice)
     })
   }
 
-  getProductModelCostDetailDtoByLocationModelId(){
+  getProductModelCostDetailDtoByLocationModelId() {
     console.log("Location ve model başladı")
     console.log("Location id ve model Id", this.locationId, this.modelId)
     this.productModelCostDetailService.getProductModelCostDtoByLocationModelId(this.locationId, this.modelId).subscribe(response => {
@@ -119,83 +124,67 @@ export class ProductModelCostComponent implements OnInit {
     })
   }
 
-  getProductModelCostDetailDtoByProductModelCostId(productModelCostId : number){
+  getProductModelCostDetailDtoByProductModelCostId(productModelCostId: number) {
     this.productModelCostDetailService.getAllProductModelCostDtoByProductModelCostId(productModelCostId).subscribe(response => {
       this.productModelCostDetailDtoSelectList = response.data
       console.log(this.productModelCostDetailDtoSelectList)
     })
   }
 
-  getAllInstallationLocation(){
+  getAllInstallationLocation() {
     this.installationCostService.getAllInstallationCostDto().subscribe(response => {
       console.log(response.data)
       this.installationCostDtoList = response.data
     })
   }
 
-  getInstallationCostById(){
+  getInstallationCostById() {
     console.log("Arama başladı", this.installationCostId)
     if (this.installationCostId) {
       this.installationCostService.getInstallationCostByLocationId(this.installationCostId).subscribe(response => {
         this.installationCost = response.data
       })
     }
-    
+
   }
 
-  addProductModelCostDto(){
-    console.log("Check add",this._productModelCostDtoForm.value)
-    if(this._productModelCostDtoForm.valid){
+  addProductModelCostDto() {
+    console.log("Check add", this._productModelCostDtoForm.value)
+    if (this._productModelCostDtoForm.valid) {
       let productModelCostDto = Object.assign({}, this._productModelCostDtoForm.value)
       this.productModelCostService.addProductModelCostDto(productModelCostDto).pipe(
-        catchError((err : HttpErrorResponse) => { 
-          console.log("Hata",err.error)
-          if(err.error.message != null && err.error.message != undefined && !err.error.Errors){
-            console.log("Length 1")
-            this.toastrService.error(err.error.message,"Hata")
-          }
-          else if (err.error.Errors.length > 0) {
-            console.log("Array hatasına giriş yapıldı")
-            for (let i = 0; i < err.error.Errors.length; i++) {
-              this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-            }
-          }
-           
-           return EMPTY
+        catchError((err: HttpErrorResponse) => {
+          this.errorService.checkError(err)
+          return EMPTY
         }))
         .subscribe(response => {
-          this.toastrService.success(response.message,"Başarılı")
+          this.toastrService.success(response.message, "Başarılı")
           this.activatedRoute.params.subscribe(params => {
-          this.getProductModelCostDtoByModelId(params["productModelCostId"])
-          this.getProductModelCostDetailDtoByProductModelCostId(params["productModelCostId"])
+            this.getProductModelCostDtoByModelId(params["productModelCostId"])
+            this.getProductModelCostDetailDtoByProductModelCostId(params["productModelCostId"])
           })
         })
     }
   }
 
-  updateProductModelCostDto(){
+  updateProductModelCostDto() {
     if (this._updateProductModelCostDtoForm.valid) {
       let productModelCostDto = Object.assign({}, this._updateProductModelCostDtoForm.value)
       this.productModelCostService.updateProductModelCostDto(productModelCostDto).pipe(
-        catchError((err : HttpErrorResponse) => {
-          console.log("update hatası",err)
-          if (err.error.Errors.length > 0) {
-            for (let i = 0; i < err.error.Errors.length; i++) {
-              this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-            }
-          }
-           return EMPTY
+        catchError((err: HttpErrorResponse) => {
+          this.errorService.checkError(err)
+          return EMPTY
         }))
         .subscribe(response => {
-          this.toastrService.success(response.message,"Başarılı")
+          this.toastrService.success(response.message, "Başarılı")
           this.activatedRoute.params.subscribe(params => {
-          this.getProductModelCostDtoByModelId(params["productModelCostId"])
-          this.getProductModelCostDetailDtoByProductModelCostId(params["productModelCostId"])
+            this.getProductModelCostDtoByModelId(params["productModelCostId"])
+            this.getProductModelCostDetailDtoByProductModelCostId(params["productModelCostId"])
           })
         })
     }
   }
 
- 
+
 
 }

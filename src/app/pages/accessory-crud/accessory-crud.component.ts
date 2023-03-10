@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { Accessory } from 'src/app/models/accessory';
 import { AccessoryService } from 'src/app/services/accessoryService/accessory.service';
+import { ErrorService } from 'src/app/services/errorService/error.service';
 import { ModalService } from 'src/app/services/modalService/modal.service';
 
 @Component({
@@ -15,16 +16,23 @@ import { ModalService } from 'src/app/services/modalService/modal.service';
 export class AccessoryCrudComponent implements OnInit {
 
 
-  accessoryList : Accessory[] = [];
-  _addAccessoryForm : FormGroup;
-  _updateAccessoryForm : FormGroup;
+  accessoryList: Accessory[] = [];
 
-  filterText:any
+  //Form Start
+  _addAccessoryForm: FormGroup;
+  _updateAccessoryForm: FormGroup;
+  //Form End
+
+  filterText: any
+
   constructor(
-    private accessoryService : AccessoryService,
-    private modalService : ModalService,
-    private formBuilder : FormBuilder,
-    private toastrService : ToastrService,
+    //Service Start
+    private accessoryService: AccessoryService,
+    private modalService: ModalService,
+    private toastrService: ToastrService,
+    private errorService: ErrorService,
+    //Service End
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -33,89 +41,77 @@ export class AccessoryCrudComponent implements OnInit {
     this.updateAccessoryForm()
   }
 
-  getAllAccessory(){
+  getAllAccessory() {
     this.accessoryService.getAllAccessory().subscribe(response => {
       this.accessoryList = response.data
     })
   }
 
-  openLg(content:any) : void{
+  openLg(content: any): void {
     this.modalService.openLg(content);
   }
 
-  writeAccessory(accessory:Accessory){
+  writeAccessory(accessory: Accessory) {
     this._updateAccessoryForm.patchValue({
-      id:accessory.id, accessoryName:accessory.accessoryName, accessoryEuroPrice:accessory.accessoryEuroPrice
+      id: accessory.id, accessoryName: accessory.accessoryName, accessoryEuroPrice: accessory.accessoryEuroPrice
     })
   }
 
-  addAccessoryForm(){
+  addAccessoryForm() {
     this._addAccessoryForm = this.formBuilder.group({
-      accessoryName:["", Validators.required],
-      accessoryEuroPrice:["",Validators.required],
+      accessoryName: ["", Validators.required],
+      accessoryEuroPrice: ["", Validators.required],
     })
   }
 
-  updateAccessoryForm(){
+  updateAccessoryForm() {
     this._updateAccessoryForm = this.formBuilder.group({
-      id:["", Validators.required],
-      accessoryName:["",Validators.required],
-      accessoryEuroPrice:["",Validators.required]
+      id: ["", Validators.required],
+      accessoryName: ["", Validators.required],
+      accessoryEuroPrice: ["", Validators.required]
     })
   }
 
-  addAccessory(){
-    if(this._addAccessoryForm.valid){
+  addAccessory() {
+    if (this._addAccessoryForm.valid) {
       let accessoryModel = Object.assign({}, this._addAccessoryForm.value)
       this.accessoryService.add(accessoryModel).pipe(
-        catchError((err:HttpErrorResponse) => {
-          if(err.error.Errors.length >0){
-            for(let i = 0; i < err.error.Errors.length; i++){
-              this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-            }
-        }
-        return of();
+        catchError((err: HttpErrorResponse) => {
+          this.errorService.checkError(err)
+          return of();
         }))
         .subscribe(response => {
           this.toastrService.success(response.message, "Başarılı");
           this.getAllAccessory()
         })
     }
-    else{
+    else {
       this.toastrService.error("Formu eksiksiz doldurun.", "Hata")
     }
   }
 
-  updateAccessory(){
+  updateAccessory() {
     if (this._updateAccessoryForm.valid) {
       let accessoryModel = Object.assign({}, this._updateAccessoryForm.value)
       this.accessoryService.update(accessoryModel).pipe(
-        catchError((err:HttpErrorResponse) => {
-          if(err.error.Errors.length >0){
-            for(let i = 0; i < err.error.Errors.length; i++){
-              this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-            }
-          }
+        catchError((err: HttpErrorResponse) => {
+          this.errorService.checkError(err)
           return of();
         }))
         .subscribe(response => {
-          this.toastrService.success(response.message,"Başarılı")
+          this.toastrService.success(response.message, "Başarılı")
           this.getAllAccessory()
         })
     }
-    else{
+    else {
       this.toastrService.error("Formu eksiksiz doldurun", "Hata")
     }
   }
 
-  deleteAccessory(accessory:Accessory){
+  deleteAccessory(accessory: Accessory) {
     this.accessoryService.delete(accessory).pipe(
-      catchError((err:HttpErrorResponse) => {
-        if(err.error.Errors.length >0){
-          for(let i = 0; i < err.error.Errors.length; i++){
-            this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-          }
-        }
+      catchError((err: HttpErrorResponse) => {
+        this.errorService.checkError(err)
         return of();
       }))
       .subscribe(response => {

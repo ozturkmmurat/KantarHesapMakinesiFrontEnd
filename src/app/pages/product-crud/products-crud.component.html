@@ -14,78 +14,45 @@
           <div class="card-header border-0">
             <h3 class="mb-0">Ürün Tablosu</h3>
           </div>
-          <div class="table-responsive">
-            <table class="table align-items-center table-flush">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Ürün Adı</th>
-                  <th scope="col">Kategori Adı</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let product of productList">
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
-                        <span class="mb-0 text-sm">{{product.productId}}</span>
-                      </a>
-                      
-                    </div>
-                  </th>
-                  <td>
-                    {{product.productName}}
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      {{product.categoryName}}
-                    </span>
-                  </td>
-                  <td class="text-right">
-                    <div ngbDropdown placement="bottom-right">
+          <form _ngcontent-bti-c110="" 
+          class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+          <div _ngcontent-bti-c110="" class="form-group mb-2" ng-reflect-ng-class="[object Object]">
+              <div style="border-color:rgb(181 171 171 / 60%);" _ngcontent-bti-c110="" class="input-group input-group-alternative">
+                  <div _ngcontent-bti-c110="" class="input-group-prepend"><span _ngcontent-bti-c110=""
+                          class="input-group-text"><i style="color:black;" _ngcontent-bti-c110="" class="fas fa-search"></i></span></div>
+                  <input style="color:black;"  _ngcontent-bti-c110=""  placeholder="Search" type="text" class="form-control" name="filterText" [(ngModel)]="filterText">
+              </div>
+          </div>
+      </form>
+       
+      <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2"
+      [rows]="productList | filter:filterText" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50"
+      [limit]="5" [footerHeight]="50" [rowHeight]="60">
+      <ngx-datatable-column name="ID" prop="productId">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Ürün Adı" prop="productName">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="İşlemler" [sortable]="false">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <ng-container>
+                    <div container="body" ngbDropdown placement="bottom-right">
                       <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
                         <i class="fas fa-ellipsis-v"></i>
                       </a>
                       <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                        <a class="dropdown-item" href="javascript:void(0)" (click)="deleteProduct(product)">Sil</a>
-                        <a class="dropdown-item" href="javascript:void(0)" (click)="writeProduct(product)" (click)="openLg(productUpdatePopup)">Güncelle</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="deleteProduct(row)">Sil</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="writeProduct(row)" (click)="openLg(productUpdatePopup)">Güncelle</a>
                       </div>
                     </div>
-                  </td>
-                </tr>
-              </ng-container>
-              </tbody>
-            </table>
-          </div>
+                  </ng-container>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+            </div>
           <div class="card-footer py-4">
             <div _ngcontent-icv-c119="" class="d-flex justify-content-between">
               <a _ngcontent-icv-c119="" (click)="openLg(productAddPopup)" href="javascript:void(0)" class="btn btn-sm btn-info mr-4" >Ürün Ekle</a>
             </div>
-            <nav aria-label="...">
-              <ul class="pagination justify-content-end mb-0">
-                <li class="page-item disabled">
-                  <a class="page-link" href="javascript:void(0)" tabindex="-1">
-                    <i class="fas fa-angle-left"></i>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link" href="javascript:void(0)">1</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="javascript:void(0)">2 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="javascript:void(0)">
-                    <i class="fas fa-angle-right"></i>
-                    <span class="sr-only">Next</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
           </div>
 
           <form [formGroup]="_addProductForm">
@@ -107,23 +74,12 @@
                           formControlName="productName" class="form-control form-control-alternative">
                       </div>
                     </div>
-  
-  
-                  <div _ngcontent-bya-c115="" class="col-lg-12">
-                    <label for="inputState">Kategori</label>
-                    <select id="categoryId" name="categoryId" class="form-control" formControlName="categoryId">
-                      <option selected disabled value="">Kategori Seçiniz</option>
-                       <option *ngFor="let category of categoryList" [ngValue]="category.id" selected>
-                        {{category.categoryName}}
-                      </option>
-                    </select>
-                  </div>
-  
+
                   </div>
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark" (click)="addProduct()">Oluştur</button>
+                <button type="button" class="btn btn-success" (click)="addProduct()">Oluştur</button>
               </div>
             </ng-template>
           </form>
@@ -164,7 +120,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark" (click)="updateProduct()">Güncelle</button>
+                <button type="button" class="btn btn-success" (click)="updateProduct()">Güncelle</button>
               </div>
             </ng-template>
           </form>
@@ -172,5 +128,4 @@
         </div>
       </div>
     </div>
-  </div>
   

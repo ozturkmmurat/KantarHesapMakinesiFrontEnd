@@ -14,66 +14,50 @@
           <div class="card-header border-0">
             <h3 class="mb-0">Elektronik Tablosu</h3>
           </div>
-          <div class="table-responsive">
-            <table class="table align-items-center table-flush">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Elektronik Adı</th>
-                  <th scope="col">Elektronik TL Fiyatı</th>
-                  <th scope="col">Elektronik EURO Fiyatı</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let electronic of electronicList | paginate : {itemsPerPage:10, currentPage:p}">
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
-                        <span class="mb-0 text-sm">{{electronic.id}}</span>
-                      </a>
-                      
-                    </div>
-                  </th>
-                  <td>
-                    {{electronic.electronicName}}
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      {{electronic.electronicTlPrice | number:'1.2-2'}}  <b>₺</b>
-                    </span>
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      {{electronic.electronicEuroPrice | number:'1.2-2'}} <b>$</b>
-                    </span>
-                  </td>
-                  <td class="text-right">
-                    <div ngbDropdown placement="bottom-right">
+          <form _ngcontent-bti-c110="" 
+          class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+          <div _ngcontent-bti-c110="" class="form-group mb-2" ng-reflect-ng-class="[object Object]">
+              <div style="border-color:rgb(181 171 171 / 60%);" _ngcontent-bti-c110="" class="input-group input-group-alternative">
+                  <div _ngcontent-bti-c110="" class="input-group-prepend"><span _ngcontent-bti-c110=""
+                          class="input-group-text"><i style="color:black;" _ngcontent-bti-c110="" class="fas fa-search"></i></span></div>
+                  <input style="color:black;"  _ngcontent-bti-c110=""  placeholder="Search" type="text" class="form-control" name="filterText" [(ngModel)]="filterText">
+              </div>
+          </div>
+      </form>
+
+
+      <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2"
+      [rows]="electronicList | filter:filterText" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50"
+      [limit]="5" [footerHeight]="50" [rowHeight]="60">
+      <ngx-datatable-column name="ID" prop="id">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Elektronik Adı" prop="electronicName">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="TL Fiyatı" prop="electronicTlPrice">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Euro Fiyatı" prop="electronicEuroPrice">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="İşlemler" [sortable]="false">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <ng-container>
+            <div container="body" ngbDropdown placement="bottom-right">
                       <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
                         <i class="fas fa-ellipsis-v"></i>
                       </a>
                       <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                        <a class="dropdown-item" href="javascript:void(0)" (click)="deleteElectronic(electronic)">Sil</a>
-                        <a class="dropdown-item" href="javascript:void(0)" (click)="writeElectronic(electronic)" (click)="openLg(electronicUpdatePopup)" >Güncelle</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="deleteElectronic(row)">Sil</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="writeElectronic(row)" (click)="openLg(electronicUpdatePopup)" >Güncelle</a>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              </ng-container>
-              </tbody>
-            </table>
+                  </div>
+                </ng-container>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
           </div>
           <div class="card-footer py-4">
             <div _ngcontent-icv-c119="" class="d-flex justify-content-between">
               <a _ngcontent-icv-c119=""  href="javascript:void(0)" class="btn btn-sm btn-info mr-4" (click)="openLg(electronicAddPopup)" >Elektronik Ekle</a>
             </div>
-            <pagination-controls  class="float-right"
-            (pageChange)="p = $event"
-            nextLabel=""
-            previousLabel="">
-            </pagination-controls>
           </div>
 
           <form [formGroup]="_addElectronicForm">
@@ -108,7 +92,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark" (click)="addElectronic()" >Oluştur</button>
+                <button type="button" class="btn btn-success" (click)="addElectronic()" >Oluştur</button>
               </div>
             </ng-template>
           </form>
@@ -141,12 +125,11 @@
                                 formControlName="electronicEuroPrice" class="form-control form-control-alternative">
                             </div>
                           </div>
-      
                       </div>
                     </div>
                   </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark" (click)="updateElectronic()">Güncelle</button>
+                <button type="button" class="btn btn-success" (click)="updateElectronic()">Güncelle</button>
               </div>
             </ng-template>
           </form>
@@ -154,5 +137,4 @@
         </div>
       </div>
     </div>
-  </div>
   

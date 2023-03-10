@@ -1,7 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { catchError, EMPTY } from 'rxjs';
 import { AuthService } from 'src/app/services/authService/auth.service';
+import { ErrorService } from 'src/app/services/errorService/error.service';
 
 @Component({
   selector: 'app-register',
@@ -13,9 +16,13 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup
 
   constructor(
-    private formBuilder: FormBuilder,
+    //Service Start
     private authService: AuthService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private errorService : ErrorService,
+    //Service End
+
+    private formBuilder: FormBuilder,
   ) { }
 
   ngOnInit() {
@@ -31,19 +38,17 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  register() {
-    if (this.registerForm.valid) {
+  register(){
+    if(this.registerForm.valid){
       let registerModel = Object.assign({}, this.registerForm.value)
-      this.authService.register(registerModel).subscribe(response => {
-        if (response.success) {
-          this.toastrService.info(response.message)
-          localStorage.setItem("token", response.data.token)
-          localStorage.setItem("expiration", response.data.expiration)
-          console.log(response);
-        }
-      }, responseError => {
-        this.toastrService.error(responseError.error)
-      })
+      this.authService.register(registerModel).pipe(
+        catchError((err : HttpErrorResponse) => {
+          this.errorService.checkError(err)
+          return EMPTY
+        }))
+        .subscribe(response => {
+          this.toastrService.success(response.message)
+        })
     }
   }
 

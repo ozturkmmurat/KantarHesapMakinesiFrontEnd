@@ -15,7 +15,7 @@
     <div class="col">
       <div class="card shadow">
         <div class="card-header border-0">
-          <h3 class="mb-0">Ürün Tablosu</h3>
+          <h3 class="mb-0">Model Tablosu</h3>
         </div>
         <form _ngcontent-bti-c110="" 
         class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
@@ -69,11 +69,6 @@
                         ngbDropdownMenu
                         class="dropdown-menu-right dropdown-menu-arrow"
                       >
-                      <a
-                      class="dropdown-item"
-                      href="javascript:void(0)"
-                      >Test</a
-                    >
                         <a
                           class="dropdown-item"
                           href="javascript:void(0)"
@@ -105,8 +100,15 @@
                           href="javascript:void(0)"
                           (click)="edit(row)"
                         >
-                          Modle Elektronik Deteay
+                          Model Elektronik Detay
                         </a>
+                        <a
+                        class="dropdown-item"
+                        href="javascript:void(0)"
+                        [routerLink]="'productModelCost/' + row.id"
+                      >
+                        Model Maliyeti
+                      </a>
                       </div>
                     </div>
               </ng-container>
@@ -181,7 +183,7 @@
 
 
                   <div _ngcontent-bya-c115="" class="col-lg-12">
-                    <label for="inputState">ÜRÜN</label>
+                    <label for="inputState">MODEL</label>
                     <select
                      
                       id="modelProductId"
@@ -191,7 +193,7 @@
                       (change)="onSelected(_addModelForm)"
                     >
                       <option selected disabled value="" >
-                        Ürün Seçiniz
+                        Model Seçiniz
                       </option>
                       <option  
                         *ngFor="let product of productList"
@@ -491,7 +493,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-outline-dark" (click)="updateModel()">
+              <button type="button" class="btn btn-success" (click)="updateModel()">
                 Güncelle
               </button>
             </div>
@@ -544,7 +546,7 @@
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-outline-dark"
+                class="btn btn-success"
                 (click)="addModelAccessoryDetail()"
               >
                 Oluştur
@@ -596,7 +598,7 @@
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-outline-dark"
+                class="btn btn-success"
                 (click)="updateModelAccessoryDetail()"
               >
                 Güncelle

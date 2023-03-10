@@ -1,13 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, distinctUntilChanged, EMPTY, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { Accessory } from 'src/app/models/accessory';
+import { AccessoryPackage } from 'src/app/models/accessoryPackage';
 import { AccessoryPackageDetail } from 'src/app/models/accessoryPackageDetail';
 import { AccessoryPackageDetailDto } from 'src/app/models/Dtos/accessoryPackageDetailDto';
 import { AccessoryPackageDetailService } from 'src/app/services/accessoryPackageDetailService/accessory-package-detail.service';
 import { AccessoryService } from 'src/app/services/accessoryService/accessory.service';
+import { ErrorService } from 'src/app/services/errorService/error.service';
+import { ModalService } from 'src/app/services/modalService/modal.service';
 const { required, min } = Validators;
 
 
@@ -22,41 +26,82 @@ export class PackageAccesoriesModalComponent implements OnInit {
     quantity: new FormControl(0, { nonNullable: true, validators: [required, min(1)] })
   });
 
-  accessoryPackageDetailList$: Observable<any[]>;
+  //#region Injections
+  private readonly fb = inject(FormBuilder);
+  private readonly detailService = inject(AccessoryPackageDetailService);
+  private readonly accessoryService = inject(AccessoryService);
+  private readonly toastrService = inject(ToastrService);
+  //#endregion
+
+  @Input() accessoryPackage : AccessoryPackage
+    //#region Utilities
+    private loadAccessoryList(): void {
+      this.accessoryService.getAllAccessory().subscribe(
+        response => this.accessoryList = response.data
+      )
+    }
+
   accessoryList: Accessory[] = []
   accessoryPackageId: number
   accessoryPackageDetail: AccessoryPackageDetail
   accessoryPackageDetailDtoList: AccessoryPackageDetailDto[] = [];
-  _accessoryPackageDetailForm: FormGroup;
-  _addAccessoryPackageDetailForm: FormGroup;
+  accessoryPackageDetailForm: FormGroup;
   filterText:any
+  
+
+
 
   constructor(
-    private toastrService: ToastrService,
     private accessoryPackageDetailService: AccessoryPackageDetailService,
-    private accessoryService: AccessoryService
+    private errorService : ErrorService,
+    private modalService : ModalService
   ) { }
 
   ngOnInit(): void {
-    this.updateAccessoryPackageDetailForm()
-    this.addAccessoryPackageDetailForm()
-    this.getAllAccesory()
+    this.loadAccessoryList();
+    this.buildForm();
+    this.getAccessoryPackageDetail();
   }
 
-  addAccessoryPackageDetailForm() {
-    this.accessoryPackageDetailService.addAccessoryPackageDetailForm()
-    this._addAccessoryPackageDetailForm = this.accessoryPackageDetailService._addAccessoryPackageDetailForm
+
+  private buildForm(): void {
+    const { id } = this.accessoryPackage;
+    this.accessoryPackageDetailForm = this.fb.group({
+      accessoryPackageId: new FormControl(id || 0, { nonNullable: true, validators: [required] }),
+      accessoryId: new FormControl(0, { nonNullable: true, validators: [required] }),
+      accessoryPcs: new FormControl(1, { nonNullable: true, validators: [required] }),
+      accessoryPackageDetails: this.fb.array([])
+    })
+  }
+//#endregion
+
+  getAccessoryPackageDetail(){
+    const input = this.accessoryPackageDetailForm.value as any;
+    console.log("input yazdırıldı başlangıç", input)
+    this.detailService
+    .getAllAccessoryPackageDetailDtoById(input.accessoryPackageId)
+    .subscribe(({ data }) => {
+      data.map(item => {
+        const group = this.fb.group({
+          accessoryName: new FormControl(item.accessoryName),
+          accessoryPackageDetailId: new FormControl<number | undefined>(item.accessoryPackageDetailId),
+              accessoryEuroPrice: new FormControl<number | undefined>(item.accessoryEuroPrice),
+              accessoryTlPrice: new FormControl<number | undefined>(item.accessoryTlPrice),
+              accessoryPackageDetailAccessoryPackageId: new FormControl<number | undefined>(item.accessoryPackageDetailAccessoryPackageId),
+              accessoryPackageDetailAccessoryId: new FormControl<number | undefined>(item.accessoryPackageDetailAccessoryId),
+              accessoryPackageDetailAccessoryPcs: new FormControl<number | undefined>(item.accessoryPackageDetailAccessoryPcs),
+        })
+        this.accessoryPackageDetails.push(group)
+      });
+    })
   }
 
-  updateAccessoryPackageDetailForm() {
-    this.accessoryPackageDetailService.updateAccessoryPackageDetailForm()
-    this._accessoryPackageDetailForm = this.accessoryPackageDetailService._accessoryPackageDetailForm
-  }
 
-  get accessoryPackageDetailFormArray() {
-    return this.accessoryPackageDetailService.accessoryPackageDetailFormArray
-  }
 
+
+  get accessoryPackageDetails() {
+    return this.accessoryPackageDetailForm.controls['accessoryPackageDetails'] as FormArray;
+  }
 
   getAllAccesory() {
     this.accessoryService.getAllAccessory().subscribe(response => {
@@ -70,6 +115,7 @@ export class PackageAccesoriesModalComponent implements OnInit {
     })
   }
 
+
   editaAccessoryPackageDetail(accessoryPackageDetailDto: any) {
     var result = this.accessoryPackageDetail = {
       id: accessoryPackageDetailDto.accessoryPackageDetailId, accessoryId: parseInt(accessoryPackageDetailDto.accessoryPackageDetailAccessoryId),
@@ -78,73 +124,91 @@ export class PackageAccesoriesModalComponent implements OnInit {
     return result
   }
 
-  addAccessoryPackageDetail() {
-    console.log("Boş mu dolu mu ?",this._addAccessoryPackageDetailForm.value)
-    if (this._addAccessoryPackageDetailForm.valid) {
-      let accessoryPackageDetailModel = Object.assign({}, this._addAccessoryPackageDetailForm.value)
-      this.accessoryPackageDetailService.add(accessoryPackageDetailModel).pipe(
+
+  save(): void {
+    if (this.accessoryPackageDetailForm.invalid) {
+      this.toastrService.error("Formu eksiksiz doldurun.", "Hata");
+      return;
+    }
+
+    const input = this.accessoryPackageDetailForm.value as any;
+    this.detailService.add(input)
+      .pipe(
         catchError((err: HttpErrorResponse) => {
-          if (err.error.Errors.length > 0) {
-            for (let i = 0; i < err.error.Errors.length; i++) {
-              this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-            }
-          }
-          return of();
-        }))
-        .subscribe(response => {
-          (this.accessoryPackageDetailService._accessoryPackageDetailForm.get('accessoryPackageDetailArray') as FormArray).clear()
-          this.accessoryPackageDetailService.writeAccessoryPackage(this._addAccessoryPackageDetailForm.value.accessoryPackageId)
-          this.toastrService.success(response.message, "Başarılı")
+          this.errorService.checkError(err)
+          return EMPTY;
         })
-    }
-    else {
-      this.toastrService.error("Formu eksiksiz doldurun", "Hata")
-    }
+      )
+      .subscribe(response => {
+        this.detailService
+          .getAllAccessoryPackageDetailDtoById(input.accessoryPackageId)
+          .subscribe(({ data }) => {
+            data.map(item => {
+              const group = this.fb.group({
+                accessoryName: new FormControl(item.accessoryName),
+                accessoryPackageDetailId: new FormControl<number | undefined>(item.accessoryPackageDetailId),
+                accessoryEuroPrice: new FormControl<number | undefined>(item.accessoryEuroPrice),
+                accessoryTlPrice: new FormControl<number | undefined>(item.accessoryTlPrice),
+                accessoryPackageDetailAccessoryPackageId: new FormControl<number | undefined>(item.accessoryPackageDetailAccessoryPackageId),
+                accessoryPackageDetailAccessoryId: new FormControl<number | undefined>(item.accessoryPackageDetailAccessoryId),
+                accessoryPackageDetailAccessoryPcs: new FormControl<number | undefined>(item.accessoryPackageDetailAccessoryPcs),
+              })
+              this.accessoryPackageDetails.push(group)
+            });
+          })
+          this.accessoryPackageDetails.clear()
+          console.log("Reset başarılı mı ?",this.accessoryPackageDetails)
+        this.toastrService.success(response.message, "Başarılı")
+      })
   }
 
-  deleteAccessoryPackageDetail(accessoryPackageDetail: any, index: number) {
-    this.accessoryPackageId = accessoryPackageDetail.accessoryPackageDetailAccessoryPackageId
-    var result = this.editaAccessoryPackageDetail(this.accessoryPackageDetailFormArray.controls[index].value)
-    this.accessoryPackageDetailService.delete(result).pipe(
+
+
+  update(contact: any, index: number): void {
+    if (this.accessoryPackageDetailForm.invalid) {//Validate form
+      this.toastrService.error("Formu eksiksiz doldurun.", "Hata")
+      return;
+    }
+    const input = {
+      id:contact.controls.accessoryPackageDetailId.value,
+      accessoryId:contact.controls.accessoryPackageDetailAccessoryId.value,
+      accessoryPackageId:contact.controls.accessoryPackageDetailAccessoryPackageId.value,
+      accessoryPcs:contact.controls.accessoryPackageDetailAccessoryPcs.value
+    }
+    this.detailService.update(input).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (err.error.Errors.length > 0) {
-          for (let i = 0; i < err.error.Errors.length; i++) {
-            this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-          }
-        }
+        this.errorService.checkError(err)
         return of();
       }))
       .subscribe(response => {
         this.toastrService.success(response.message, "Başarılı")
-        this.removeAccessoryPackageDetailForm(index)
       })
   }
 
-  removeAccessoryPackageDetailForm(index: number) {
-    this._accessoryPackageDetailForm.get('accessoryPackageDetailArray')["controls"].splice(index, 1)
+
+
+  remove(contact: any, index: number): void {
+    const input = {
+      id:contact.controls.accessoryPackageDetailId.value,
+      accessoryId:contact.controls.accessoryPackageDetailAccessoryId.value,
+      accessoryPackageId:contact.controls.accessoryPackageDetailAccessoryPackageId.value,
+      accessoryPcs:contact.controls.accessoryPackageDetailAccessoryPcs.value
+    }
+    this.detailService.delete(input).pipe(
+      catchError((err: HttpErrorResponse) => {
+        this.errorService.checkError(err)
+        return EMPTY;
+      }))
+      .subscribe(response => {
+        this.toastrService.success(response.message, "Başarılı")
+        this.accessoryPackageDetails.controls.splice(index, 1);
+      })
   }
 
-  updateAccessorPackageDetail(accessoryPackageDetail: any, index: number) {
-    this.accessoryPackageDetail = this.editaAccessoryPackageDetail(this.accessoryPackageDetailFormArray.controls[index].value)
-    if (this._accessoryPackageDetailForm.valid) {
-      this.accessoryPackageDetailService.update(this.accessoryPackageDetail).pipe(
-        catchError((err: HttpErrorResponse) => {
-          console.log(err)
-          if (err.error.Errors.length > 0) {
-            for (let i = 0; i < err.error.Errors.length; i++) {
-              this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-            }
-          }
-          return of();
-        }))
-        .subscribe(response => {
-          this.toastrService.success(response.message, "Başarılı")
-          this.getAllAccessoryPackageDetailDtoById(this.editaAccessoryPackageDetail(accessoryPackageDetail).accessoryPackageId)
-        })
-    } else {
-      this.toastrService.error("Formu eksiksiz doldurun", "Hata")
-    }
-  }
+
+
+
+
 
 
 }

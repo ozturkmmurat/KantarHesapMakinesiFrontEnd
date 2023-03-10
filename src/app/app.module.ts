@@ -19,7 +19,7 @@ import { FilterPipe } from './pipes/filterPipe/filter.pipe';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    AuthLayoutComponent
+    AuthLayoutComponent,
   ],
   imports: [
     BrowserModule,

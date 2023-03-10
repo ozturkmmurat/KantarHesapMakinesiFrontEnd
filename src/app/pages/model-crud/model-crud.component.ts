@@ -23,6 +23,7 @@ import { ModelService } from 'src/app/services/modelService/model.service';
 import { ProductService } from 'src/app/services/productService/product.service';
 import { CostVariable } from 'src/app/models/costVariable';
 import { CostVariableService } from 'src/app/services/costVariableService/cost-variable.service';
+import { ErrorService } from 'src/app/services/errorService/error.service';
 
 @Component({
   selector: 'app-model-crud',
@@ -39,6 +40,7 @@ export class ModelCrudComponent implements OnInit {
   electronicList: Electronic[] = [];
   costVariableList : CostVariable[] = [];
   // List End
+
   // Form Start
   _addModelForm: FormGroup;
   _updateModelForm: FormGroup;
@@ -63,7 +65,8 @@ export class ModelCrudComponent implements OnInit {
     //Service End
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
-    private productService: ProductService
+    private productService: ProductService,
+    private errorService : ErrorService
     //Data Table
     
   ) { }
@@ -99,14 +102,7 @@ export class ModelCrudComponent implements OnInit {
     })
   }
 
-  openXl(content: any): void {
-    this.modalService
-      .openXl(content)
-      .dismissed
-      .subscribe(() => {
-        (this.modelElectronicDetailService._electronicDetailForm.get('modelElectronicDetailArray') as FormArray).clear()
-      });
-  }
+
 
   @ViewChild('modelElectronicDetail') modelElectronicDetail: any;
   selectedModel: Model;
@@ -238,11 +234,7 @@ export class ModelCrudComponent implements OnInit {
       model.modelMostSizeKg += " " + this.selectedValue
       this.modelService.add(model).pipe(
         catchError((err: HttpErrorResponse) => {
-          if (err.error.Errors.length > 0) {
-            for (let i = 0; i < err.error.Errors.length; i++) {
-              this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-            }
-          }
+          this.errorService.checkError(err)
           return of();
         }))
         .subscribe(response => {
@@ -262,11 +254,7 @@ export class ModelCrudComponent implements OnInit {
       model.modelMostSizeKg += " " + this.selectedValue
       this.modelService.update(model).pipe(
         catchError((err: HttpErrorResponse) => {
-          if (err.error.Errors.length > 0) {
-            for (let i = 0; i < err.error.Errors.length; i++) {
-              this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-            }
-          }
+          this.errorService.checkError(err)
           return of();
         }))
         .subscribe(response => {
@@ -282,11 +270,7 @@ export class ModelCrudComponent implements OnInit {
   deleteModel(model: Model) {
     this.modelService.delete(model).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (err.error.Errors.length > 0) {
-          for (let i = 0; i < err.error.Errors.length; i++) {
-            this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-          }
-        }
+        this.errorService.checkError(err)
         return of();
       }))
       .subscribe(response => {
@@ -324,11 +308,7 @@ export class ModelCrudComponent implements OnInit {
       let modelAccesoryDetail = Object.assign({}, this._updateModelAccessoryDetail.value)
       this.modelAccessoryDetailService.update(modelAccesoryDetail).pipe(
         catchError((err: HttpErrorResponse) => {
-          if (err.error.Errors.length > 0) {
-            for (let i = 0; i < err.error.Errors.length; i++) {
-              this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-            }
-          }
+          this.errorService.checkError(err)
           return of();
         }))
         .subscribe(response => {
@@ -344,11 +324,7 @@ export class ModelCrudComponent implements OnInit {
   deleteModelAccesoryDetail(modelAccesoryDetail: ModelAccessoryDetail) {
     this.modelAccessoryDetailService.delete(modelAccesoryDetail).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (err.error.Errors.length > 0) {
-          for (let i = 0; i < err.error.Errors.length; i++) {
-            this.toastrService.error(err.error.Errors[i].errorMessage, "Doğrulama hatası")
-          }
-        }
+        this.errorService.checkError(err)
         return of();
       }))
       .subscribe(response => {

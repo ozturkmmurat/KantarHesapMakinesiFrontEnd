@@ -15,9 +15,11 @@ import { ProductModelCostComponent } from 'src/app/pages/product-model-cost/prod
 import { CostVariableComponent } from 'src/app/pages/cost-variable/cost-variable.component';
 import { LoginGuard } from 'src/app/guards/login/login.guard';
 import { DataTableTestComponent } from 'src/app/pages/data-table-test/data-table-test.component';
+import { UserListComponent } from 'src/app/pages/user-list/user-list.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'user-profile',   component: UserProfileComponent, canActivate:[LoginGuard] },
+    { path: 'userList',      component:UserListComponent, canActivate:[LoginGuard]},
     { path: 'tables',         component: TablesComponent },
     { path: 'icons',          component: IconsComponent },
     { path: 'maps',           component: MapsComponent },

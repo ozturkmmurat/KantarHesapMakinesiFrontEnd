@@ -10,6 +10,7 @@ import { ProductDto } from 'src/app/models/Dtos/productDto';
 import { CategoryService } from 'src/app/services/categoryService/category.service';
 import { ModalService } from 'src/app/services/modalService/modal.service';
 import { ProductService } from 'src/app/services/productService/product.service';
+import { ErrorService } from 'src/app/services/errorService/error.service';
 
 @Component({
   selector: 'app-product',
@@ -18,18 +19,29 @@ import { ProductService } from 'src/app/services/productService/product.service'
 })
 export class ProductsCrudComponent implements OnInit {
 
-  productList : ProductDto[] = [];
-  categoryList : Category[] = [];
-  product:Product
-  _addProductForm : FormGroup;
-  _updateProductForm : FormGroup;
+  //Model Start
+  productList: ProductDto[] = [];
+  categoryList: Category[] = [];
+  product: Product
+  //Model End
+
+  //Form Start
+  _addProductForm: FormGroup;
+  _updateProductForm: FormGroup;
+  //Form End
+
+  filterText: any;
 
   constructor(
-    private productService : ProductService,
-    private categoryService : CategoryService,
-    private modalService : ModalService,
+    //Service Start
+    private productService: ProductService,
+    private categoryService: CategoryService,
+    private modalService: ModalService,
+    private toastrService: ToastrService,
+    private errorService: ErrorService,
+    //Service End
+
     private formBuilder: FormBuilder,
-    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -39,18 +51,17 @@ export class ProductsCrudComponent implements OnInit {
     this.updateProductForm()
   }
 
-  addProductForm(){
+  addProductForm() {
     this._addProductForm = this.formBuilder.group({
-       categoryId:["", Validators.required],
-       productName:["", Validators.required]
+      productName: ["", Validators.required]
     })
   }
 
-  updateProductForm(){
+  updateProductForm() {
     this._updateProductForm = this.formBuilder.group({
-      id:["", Validators.required],
-      categoryId:["", Validators.required],
-      productName:["", Validators.required]
+      id: ["", Validators.required],
+      categoryId: ["", Validators.required],
+      productName: ["", Validators.required]
     })
   }
 
@@ -58,36 +69,32 @@ export class ProductsCrudComponent implements OnInit {
     this.modalService.openLg(content);
   }
 
-  getAllProductDto(){
+  getAllProductDto() {
     this.productService.getAllProductDto().subscribe(response => {
       this.productList = response.data
       console.log(response.data)
     })
   }
 
-  getAllCategory(){
+  getAllCategory() {
     this.categoryService.getAllCategory().subscribe(response => {
       this.categoryList = response.data
       console.log(this.categoryList)
     })
   }
 
-  writeProduct(product:ProductDto){
+  writeProduct(product: ProductDto) {
     this._updateProductForm.patchValue({
-      id:product.productId, categoryId:product.categoryId,productName:product.productName
+      id: product.productId,  productName: product.productName
     })
   }
 
-  addProduct(){
+  addProduct() {
     if (this._addProductForm.valid) {
       let productModel = Object.assign({}, this._addProductForm.value)
       this.productService.add(productModel).pipe(
-        catchError((err:HttpErrorResponse) => {
-          if(err.error.Errors.length >0){
-              for(let i = 0; i < err.error.Errors.length; i++){
-                this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-              }
-          }
+        catchError((err: HttpErrorResponse) => {
+          this.errorService.checkError(err)
           return of();
         }))
         .subscribe(response => {
@@ -95,43 +102,35 @@ export class ProductsCrudComponent implements OnInit {
           this.getAllProductDto()
         })
     }
-    else{
+    else {
       this.toastrService.error("Formu eksiksiz doldurun.", "Hata")
     }
   }
 
-  updateProduct(){
-    if(this._updateProductForm.valid){
+  updateProduct() {
+    if (this._updateProductForm.valid) {
       let productModel = Object.assign({}, this._updateProductForm.value)
       this.productService.update(productModel).pipe(
-        catchError((err:HttpErrorResponse) => {
-          if(err.error.Errors.length >0){
-            for(let i = 0; i < err.error.Errors.length; i++){
-              this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-            }
-          }
+        catchError((err: HttpErrorResponse) => {
+          this.errorService.checkError(err)
           return of();
         }))
         .subscribe(response => {
-          this.toastrService.success(response.message,"Başarılı")
+          this.toastrService.success(response.message, "Başarılı")
           this.getAllProductDto()
         })
     }
-    else{
+    else {
       this.toastrService.error("Formu eksiksiz doldurun.", "Hata")
     }
   }
 
-  deleteProduct(product:ProductDto){
+  deleteProduct(product: ProductDto) {
     var result = this.editProductDto(product)
     this.productService.delete(result).pipe(
-      catchError((err:HttpErrorResponse) => {
-        if(err.error.Errors.length >0){
-          for(let i = 0; i < err.error.Errors.length; i++){
-            this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-          }
-        }
-          return of();
+      catchError((err: HttpErrorResponse) => {
+        this.errorService.checkError(err)
+        return of();
       }))
       .subscribe(response => {
         this.toastrService.success(response.message, "Başarılı")
@@ -139,9 +138,9 @@ export class ProductsCrudComponent implements OnInit {
       })
   }
 
-  editProductDto(productDto: ProductDto){
+  editProductDto(productDto: ProductDto) {
     var editProduct = this.product = {
-      id : productDto.productId, categoryId : productDto.categoryId, productName: productDto.productName
+      id: productDto.productId, productName: productDto.productName
     }
     return editProduct
   }

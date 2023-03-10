@@ -18,50 +18,8 @@ export class ModelElectronicDetailService {
   _addModelElectronicDetailFormm: FormGroup
 
   constructor(private httpClient: HttpClient,
-    private formBuilder: FormBuilder) { }
+  ) { }
 
-
-  get modelElectronicDetailFormArray() {
-    return this._electronicDetailForm.get('modelElectronicDetailArray') as FormArray
-  }
-
-
-  addModelElectronicDetailForm() {
-    this._addModelElectronicDetailFormm = this.formBuilder.group({
-      modelId: ["", Validators.required],
-      electronicId: ["", Validators.required],
-      electronicPcs: [1, Validators.required],
-    })
-  }
-
-  modelElectronicDetailForm() {
-    this._electronicDetailForm = this.formBuilder.group({
-      modelElectronicDetailArray: this.formBuilder.array([]),
-    })
-  }
-
-  writeModelElectronicDetail(modelId: number) {
-    this.getAllModelElectronicDetailDtoByModelId(modelId).pipe(
-      catchError((err: HttpErrorResponse) => {
-        console.error(err)
-        return EMPTY;
-      }))
-      .subscribe(({ data }) => {
-        data.map(r => {
-          (this._electronicDetailForm.get('modelElectronicDetailArray') as FormArray).push(
-            new FormGroup({
-              electronicName: new FormControl(r.electronicName),
-              electronicEuroPrice: new FormControl(r.electronicEuroPrice),
-              electronicTlPrice: new FormControl(r.electronicTlPrice),
-              modelElectronicDetailsId: new FormControl(r.modelElectronicDetailsId),
-              modelElectronicDetailsModelId: new FormControl(r.modelElectronicDetailsModelId),
-              modelElectronicDetailsElectronicId: new FormControl(r.modelElectronicDetailsElectronicId),
-              modelElectronicDetailsElectronicPcs: new FormControl(r.modelElectronicDetailsElectronicPcs)
-            })
-          )
-        })
-      })
-  }
 
   getAllModelElectronicDetailDtoByModelId(modelId: number): Observable<ListResponseModel<ModelElectronicDetailDto>> {
     let newPath = environment.apiUrl + "api/modelElectronicDetails/getAllModelElectronicDetailDtoByModelId?modelId=" + modelId

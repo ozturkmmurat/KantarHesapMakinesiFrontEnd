@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { Electronic } from 'src/app/models/electronic';
 import { ElectronicService } from 'src/app/services/electronicService/electronic.service';
+import { ErrorService } from 'src/app/services/errorService/error.service';
 import { ModalService } from 'src/app/services/modalService/modal.service';
 
 @Component({
@@ -14,15 +15,24 @@ import { ModalService } from 'src/app/services/modalService/modal.service';
 })
 export class ElectronicCrudComponent implements OnInit {
 
+  //Model Start
   electronicList : Electronic[] = [];
+  //Model End
+
+  //Form Start
   _addElectronicForm : FormGroup;
   _updateElectronicForm : FormGroup
-  p : any
+  //Form End
+  
+  filterText : any
 
   constructor(
+    //Service Start
     private electronicService: ElectronicService,
     private modalService : ModalService,
     private toastrService: ToastrService,
+    private errorService : ErrorService,
+    //Service End
     private formBuilder : FormBuilder
   ) { }
 
@@ -68,11 +78,7 @@ export class ElectronicCrudComponent implements OnInit {
       let electronicModel = Object.assign({}, this._addElectronicForm.value)
       this.electronicService.add(electronicModel).pipe(
         catchError((err:HttpErrorResponse) => {
-          if(err.error.Errors.length >0){
-            for(let i = 0; i < err.error.Errors.length; i++){
-              this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-            }
-        }
+        this.errorService.checkError(err)
         return of();
         }))
         .subscribe(response => {
@@ -90,11 +96,7 @@ export class ElectronicCrudComponent implements OnInit {
       let electronicModel = Object.assign({}, this._updateElectronicForm.value)
       this.electronicService.update(electronicModel).pipe(
         catchError((err:HttpErrorResponse) => {
-          if(err.error.Errors.length >0){
-            for(let i = 0; i < err.error.Errors.length; i++){
-              this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-            }
-        }
+         this.errorService.checkError(err)
         return of()
         }))
         .subscribe(response => {
@@ -107,11 +109,7 @@ export class ElectronicCrudComponent implements OnInit {
   deleteElectronic(electronic:Electronic){
     this.electronicService.delete(electronic).pipe(
       catchError((err:HttpErrorResponse) => {
-        if(err.error.Errors.length >0){
-          for(let i = 0; i < err.error.Errors.length; i++){
-            this.toastrService.error(err.error.Errors[i].errorMessage,"Doğrulama hatası")
-          }
-        }
+        this.errorService.checkError(err)
         return of();
       }))
       .subscribe(response => {

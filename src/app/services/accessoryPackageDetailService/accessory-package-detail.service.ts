@@ -18,61 +18,13 @@ import { ModalService } from '../modalService/modal.service';
 export class AccessoryPackageDetailService {
 
   _accessoryPackageDetailForm: FormGroup;
-  _addAccessoryPackageDetailForm: FormGroup;
 
   constructor(private httpClient: HttpClient,
-    private formBuilder: FormBuilder,
   ) {
   }
 
   get accessoryPackageDetailFormArray() {
-    return this._accessoryPackageDetailForm.get('accessoryPackageDetailArray') as FormArray
-  }
-
-  addAccessoryPackageDetailForm() {
-    this._addAccessoryPackageDetailForm = this.formBuilder.group({
-      accessoryPackageId: ["", Validators.required],
-      accessoryId: ["", Validators.required],
-      accessoryPcs: [1, Validators.required],
-    })
-  }
-
-  updateAccessoryPackageDetailForm() {
-    this._accessoryPackageDetailForm = this.formBuilder.group({
-      accessoryPackageDetailArray: this.formBuilder.array([
-      ]),
-    })
-  }
-
-  writeAddAccessoryPackagaDetail(accesoryPackage: AccessoryPackage) {
-    console.log("Paket geldi servis",accesoryPackage)
-    this._addAccessoryPackageDetailForm.patchValue({
-      accessoryPackageId: accesoryPackage.id,
-    })
-  }
-
-  writeAccessoryPackage(accesoryPackageId: number) {
-    this.getAllAccessoryPackageDetailDtoById(accesoryPackageId).pipe(
-      catchError((err: HttpErrorResponse) => {
-        console.log(err.error)
-        return of()
-      }))
-      .subscribe(response => {
-        let result = response.data
-        const groups = result.map(r => {
-          (this._accessoryPackageDetailForm.get('accessoryPackageDetailArray') as FormArray).push(
-            new FormGroup({
-              accessoryPackageDetailId: new FormControl<number | undefined>(r.accessoryPackageDetailId),
-              accessoryEuroPrice: new FormControl<number | undefined>(r.accessoryEuroPrice),
-              accessoryTlPrice: new FormControl<number | undefined>(r.accessoryTlPrice),
-              accessoryPackageDetailAccessoryPackageId: new FormControl<number | undefined>(r.accessoryPackageDetailAccessoryPackageId),
-              accessoryPackageDetailAccessoryId: new FormControl<number | undefined>(r.accessoryPackageDetailAccessoryId),
-              accessoryPackageDetailAccessoryPcs: new FormControl<number | undefined>(r.accessoryPackageDetailAccessoryPcs),
-            })
-
-          );
-        })
-      })
+    return (this._accessoryPackageDetailForm.get('accessoryPackageDetailArray') as FormArray).controls
   }
 
   getAllAccessoryPackageDetail(): Observable<ListResponseModel<AccessoryPackageDetail>> {
@@ -102,7 +54,7 @@ export class AccessoryPackageDetailService {
 
   update(accesoryPackageDetails: AccessoryPackageDetail): Observable<ResponseModel> {
     console.log(accesoryPackageDetails)
-    let newPath = "https://localhost:5001/api/accessoryPackageDetails/update"
+    let newPath = environment.apiUrl + "api/accessoryPackageDetails/update"
     console.log(newPath)
     return this.httpClient.post<ResponseModel>(newPath, accesoryPackageDetails)
   }

@@ -59,17 +59,13 @@
                           class="dropdown-item"
                           href="javascript:void(0)"
                           (click)="openLg(updateAccessoryPackagePopup)"
-                          (click)="writeAccessoryPackage(row)"
+                          (click)="writeAccessoryPackageForm(row)"
                           >Güncelle</a
                         >
                         <a
                           class="dropdown-item"
                           href="javascript:void(0)"
-                          (click)="openXl(accessoryPackageDetail)"
-                          (click)="writeAccessoryPackage(row)"
-                          (click)="
-                            writeAddAccessoryPackagaDetail(row)
-                          "
+                          (click)="edit(row)"
                           >Paket Aksesuar Detayları</a
                         >
                       </div>
@@ -131,7 +127,7 @@
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-outline-dark"
+                class="btn btn-success"
                 (click)="addAccessoryPackage()"
               >
                 Oluştur
@@ -180,7 +176,7 @@
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-outline-dark"
+                class="btn btn-success"
                 (click)="updateAccessoryPackage()"
               >
                 Güncelle
@@ -200,7 +196,9 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <app-package-accesories-modal></app-package-accesories-modal>
+          <app-package-accesories-modal [accessoryPackage]="selectedModel">
+
+          </app-package-accesories-modal>
         </ng-template>
       </div>
     </div>

@@ -8,7 +8,7 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-md-12 col-sm-12">
-                    <label for="inputState">Aksesuar</label>
+                    <label for="inputState">Elektronik</label>
                     <select
                       id="electronicId"
                       name="electronicId"
@@ -16,7 +16,7 @@
                       formControlName="electronicId"
                     >
                       <option selected disabled value="0">
-                        Aksesuar Seçiniz
+                        Elektronik Seçiniz
                       </option>
                       <option
                         *ngFor="let electronic of electronicList"
@@ -30,7 +30,7 @@
                   <div class="col-lg-3 col-md-3 col-sm-12">
                     <div class="form-group">
                       <label for="electronicPcs" class="form-control-label">
-                        Aksesuar Adeti
+                        Elektronik Adeti
                       </label>
                       <input
                         type="number"
@@ -42,14 +42,15 @@
                     </div>
                   </div>
 
-                  <div class="col-lg-3 col-md-3 col-sm-12">
+                  <div class="col-lg-3 mt-4">
+                    <label _ngcontent-bya-c115="" for="input-username" class="form-control-label"></label>
                     <button
-                      type="submit"
-                      class="btn btn-outline-dark mt-1"
-                      [class.disabled]="electronicDetailForm.invalid"
-                    >
-                      Pakete Aksesuar Ekle
-                    </button>
+                    type="submit"
+                    class="btn btn-success"
+                    [class.disabled]="electronicDetailForm.invalid"
+                  >
+                    Elektronik Ekle
+                  </button>
                   </div>
                 </div>
               </div>
@@ -63,9 +64,9 @@
             <thead>
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Aksesuar Adı</th>
-                <th scope="col">Aksesuar TL Fiyatı</th>
-                <th scope="col">Aksesaur Euro Fiyatı</th>
+                <th scope="col">Elektronik Adı</th>
+                <th scope="col">Elektronik TL Fiyatı</th>
+                <th scope="col">Elektronik Euro Fiyatı</th>
                 <th scope="col">Adet</th>
                 <th scope="col" class="text-center">İşlemler</th>
               </tr>
@@ -97,11 +98,11 @@
                   </td>
 
                   <td scope="col">
-                    {{ contact.get("electronicTlPrice").value }}
+                    {{ contact.get("electronicTlPrice").value * contact.get('modelElectronicDetailsElectronicPcs').value}}
                   </td>
 
                   <td scope="col">
-                    {{ contact.get("electronicEuroPrice").value }}
+                    {{ contact.get("electronicEuroPrice").value * contact.get('modelElectronicDetailsElectronicPcs').value}}
                   </td>
 
                   <td scope="col">
