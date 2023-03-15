@@ -57,8 +57,7 @@ export class CostVariableComponent implements OnInit {
       xValue: ["", Validators.required],
       yValue: ["", Validators.required],
       fireShateIronAndIProfilePercentage: ["", Validators.required],
-      fireTotalPercentAge: ["", Validators.required],
-      firePercentAge: ["", Validators.required]
+      fireTotalPercentAge: ["", Validators.required]
     })
   }
 
@@ -70,8 +69,7 @@ export class CostVariableComponent implements OnInit {
       xValue: ["", Validators.required],
       yValue: ["", Validators.required],
       fireShateIronAndIProfilePercentage: ["", Validators.required],
-      fireTotalPercentAge: ["", Validators.required],
-      firePercentAge: ["", Validators.required]
+      fireTotalPercentAge: ["", Validators.required]
     })
   }
 
@@ -85,7 +83,7 @@ export class CostVariableComponent implements OnInit {
   writeUpdateCostVariableForm(costVariable: CostVariable) {
     this._updateCostVariableForm.patchValue({
       id: costVariable.id, iProfile: costVariable.iProfile, fireShateIronAndIProfilePercentage: costVariable.fireShateIronAndIProfilePercentage,
-      fireTotalPercentAge: costVariable.fireTotalPercentAge, firePercentAge: costVariable.firePercentAge
+      fireTotalPercentAge: costVariable.fireTotalPercentAge
     })
   }
 

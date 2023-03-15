@@ -5,5 +5,4 @@ export interface CostVariable{
     shateIron:number,
     fireShateIronAndIProfilePercentage:number,
     fireTotalPercentAge:number,
-    firePercentAge:number
 }

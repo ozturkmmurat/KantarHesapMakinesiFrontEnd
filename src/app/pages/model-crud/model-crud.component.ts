@@ -97,7 +97,7 @@ export class ModelCrudComponent implements OnInit {
   }
   writeModel(model: Model) {
     this._updateModelForm.patchValue({
-      modelId: model.id, modelMostSizeKg: model.mostSizeKg, modelProductId: model.productId, modelNetWeight: model.netWeight, modelGateWeight: model.gateWeight,
+      modelId: model.id, modelMostSizeKg: model.mostSizeKg, modelProductId: model.productId, modelNetWeight: model.netWeight,
       modelProductionTime: model.productionTime, modelShateIronWeight: model.shateIronWeight, modelIProfilWeight: model.iProfilWeight
     })
   }
@@ -145,7 +145,6 @@ export class ModelCrudComponent implements OnInit {
       costVariableId: ["", Validators.required],
       modelMostSizeKg: ["", Validators.required],
       modelNetWeight: ["", Validators.required],
-      modelGateWeight: ["", Validators.required],
       modelProductionTime: ["", Validators.required],
       modelShateIronWeight: ["", Validators.required],
       modelIProfilWeight: ["", Validators.required]
@@ -159,7 +158,6 @@ export class ModelCrudComponent implements OnInit {
       costVariableId: ["", Validators.required],
       modelMostSizeKg: ["", Validators.required],
       modelNetWeight: ["", Validators.required],
-      modelGateWeight: ["", Validators.required],
       modelProductionTime: ["", Validators.required],
       modelShateIronWeight: ["", Validators.required],
       modelIProfilWeight: ["", Validators.required]
