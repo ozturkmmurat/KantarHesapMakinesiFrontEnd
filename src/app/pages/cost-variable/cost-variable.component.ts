@@ -52,6 +52,7 @@ export class CostVariableComponent implements OnInit {
 
   addCostVariableForm() {
     this._addCostVariableForm = this.formBuilder.group({
+      costVariableName:["Fix Hesap",Validators.required],
       iProfile: ["", Validators.required],
       xValue: ["", Validators.required],
       yValue: ["", Validators.required],
@@ -64,6 +65,7 @@ export class CostVariableComponent implements OnInit {
   updateCostVariableForm() {
     this._updateCostVariableForm = this.formBuilder.group({
       id: ["", Validators.required],
+      costVariableName:["Fix Hesap",Validators.required],
       iProfile: ["", Validators.required],
       xValue: ["", Validators.required],
       yValue: ["", Validators.required],
