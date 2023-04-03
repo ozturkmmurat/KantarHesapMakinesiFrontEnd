@@ -14,12 +14,16 @@ export class ErrorService {
   checkError(err: HttpErrorResponse) {
     console.log(err)
     if (err.error != null && err.error != undefined && !err.error.Errors) {
-      this.toastrService.error(err.error, "Hata")
+      console.log
+      this.toastrService.error(err.error.message, "Hata")
     }
     else if (err.error.Errors.length > 0) {
       for (let i = 0; i < err.error.Errors.length; i++) {
         this.toastrService.error(err.error.Errors[i].ErrorMessage, "Doğrulama hatası")
       }
+    }
+    else if (err.message  != null || err.message != undefined){
+      this.toastrService.error(err.error.message)
     }
   }
 }

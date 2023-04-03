@@ -1,0 +1,110 @@
+<div class="header py-7 py-lg-0">
+  <div class="container">
+    <div class="header-body text-center mb-7">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-6">
+          <h1 class="text-white"></h1>
+          <p class="text-lead text-light"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="mb-3">
+      <a _ngcontent-ojw-c109="" routerlinkactive="active" class="navbar-brand pt-0" ng-reflect-router-link-active="active"
+      ng-reflect-router-link="/login" href="#/login"><img _ngcontent-ojw-c109="" style="max-height: 2.5rem;"
+        src="assets/img/website/logo/esit.png" alt="..." class="navbar-brand-img"></a>
+    </div>
+  </div>
+</div>
+<form class="container">
+  <div class="d-flex justify-content-center">
+    <span class="mb-4 mainText" >
+      KANTAR HESAP MAKİNESİ
+    </span>
+  </div>
+  <div class="form-row">
+    <div class="col-md-1"></div>
+    <div class="form-group col-md-5">
+      <label for="productId">ÜRÜN</label>
+      <select id="productId" name="productId" class="form-control" [(ngModel)]="productId"
+        (ngModelChange)="getAllModelProductId()">
+        <option value="0" selected>Ürün Seçiniz</option>
+        <option *ngFor="let product of productList" [ngValue]="product.id">{{product.productName}}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-5">
+      <label for="inputState">En Boy Ağırlık</label>
+      <select id="modelId" name="modelId" class="form-control" [(ngModel)]="modelId">
+        <option value="0" selected>Model Seçiniz</option>
+        <option *ngFor="let model of modelList" [ngValue]="model.id">{{model.mostSizeKg}}</option>
+      </select>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+  <div class="form-row mt-3">
+    <div class="col-md-1"></div>
+    <div class="form-group col-md-5">
+      <button type="button" class="btn btn-primary" (click)="exportationStatus(true)">Yurt İçi</button>
+      <button type="button" class="btn btn-primary" (click)="exportationStatus(false)" (click)="getCalculate()">İhraç</button>
+    </div>
+  </div>
+
+  <div class="form-row" *ngIf="exportationState">
+    <div class="col-md-1"></div>
+    <div class="form-group col-md-5">
+      <label for="inputState">Bölge</label>
+      <select id="installationCostLocationId" name="installationCostLocationId" class="form-control"
+        [(ngModel)]="installationCostLocationId">
+        <option value="0" selected>Bölge Seçiniz</option>
+        <option *ngFor="let installationLocation of installationCostDtoList"
+          [ngValue]="installationLocation.locationId">{{installationLocation.cityName}}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-5">
+      <label for="inputState">Aksesuar</label>
+      <select id="accessoryId" name="accessoryId" class="form-control" [(ngModel)]="accessoryId">
+        <option value="0" selected>Aksesuar Seçiniz</option>
+        <option *ngFor="let acccessory of accessoryList" [ngValue]="acccessory.id">{{acccessory.accessoryName}}</option>
+      </select>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
+    <div class="form-group col-md-5">
+      <button type="submit" class="btn btn-primary" (click)="getCalculate()">Hesapla</button>
+    </div>
+  </div>
+  <div class="form-group mt-3">
+    <div *ngIf="turkeyHtmlState">
+      <div class="form-group ">
+        <div class="form-row">
+          <div class="col-md-1"></div>
+          <div class="col-md-5">
+            <p class="font-weight-bold d-inline-flex">Son Fiyat : {{productModelCostDetail.exportFinalDiscountPrice | number
+              :'1.2-2'}} ₺</p>
+              <br>
+              <p class="font-weight-bold d-inline-flex">Teklif Fiyatı : {{productModelCostDetail.offerPriceTl | number
+                :'1.2-2'}} ₺</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="exportationState == false">
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-md-1"></div>
+          <div class="col-md-5">
+            <p class="font-weight-bold d-inline-flex">Son Fiyat : {{productModelCostDetail.exportFinalDiscountPrice | number
+              :'1.2-3'}}$ </p>
+              <br>
+              <p class="font-weight-bold d-inline-flex">Teklif Fiyatı : {{productModelCostDetail.offerPriceEuro | number
+                :'1.2-2'}}$ </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

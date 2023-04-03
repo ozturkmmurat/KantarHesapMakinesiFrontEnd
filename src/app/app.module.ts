@@ -13,13 +13,15 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { ToastrModule } from 'ngx-toastr';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
-import { FilterPipe } from './pipes/filterPipe/filter.pipe';
+import { CalculateOfferComponent } from './pages/calculate-offer/calculate-offer.component';
+import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
+    PublicLayoutComponent
   ],
   imports: [
     BrowserModule,

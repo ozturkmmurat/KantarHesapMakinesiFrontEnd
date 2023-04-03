@@ -14,26 +14,26 @@ export class AccessoryPackageService {
 
   accessoryPackageList:AccessoryPackage[] = [];
   constructor(
-    private httpCleint: HttpClient) { }
+    private httpClient: HttpClient) { }
 
 
   getAllAccessoryPackage():Observable<ListResponseModel<AccessoryPackage>>{
     let newPath = environment.apiUrl + "api/AccessoryPackages/GetAll";
-    return this.httpCleint.get<ListResponseModel<AccessoryPackage>>(newPath);
+    return this.httpClient.get<ListResponseModel<AccessoryPackage>>(newPath);
   }
 
   add(accessoryPackage:AccessoryPackage):Observable<ResponseModel>{
     let newPath = environment.apiUrl + "api/AccessoryPackages/add"
-    return this.httpCleint.post<ResponseModel>(newPath,accessoryPackage)
+    return this.httpClient.post<ResponseModel>(newPath,accessoryPackage)
   }
 
   update(accessoryPackage:AccessoryPackage):Observable<ResponseModel>{
     let newPath = environment.apiUrl + "api/AccessoryPackages/update"
-    return this.httpCleint.post<ResponseModel>(newPath,accessoryPackage)
+    return this.httpClient.post<ResponseModel>(newPath,accessoryPackage)
   }
 
   delete(accessoryPackage:AccessoryPackage):Observable<ResponseModel>{
     let newPath = environment.apiUrl + "api/AccessoryPackages/delete"
-    return this.httpCleint.post<ResponseModel>(newPath,accessoryPackage)
+    return this.httpClient.post<ResponseModel>(newPath,accessoryPackage)
   }
 }

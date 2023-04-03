@@ -30,32 +30,6 @@
             <h6 class="heading-small text-muted mb-4">Maliyet Hesapla</h6>
             <div class="pl-lg-4">
               <form [formGroup]="_productModelCostDtoForm">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-username">Kurulum Yeri</label>
-                      <select
-                      id="installationCostLocationId"
-                      name="installationCostLocationId"
-                      class="form-control"
-                      formControlName="installationCostLocationId"
-                      [(ngModel)]="installationCostId"
-                      (ngModelChange)="getInstallationCostById()"
-                    >
-                      <option selected disabled [ngValue]="null" >
-                        Ürün Seçiniz
-                      </option>
-                      <option  
-                        *ngFor="let installationCostDto of installationCostDtoList"
-                        [ngValue]="installationCostDto.locationId"
-                        selected
-                      >
-                        {{ installationCostDto.cityName }}
-                      </option>
-                    </select>
-                    </div>
-                  </div>
-                </div>
                 <div class="row" *ngIf="installationCost">
                   <div class="col-lg-6">
                     <div class="form-group">
@@ -70,50 +44,24 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row mb-3">
                   <div class="col-lg-6">
                     <div class="form-group">
-                      <label class="form-control-label" for="input-username">Genel Gider Yüzdesi</label>
-                      <input type="number" id="input-username" class="form-control form-control-alternative" value="1"
-                        formControlName="productModelCostOverheadPercentage">
+                      <label class="form-control-label" for="productModelCostProfitPercentage">Kar Yüzdesi</label>
+                      <input type="number" id="productModelCostProfitPercentage" class="form-control form-control-alternative"
+                        formControlName="productModelCostProfitPercentage">
                     </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-6">
                     <div class="form-group">
-                      <label class="form-control-label" for="input-username">Saatlik İşçilik Ücreti</label>
-                      <input type="number" id="input-username" class="form-control form-control-alternative" value="1"
-                        formControlName="productModelCostLaborCostPerHour">
-                    </div>
+                    <label class="form-control-label" for="input-username">Ek Kar Yüzdesi</label>
+                    <input type="number" name="productModelCostAdditionalProfitPercentage" class="form-control form-control-alternative" id="productModelCostAdditionalProfitPercentage" formControlName="productModelCostAdditionalProfitPercentage">
+                  </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-username">Kar Yüzdesi</label>
-                      <input type="number" id="input-username" class="form-control form-control-alternative" value="0"
-                        formControlName="productModelCostDetailProfitPercentage">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-username">Türkiye Satış İndirimi Euro</label>
-                      <input type="number" id="input-username" class="form-control form-control-alternative" value="0"
-                        formControlName="productModelCostDetailTurkeySalesDiscount">
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-username">İhracat Satış İndirimi Euro</label>
-                      <input type="number" id="input-username" class="form-control form-control-alternative" value="0"
-                        formControlName="productModelCostDetailExportFinalDiscount">
-                    </div>
-                  </div>
-                </div>
-                <div _ngcontent-icv-c119="" class="d-flex justify-content-between">
+                <div *ngIf="!productModelCostDto"  _ngcontent-icv-c119="" class="d-flex justify-content-between">
                   <a
                     _ngcontent-icv-c119=""
                     href="javascript:void(0)"
@@ -121,11 +69,19 @@
                     >Maliyet Oluştur</a
                   >
                 </div>
+                <div *ngIf="productModelCostDto" _ngcontent-icv-c119="" class="d-flex justify-content-between">
+                  <a
+                    _ngcontent-icv-c119=""
+                    href="javascript:void(0)"
+                    class="btn btn-sm btn-info mr-4" (click)="updateProductModelCostDto()"
+                    >Güncelle</a
+                  >
+                </div>
               </form>
             </div>
 
 
-            <form *ngIf="productModelCostDto" [formGroup]="_updateProductModelCostDtoForm">
+            <form *ngIf="productModelCostDto">
             <hr class="my-4" />
               <h6 class="heading-small text-muted mb-4">Model Maliyet Bilgisi</h6>
               <div class="pl-lg-4">
@@ -174,16 +130,25 @@
                 <div class="row">
                   <div class="col-lg-6">
                     <div class="form-group">
-                      <label class="form-control-label" for="input-first-name">İşçilik Saatlik Ücret</label>
+                      <label class="form-control-label" for="input-first-name">İşçilik Saatlik Ücret Euro</label>
                       <input type="number" id="input-first-name" class="form-control form-control-alternative" disabled
-                        value="{{productModelCostDto.productModelCostLaborCostPerHour}}">
+                        value="{{productModelCostDto.laborCostPerHourEuro}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="input-last-name">İşçilik Dahil Ücret Euro</label>
+                      <input type="number" id="input-last-name" class="form-control form-control-alternative" disabled
+                        value="{{productModelCostDto.productModelCostTotalLaborCostEuro}}">
                     </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="form-group">
-                      <label class="form-control-label" for="input-last-name">İşçilik Dahil Ücret</label>
+                      <label class="form-control-label" for="input-last-name">İşçilik Dahil Ücret </label>
                       <input type="number" id="input-last-name" class="form-control form-control-alternative" disabled
-                        value="{{productModelCostDto.productModelCostTotalLaborCost}}">
+                        value="{{productModelCostDto.productModelCostTotalLaborCostTl}}">
                     </div>
                   </div>
                 </div>
@@ -197,13 +162,6 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-first-name">Genel Gider Yüzdesi</label>
-                      <input type="number" id="input-first-name" class="form-control form-control-alternative" formControlName="productModelCostOverheadPercentage"
-                        value="{{productModelCostDto.productModelCostOverheadPercentage}}">
-                    </div>
-                  </div>
                   <div class="col-lg-6">
                     <div class="form-group">
                       <label class="form-control-label" for="input-last-name">Genel Gider</label>
@@ -237,144 +195,166 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-first-name">Akseusar TL Fiyatı</label>
-                      <input type="number" id="input-first-name" class="form-control form-control-alternative" disabled
-                        value="{{productModelCostDto.productModelCostAccessoriesTlAmount}}">
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-last-name">Aksesuar Euro Fiyatı</label>
-                      <input type="number" id="input-last-name" class="form-control form-control-alternative" disabled
-                        value="{{productModelCostDto.productModelCostAccessoriesEuroAmount}}">
-                    </div>
-                  </div>
-                </div>
               </div>
-
+            </form>
               <!-- Kurulum Bölgesine Göre Maliyet -->
+              
               <hr class="my-4" />
               <h6 class="heading-small text-muted mb-4">Kurulum Yerine Göre Maliyet</h6>
               <div class="pl-lg-4">
-                  <div class="row">
+                <div class="row mt-3">
+                  <div class="log-lg-6">
+                    <button type="button" class="btn btn-primary ml-2" (click)="exportationStatus(true)">
+                      Türkiye İçi
+                    </button>
+                  </div>
+                  <div class="log-lg-6">
+                    <button type="button" class="btn btn-primary ml-1"(click)="exportationStatus(false)" (click)="getCalculate()">
+                      İhraç
+                    </button>
+                  </div>
+                </div>
+
+
+                <ng-container *ngIf="exportationstate">
+                  <div class="row" >
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label class="form-control-label" for="input-username">Kurulum Yeri</label>
-                        <select id="locationId" name="locationId" class="form-control" [(ngModel)]="locationId"  formControlName="installationCostLocationId"  (ngModelChange)="getProductModelCostDetailDtoByLocationModelId()">
-                          <option [ngValue]="null" selected disabled>Kurulum Yeri Seçiniz</option>
-                          <option *ngFor="let location of productModelCostDetailDtoSelectList" [ngValue]="location.installationCostLocationId">
-                            {{location.locationCityName}}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div *ngIf="productModelCostDetailDto">
-
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-username">Kurulum TL Ücreti</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" disabled
-                            value="{{productModelCostDetailDto.installationCostInstallationTlPrice}}">
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-email">Kurulum Euro Ücreti</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" disabled
-                            value="{{productModelCostDetailDto.installationCostInstallationEuroPrice}}">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-username">Kurulum Dahil</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" disabled
-                            value="{{productModelCostDetailDto.productModelCostDetailInstallationIncluded}}">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-username">Satış Fiyatı TL</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" disabled
-                            value="{{productModelCostDetailDto.productModelCostDetailSalesPrice}}">
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-email">Satış Fiyatı Euro</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" disabled
-                            value="{{productModelCostDetailDto.productModelCostDetailTurkeySalesPrice}}">
-                        </div>
-                      </div>
-                    </div>
-  
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-username">Kar Yüzdesi</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" formControlName="productModelCostDetailProfitPercentage" 
-                            value="{{productModelCostDetailDto.productModelCostDetailProfitPercentage}}">
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-email">Kar</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" disabled
-                            value="{{productModelCostDetailDto.productModelCostDetailProfitPrice}}">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-username">Türkiye Satış İndirimi Euro</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" formControlName="productModelCostDetailTurkeySalesDiscount"
-                            value="{{productModelCostDetailDto.productModelCostDetailTurkeySalesDiscount}}">
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-email">Türkiye İndirimli Satış Fiyatı Euro</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" disabled
-                            value="{{productModelCostDetailDto.productModelCostDetailTurkeySalesDiscountPrice}}">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-username">İhracat Satış İndirimi Euro</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" formControlName="productModelCostDetailExportFinalDiscount"
-                            value="{{productModelCostDetailDto.productModelCostDetailExportFinalDiscount}}">
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-email">İhracat İndirimli Satış Fiyatı Euro</label>
-                          <input type="number" id="input-email" class="form-control form-control-alternative" disabled
-                            value="{{productModelCostDetailDto.productModelCostDetailExportFinalDiscountPrice}}">
-                        </div>
-                      </div>
-                    </div>
-                    <div _ngcontent-icv-c119="" class="d-flex justify-content-between">
-                      <a
-                        _ngcontent-icv-c119=""
-                        href="javascript:void(0)"
-                        class="btn btn-sm btn-info mr-4" (click)="updateProductModelCostDto()"
-                        >Maliyet Güncelle</a
+                        <select
+                        class="form-control"
+                        [(ngModel)]="installationCostLocationId"
                       >
+                        <option selected disabled [ngValue]="null" >
+                          Şehir Seçiniz
+                        </option>
+                        <option  
+                          *ngFor="let installationCostDto of installationCostDtoList"
+                          [ngValue]="installationCostDto.locationId"
+                          selected
+                        >
+                          {{ installationCostDto.cityName }}
+                        </option>
+                      </select>
+                      </div>
                     </div>
                   </div>
-              </div>
-            </form>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-username">Aksesuar</label>
+                        <select
+                        class="form-control"
+                        [(ngModel)]="accessoryId"
+                      >
+                        <option selected disabled [ngValue]="null" >
+                          Aksesuar Seçiniz
+                        </option>
+                        <option  
+                          *ngFor="let accessory of accessoryList"
+                          [ngValue]="accessory.id"
+                          selected
+                        >
+                          {{ accessory.accessoryName }}
+                        </option>
+                      </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div _ngcontent-icv-c119="" class="d-flex justify-content-between">
+                    <a
+                      _ngcontent-icv-c119=""
+                      href="javascript:void(0)"
+                      class="btn btn-sm btn-info mr-4" (click)="getCalculate()"
+                      >Hesapla</a
+                    >
+                  </div>
+                </ng-container>
+                    <ng-container *ngIf="turkeyHtmlState">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label class="form-control-label" for="input-username">Kurulum Dahil TL</label>
+                              <input type="text" id="input-email" class="form-control form-control-alternative" disabled
+                                value="{{productModelCostDetail.installationIncludedTl | number :'1.2'}}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label class="form-control-label" for="input-username">Satış Fiyatı TL</label>
+                              <input type="text" id="input-email" class="form-control form-control-alternative" disabled
+                                value="{{productModelCostDetail.turkeySalesPrice | number :'1.2-2' }}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label class="form-control-label" for="input-email">Kar TL</label>
+                              <input type="text" id="input-email" class="form-control form-control-alternative" disabled
+                                value="{{productModelCostDetail.profitPriceTl | number :'1.2-2'}}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label class="form-control-label" for="input-email">Son Fiyat TL</label>
+                              <input type="text" id="input-email" class="form-control form-control-alternative" disabled
+                                value="{{productModelCostDetail.turkeySalesDiscountPrice | number :'1.2-2' }}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <label class="form-control-label" for="input-email">Teklif Fiyatı TL</label>
+                            <input type="text" id="input-email" class="form-control form-control-alternative" disabled
+                              value="{{productModelCostDetail.offerPriceTl | number :'1.2-2' }}">
+                          </div>
+                        </div>
+                    </ng-container>
+
+                    
+                    <ng-container *ngIf="exportationstate == false">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label class="form-control-label" for="input-username">Satış Fiyatı Euro</label>
+                              <br>
+                              <input type="text"  class="form-control form-control-alternative" disabled
+                                value="{{productModelCostDetail.exportSalesPrice  | number :'1.2-2'}}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label class="form-control-label" for="input-email">Kar Euro</label>
+                              <input type="text" id="input-email" class="form-control form-control-alternative" disabled
+                                value="{{productModelCostDetail.profitPriceEuro | number :'1.2-2'}}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label class="form-control-label" for="input-email">Son Fiyat Euro</label>
+                              <input type="text" id="input-email" class="form-control form-control-alternative" disabled
+                                value="{{productModelCostDetail.exportFinalDiscountPrice | number :'1.2-2' }}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <label class="form-control-label" for="input-email">Teklif Fiyatı Euro</label>
+                            <input type="text" id="input-email" class="form-control form-control-alternative" disabled
+                              value="{{productModelCostDetail.offerPriceEuro | number :'1.2-2' }}">
+                          </div>
+                        </div>
+                    </ng-container>
+                   
         </div>
       </div>
     </div>

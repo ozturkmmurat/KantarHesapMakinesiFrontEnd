@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
+import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 
 const routes: Routes =[
   {
@@ -29,7 +30,18 @@ const routes: Routes =[
         loadChildren: () => import('src/app/layouts/auth-layout/auth-layout.module').then(m => m.AuthLayoutModule)
       }
     ]
-  }, {
+  },
+  {
+    path: '',
+    component: PublicLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('src/app/layouts/public-layout/public-layout.module').then(m => m.PublicLayotuModule)
+      }
+    ]
+  },
+  {
     path: '**',
     redirectTo: 'models'
   }

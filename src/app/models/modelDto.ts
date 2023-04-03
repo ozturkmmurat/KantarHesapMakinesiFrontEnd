@@ -1,9 +1,9 @@
 export interface ModelDto{
     modelId:number,
+    modelSizeId:number,
     modelProductId:number,
+    costVariableId:number,
     modelMostSizeKg:string,
-    modelNetWeight:number,
-    modelGateWeight:number,
     modelProductionTime:number,
     modelShateIronWeight:number,
     modelIProfileWeight:number

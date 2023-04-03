@@ -77,26 +77,6 @@
                           >Güncelle</a
                         >
                         <a
-                          class="dropdown-item"
-                          href="javascript:void(0)"
-                          (click)="openLg(modelAddAccessoryPopup)" (click)="writeAddModelAccessoryDetail(row)"
-                          >Modele Aksesuar Ekle</a
-                        >
-                        <a
-                          class="dropdown-item"
-                          href="javascript:void(0)"
-                          (click)="openLg(modelUpdateAccessoryPopup)"
-                          (click)="writeUpdateModelAccessoryDetail(row)"
-                          >Model Aksesuar Güncelle</a
-                        >
-                        <a
-                          class="dropdown-item"
-                          href="javascript:void(0)"
-                          (click)="edit(row)"
-                        >
-                          Model Elektronik Detay
-                        </a>
-                        <a
                         class="dropdown-item"
                         href="javascript:void(0)"
                         [routerLink]="'productModelCost/' + row.id"
@@ -171,11 +151,6 @@
                     </select>
                   </div>
 
-
-
-
-
-
                   <div _ngcontent-bya-c115="" class="col-lg-12">
                     <label for="inputState">MODEL</label>
                     <select
@@ -198,40 +173,32 @@
                       </option>
                     </select>
                   </div>
-                  <div _ngcontent-bya-c115="" class="col-lg-12">
-                    <div _ngcontent-bya-c115="" class="form-group">
-                      <label
-                        _ngcontent-bya-c115=""
-                        for="input-username"
-                        class="form-control-label"
-                        >Model En Boy Ağırlık</label
-                      >
-                      <input
-                        _ngcontent-bya-c115=""
-                        type="text"
-                        id="input-username"
-                        id="modelMostSizeKg"
-                        formControlName="modelMostSizeKg"
-                        class="form-control form-control-alternative"
-                      />
-                    </div>
 
-                    <div _ngcontent-bya-c115="" class="form-group">
-                      <label
-                        _ngcontent-bya-c115=""
-                        for="input-username"
-                        class="form-control-label"
-                        >Model Net Ağırlık
-                      </label>
-                      <input
-                        _ngcontent-bya-c115=""
-                        type="number"
-                        id="input-username"
-                        id="modelNetWeight"
-                        formControlName="modelNetWeight"
-                        class="form-control form-control-alternative"
-                      />
-                    </div>
+
+                  <div _ngcontent-bya-c115="" class="col-lg-6">
+                    <label for="inputState">En Boy</label>
+                    <select
+                     
+                      id="modelSizeId"
+                      name="modelSizeId"
+                      class="form-control"
+                      formControlName="modelSizeId"
+                    >
+                      <option selected disabled value="" >
+                        En Boy Seçiniz
+                      </option>
+                      <option  
+                        *ngFor="let size of sizeList"
+                        [ngValue]="size.id"
+                        selected
+                      >
+                        {{ size.aspect }}  {{size.weight}}
+                      </option>
+                    </select>
+                  </div>
+
+
+                  <div _ngcontent-bya-c115="" class="col-lg-12">
 
                     <div _ngcontent-bya-c115="" class="form-group">
                       <label
@@ -317,6 +284,7 @@
             <div class="modal-body">
               <div class="mb-3">
                 <div class="form-group">
+
                   <div _ngcontent-bya-c115="" class="col-lg-12">
                     <label for="inputState">Maliyet Değişkeni</label>
                     <select
@@ -339,63 +307,54 @@
                     </select>
                   </div>
 
-
                   <div _ngcontent-bya-c115="" class="col-lg-12">
-                    <label for="inputState">ÜRÜN</label>
+                    <label for="inputState">MODEL</label>
                     <select
                      
-                    id="modelProductId"
-                    name="modelProductId"
-                    class="form-control"
-                    formControlName="modelProductId"
-                    (change)="onSelected(_updateModelForm)"
-                  >
-                    <option selected disabled value="" >
-                      Ürün Seçiniz
-                    </option>
-                    <option  
-                      *ngFor="let product of productList"
-                      [ngValue]="product.productId"
-                      selected
+                      id="modelProductId"
+                      name="modelProductId"
+                      class="form-control"
+                      formControlName="modelProductId"
+                      (change)="onSelected(_updateModelForm)"
                     >
-                      {{ product.productName }}
-                    </option>
-                  </select>
-                  </div>
-                  <div _ngcontent-bya-c115="" class="col-lg-12">
-                    <div _ngcontent-bya-c115="" class="form-group">
-                      <label
-                        _ngcontent-bya-c115=""
-                        for="input-username"
-                        class="form-control-label"
-                        >Model En Boy Ağırlık</label
+                      <option selected disabled value="" >
+                        Model Seçiniz
+                      </option>
+                      <option  
+                        *ngFor="let product of productList"
+                        [ngValue]="product.productId"
+                        selected
                       >
-                      <input
-                        _ngcontent-bya-c115=""
-                        type="text"
-                        id="input-username"
-                        id="modelMostSizeKg"
-                        formControlName="modelMostSizeKg"
-                        class="form-control form-control-alternative"
-                      />
-                    </div>
+                        {{ product.productName }}
+                      </option>
+                    </select>
+                  </div>
 
-                    <div _ngcontent-bya-c115="" class="form-group">
-                      <label
-                        _ngcontent-bya-c115=""
-                        for="input-username"
-                        class="form-control-label"
-                        >Model Net Ağırlık
-                      </label>
-                      <input
-                        _ngcontent-bya-c115=""
-                        type="number"
-                        id="input-username"
-                        id="modelNetWeight"
-                        formControlName="modelNetWeight"
-                        class="form-control form-control-alternative"
-                      />
-                    </div>
+
+                  <div _ngcontent-bya-c115="" class="col-lg-6">
+                    <label for="inputState">En Boy</label>
+                    <select
+                     
+                      id="modelSizeId"
+                      name="modelSizeId"
+                      class="form-control"
+                      formControlName="modelSizeId"
+                    >
+                      <option selected disabled value="" >
+                        En Boy Seçiniz
+                      </option>
+                      <option  
+                        *ngFor="let size of sizeList"
+                        [ngValue]="size.id"
+                        selected
+                      >
+                        {{ size.aspect }}  {{size.weight}}
+                      </option>
+                    </select>
+                  </div>
+
+
+                  <div _ngcontent-bya-c115="" class="col-lg-12">
 
                     <div _ngcontent-bya-c115="" class="form-group">
                       <label
@@ -460,129 +419,6 @@
           </ng-template>
         </form>
 
-        <!-- Aksesuar Ekleme Bolumu -->
-        <form [formGroup]="_addModelAccesoryDetail">
-          <ng-template #modelAddAccessoryPopup let-modal>
-            <div class="modal-header popUpTitle">
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                (click)="modal.dismiss('Cross click')"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-
-            <div class="modal-body">
-              <div class="mb-3">
-                <div class="form-group">
-                  <div class="row">
-                    <div _ngcontent-bya-c115="" class="col-lg-12">
-                      <label for="inputState">Aksesuar Paketi Ekle</label>
-                      <select
-                        #selectedList
-                        id="accessoryPackageDetailId"
-                        name="accessoryPackageDetailId"
-                        class="form-control"
-                        formControlName="accessoryPackageDetailId"
-                      >
-                        <option selected disabled value="">
-                          Aksesuar Paketi Seçiniz
-                        </option>
-                        <option
-                          *ngFor="let accesoryPackage of accessoryPackageList"
-                          [ngValue]="accesoryPackage.id"
-                          selected
-                        >
-                          Paket Adı: {{ accesoryPackage.accessoryPackageName }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-success"
-                (click)="addModelAccessoryDetail()"
-              >
-                Oluştur
-              </button>
-            </div>
-          </ng-template>
-        </form>
-        <!-- Aksesuar Guncelleme Bolumu -->
-        <form [formGroup]="_updateModelAccessoryDetail">
-          <ng-template #modelUpdateAccessoryPopup let-modal>
-            <div class="modal-header popUpTitle">
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                (click)="modal.dismiss('Cross click')"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-
-            <div class="modal-body">
-              <div class="mb-3">
-                <div class="form-group">
-                  <div class="row">
-                    <div _ngcontent-bya-c115="" class="col-lg-12">
-                      <label for="inputState">Aksesuar Paketi Ekle</label>
-                      <select
-                        #selectedList
-                        id="accessoryPackageDetailId"
-                        name="accessoryPackageDetailId"
-                        class="form-control"
-                        formControlName="accessoryPackageDetailId"
-                      >
-                      <option selected disabled value="">Ürün Seçiniz</option>
-                      <option
-                        *ngFor="let accessoryPackage of accessoryPackageList"
-                        [ngValue]="accessoryPackage.id"
-                        selected
-                      >
-                        {{ accessoryPackage.accessoryPackageName }}
-                      </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-success"
-                (click)="updateModelAccessoryDetail()"
-              >
-                Güncelle
-              </button>
-            </div>
-          </ng-template>
-        </form>
-
-        <!-- Elektronik Ekleme Bolumu -->
-        <ng-template #modelElectronicDetail let-modal>
-          <div class="modal-header popUpTitle">
-            <button
-              type="button"
-              class="close"
-              aria-label="Close"
-              (click)="modal.dismiss('Cross click')"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <app-model-electronic-detail-modal
-            [model]="selectedModel"
-          ></app-model-electronic-detail-modal>
-        </ng-template>
       </div>
     </div>
   </div>

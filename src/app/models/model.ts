@@ -2,8 +2,8 @@ export interface Model{
     id:number,
     productId:number,
     costVariableId:number,
+    sizeId:number
     mostSizeKg:string,
-    netWeight:number,
     shateIronWeight:number,
     iProfilWeight:number,
     fireShateIronWeight:number,

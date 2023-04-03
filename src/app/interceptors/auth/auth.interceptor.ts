@@ -26,7 +26,6 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let newRequest: HttpRequest<any>;
     let token = this.localStorageService.getToken();
-    if (token) {
       newRequest = this.addTokenHeader(request, token);
       return next.handle(newRequest).pipe(
         catchError((error) => {
@@ -48,10 +47,6 @@ export class AuthInterceptor implements HttpInterceptor {
           return throwError(error);
         })
       )
-    }
-    else {
-      if (request.method != "GET") return next.handle(request);
-    }
     return EMPTY
   }
 

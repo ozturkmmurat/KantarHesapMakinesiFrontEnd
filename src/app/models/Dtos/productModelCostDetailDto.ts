@@ -5,12 +5,8 @@ export interface ProductModelCostDetailDto{
     productModelCostDetailInstallationIncluded:number,
     productModelCostDetailSalesPrice:number,
     productModelCostDetailTurkeySalesPrice:number,
-    productModelCostDetailProfitPercentage:number,
+    productModelCostProfitPercentage:number,
     productModelCostDetailProfitPrice:number,
-    productModelCostDetailTurkeySalesDiscount:number,
-    productModelCostDetailTurkeySalesDiscountPrice:number,
-    productModelCostDetailExportFinalDiscount:number,
-    productModelCostDetailExportFinalDiscountPrice:number,
 
     installationCostId:number,
     installationCostLocationId:number,

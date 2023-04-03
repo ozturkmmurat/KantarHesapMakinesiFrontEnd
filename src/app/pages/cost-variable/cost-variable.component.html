@@ -19,11 +19,13 @@
               <thead class="thead-light">
                 <tr>
                   <th>ID</th>
+                  <th>Değişken Adı</th>
                   <th scope="col">Saç € Değişkenleri</th>
                   <th scope="col">I Profil Değişkenleri</th>
                   <th scope="col">Fireli Saç ve I Profil Ağırlığı Yüzdesi</th>
                   <th scope="col">Fireli Toplam Ağırlık Yüzdesi</th>
-                  <th scope="col">Fire Yüzdesi</th>
+                  <th scope="col">Saatlik İşçilik Ücreti</th>
+                  <th scope="col">Genel Gider Yüzdesi</th>
                   <th scope="col">İşlemler</th>
                 </tr>
               </thead>
@@ -39,6 +41,9 @@
                       
                     </div>
                   </th>
+                  <td>
+                    {{costVariable.costVariableName}}
+                  </td>
                   <td>
                     {{costVariable.iProfile | number :'1.2-5'}}
                   </td>
@@ -56,6 +61,12 @@
                     <span class="badge badge-dot mr-4">
                         {{costVariable.fireTotalPercentAge | number:'1.2-5'}}
                       </span>
+                  </td>
+                  <td>
+                    {{costVariable.laborCostPerHourEuro}}
+                  </td>
+                  <td>
+                    {{costVariable.overheadPercentage}}
                   </td>
                   <td class="text-right">
                     <div ngbDropdown placement="bottom-right">
@@ -97,6 +108,13 @@
                 <div class="mb-3">
                   <div class="form-group">
                     <div class=row>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Değişken Adı</label>
+                          <input _ngcontent-bya-c115="" type="text" id="costVariableName" formControlName="costVariableName" placeholder="Fix Değerler"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
                       <div class="alert alert-light col-sm-12" role="alert">
                         Saç değişkenini oluşturmak için X değeri ve Y değeri giriniz.
                         <br>
@@ -104,21 +122,14 @@
                       </div>
                       <div _ngcontent-bya-c115="" class="col-lg-6">
                         <div _ngcontent-bya-c115="" class="form-group">
-                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label" >Saç X Değeri</label>
-                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="xValue" placeholder="0,805"
-                            class="form-control form-control-alternative">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label" >Saç Değeri Euro</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="shateIron"  placeholder="0,80"
+                            class="form-control form-control-alternative" >
                         </div>
                       </div>
                       <div _ngcontent-bya-c115="" class="col-lg-6">
                         <div _ngcontent-bya-c115="" class="form-group">
-                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label" >Saç Y Değeri</label>
-                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="yValue" placeholder="1,075"
-                            class="form-control form-control-alternative">
-                        </div>
-                      </div>
-                      <div _ngcontent-bya-c115="" class="col-lg-12">
-                        <div _ngcontent-bya-c115="" class="form-group">
-                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">I Profil Değişkeni</label>
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">I Profil Değeri Euro</label>
                           <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice"  formControlName="iProfile" placeholder="0,935"
                             class="form-control form-control-alternative">
                         </div>
@@ -134,6 +145,20 @@
                         <div _ngcontent-bya-c115="" class="form-group">
                           <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fireli Toplam Ağırlık</label>
                           <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="fireTotalPercentAge" placeholder="1,0513"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Saatlik işçilik Ücreti Euro</label>
+                          <input _ngcontent-bya-c115="" type="number" id="laborCostPerHourEuro" formControlName="laborCostPerHourEuro" placeholder="20"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Genel Gider Yüzdesi</label>
+                          <input _ngcontent-bya-c115="" type="number" id="overheadPercentage" formControlName="overheadPercentage" placeholder="17"
                             class="form-control form-control-alternative">
                         </div>
                       </div>
@@ -190,78 +215,95 @@
   
               <div class="modal-body">
                 <div class="mb-3">
-                  <div class="form-group"> <div class=row>
-                    <div class="alert alert-light col-sm-12" role="alert">
-                      Saç değişkenini oluşturmak için X değeri ve Y değeri giriniz.
-                      <br>
-                      Örnek işlem: <a href="#" class="alert-link" style="color:black">0,805/1,075  Sonuç = 0.75€</a> 
-                    </div>
-                    <div _ngcontent-bya-c115="" class="col-lg-6">
-                      <div _ngcontent-bya-c115="" class="form-group">
-                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label" >Saç X Değeri</label>
-                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="xValue" placeholder="0,805"
-                          class="form-control form-control-alternative">
+                  <div class="form-group">
+                    <div class=row>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Değişken Adı</label>
+                          <input _ngcontent-bya-c115="" type="text" id="costVariableName" formControlName="costVariableName" placeholder="Fix Değerler"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div class="alert alert-light col-sm-12" role="alert">
+                        Saç değişkenini oluşturmak için X değeri ve Y değeri giriniz.
+                        <br>
+                        Örnek işlem: <a href="#" class="alert-link" style="color:black">0,805/1,075  Sonuç = 0.75€</a> 
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-6">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label" >Saç Değeri Euro</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="shateIron" 
+                            class="form-control form-control-alternative" >
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-6">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">I Profil Değeri Euro</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice"  formControlName="iProfile" placeholder="0,935"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fireli Saç ve Fireli I Profil Değişkeni</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="fireShateIronAndIProfilePercentage" placeholder="5,00"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fireli Toplam Ağırlık</label>
+                          <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="fireTotalPercentAge" placeholder="1,0513"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Saatlik işçilik Ücreti Euro</label>
+                          <input _ngcontent-bya-c115="" type="number" id="laborCostPerHourEuro" formControlName="laborCostPerHourEuro" placeholder="20"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div _ngcontent-bya-c115="" class="col-lg-12">
+                        <div _ngcontent-bya-c115="" class="form-group">
+                          <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Genel Gider Yüzdesi</label>
+                          <input _ngcontent-bya-c115="" type="number" id="overheadPercentage" formControlName="overheadPercentage" placeholder="17"
+                            class="form-control form-control-alternative">
+                        </div>
+                      </div>
+                      <div class="alert alert-success col-sm-12" role="alert">
+                        <h4>Açıklama :</h4>
+                        <br>
+                        <a href="#" class="alert-link" style="color:black">I € Değişkeni :</a> Excell de I € Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                        <br>
+                        Örnek Değişken Excell'de M3 alanı.
+                        <br>
+                        <br>
+                        <a href="#" class="alert-link" style="color:black">Saç € Değişkeni :</a> Excell de Saç € Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                        <br>
+                        Örnek Değişken Excell'de M4 alanı.
+                        <br>
+                        <br>
+                        <a href="#" class="alert-link" style="color:black">Fireli Saç ve Fireli I Profil Değişkeni :</a> Excell de Fireli Saç Ağırlığı ve Fireli I Profil Ağırlığı Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                        <br>
+                        Örnek Değişken Excell'de F51 ve G51 alanı.
+                        <br>
+                        <br>
+                        <a href="#" class="alert-link" style="color:black">Fireli Toplam Ağırlık Değişkeni :</a> Excell de Fireli Toplam Ağırlık Sütunu hesaplanırken kullanılan 
+                        <br>
+                        değişkenler oluşturuluyor.
+                        <br>
+                        Örnek Değişken Excell'de H51 alanı.
+                        <br>
+                        <br>
+                        <a href="#" class="alert-link" style="color:black">Fire Değişkeni :</a> Excell de Fire Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
+                        <br>
+                        Örnek Değişken Excell'de C4 alanı.
                       </div>
                     </div>
-                    <div _ngcontent-bya-c115="" class="col-lg-6">
-                      <div _ngcontent-bya-c115="" class="form-group">
-                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label" >Saç Y Değeri</label>
-                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="yValue" placeholder="1,075"
-                          class="form-control form-control-alternative">
-                      </div>
-                    </div>
-                    <div _ngcontent-bya-c115="" class="col-lg-12">
-                      <div _ngcontent-bya-c115="" class="form-group">
-                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">I Profil Değişkeni</label>
-                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice"  formControlName="iProfile" placeholder="0,935"
-                          class="form-control form-control-alternative">
-                      </div>
-                    </div>
-                    <div _ngcontent-bya-c115="" class="col-lg-12">
-                      <div _ngcontent-bya-c115="" class="form-group">
-                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fireli Saç ve Fireli I Profil Değişkeni</label>
-                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="fireShateIronAndIProfilePercentage" placeholder="5,00"
-                          class="form-control form-control-alternative">
-                      </div>
-                    </div>
-                    <div _ngcontent-bya-c115="" class="col-lg-12">
-                      <div _ngcontent-bya-c115="" class="form-group">
-                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Fireli Toplam Ağırlık</label>
-                        <input _ngcontent-bya-c115="" type="number" id="installationEuroPrice" formControlName="fireTotalPercentAge" placeholder="1,0513"
-                          class="form-control form-control-alternative">
-                      </div>
-                    </div>
-                    <div class="alert alert-success col-sm-12" role="alert">
-                      <h4>Açıklama :</h4>
-                      <br>
-                      <a href="#" class="alert-link" style="color:black">I € Değişkeni :</a> Excell de I € Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
-                      <br>
-                      Örnek Değişken Excell'de M3 alanı.
-                      <br>
-                      <br>
-                      <a href="#" class="alert-link" style="color:black">Saç € Değişkeni :</a> Excell de Saç € Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
-                      <br>
-                      Örnek Değişken Excell'de M4 alanı.
-                      <br>
-                      <br>
-                      <a href="#" class="alert-link" style="color:black">Fireli Saç ve Fireli I Profil Değişkeni :</a> Excell de Fireli Saç Ağırlığı ve Fireli I Profil Ağırlığı Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
-                      <br>
-                      Örnek Değişken Excell'de F51 ve G51 alanı.
-                      <br>
-                      <br>
-                      <a href="#" class="alert-link" style="color:black">Fireli Toplam Ağırlık Değişkeni :</a> Excell de Fireli Toplam Ağırlık Sütunu hesaplanırken kullanılan 
-                      <br>
-                      değişkenler oluşturuluyor.
-                      <br>
-                      Örnek Değişken Excell'de H51 alanı.
-                      <br>
-                      <br>
-                      <a href="#" class="alert-link" style="color:black">Fire Değişkeni :</a> Excell de Fire Sütunu hesaplanırken kullanılan değişkenler oluşturuluyor
-                      <br>
-                      Örnek Değişken Excell'de C4 alanı.
-                    </div>
-                  </div>
-  
+                  
+
+
                   </div>
                 </div>
               </div>

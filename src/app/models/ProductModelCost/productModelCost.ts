@@ -4,14 +4,14 @@ export interface ProductModelCost{
     iProfileEuroPrice:number
     materialTlAmount:number,
     materialEuroAmount:number,
-    laborCostPerHour:number,
     totalLaborCost:number,
     totalAmount:number,
-    overheadPercenteage:number,
     generalExpenseAmount:number,
     overheadIncluded:number,
     electronicTlAmount:number,
     electronicEuroAmount:number,
     accessoriesTlAmount:number,
     accessoriesEuroAmount:number
+    profitPercentage:number
+    additionalProfitPercentage:number
 }

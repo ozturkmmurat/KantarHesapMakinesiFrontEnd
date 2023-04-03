@@ -52,24 +52,26 @@ export class CostVariableComponent implements OnInit {
 
   addCostVariableForm() {
     this._addCostVariableForm = this.formBuilder.group({
-      costVariableName:["Fix Hesap",Validators.required],
+      costVariableName:["",Validators.required],
       iProfile: ["", Validators.required],
-      xValue: ["", Validators.required],
-      yValue: ["", Validators.required],
+      shateIron: ["", Validators.required],
       fireShateIronAndIProfilePercentage: ["", Validators.required],
-      fireTotalPercentAge: ["", Validators.required]
+      fireTotalPercentAge: ["", Validators.required],
+      laborCostPerHourEuro:["", Validators.required],
+      overheadPercentage:["", Validators.required]
     })
   }
 
   updateCostVariableForm() {
     this._updateCostVariableForm = this.formBuilder.group({
       id: ["", Validators.required],
-      costVariableName:["Fix Hesap",Validators.required],
+      costVariableName:["",Validators.required],
       iProfile: ["", Validators.required],
-      xValue: ["", Validators.required],
-      yValue: ["", Validators.required],
+      shateIron: ["", Validators.required],
       fireShateIronAndIProfilePercentage: ["", Validators.required],
-      fireTotalPercentAge: ["", Validators.required]
+      fireTotalPercentAge: ["", Validators.required],
+      laborCostPerHourEuro:["", Validators.required],
+      overheadPercentage:["", Validators.required]
     })
   }
 
@@ -81,9 +83,10 @@ export class CostVariableComponent implements OnInit {
   }
 
   writeUpdateCostVariableForm(costVariable: CostVariable) {
+    console.log("update form", this._updateCostVariableForm)
     this._updateCostVariableForm.patchValue({
-      id: costVariable.id, iProfile: costVariable.iProfile, fireShateIronAndIProfilePercentage: costVariable.fireShateIronAndIProfilePercentage,
-      fireTotalPercentAge: costVariable.fireTotalPercentAge
+      id: costVariable.id, costVariableName:costVariable.costVariableName,  iProfile: costVariable.iProfile, shateIron:costVariable.shateIron, fireShateIronAndIProfilePercentage: costVariable.fireShateIronAndIProfilePercentage,
+      fireTotalPercentAge: costVariable.fireTotalPercentAge, laborCostPerHourEuro:costVariable.laborCostPerHourEuro, overheadPercentage:costVariable.overheadPercentage
     })
   }
 

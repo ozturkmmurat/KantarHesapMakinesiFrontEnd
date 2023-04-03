@@ -17,10 +17,7 @@ import { ModelCrudComponent } from 'src/app/pages/model-crud/model-crud.componen
 import { AccessoryCrudComponent } from 'src/app/pages/accessory-crud/accessory-crud.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ElectronicCrudComponent } from 'src/app/pages/electronic-crud/electronic-crud.component';
-import { AccessoryPackageCrudComponent } from 'src/app/pages/accessory-package-crud/accessory-package-crud.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { PackageAccesoriesModalComponent } from 'src/app/pages/accessory-package-crud/package-accesories-modal/package-accesories-modal.component';
-import { ModelElectronicDetailModalComponent } from 'src/app/pages/model-crud/model-electronic-detail-modal/model-electronic-detail-modal.component';
 import { InstallationCostComponent } from 'src/app/pages/installation-cost/installation-cost.component';
 import { ProductModelCostComponent } from 'src/app/pages/product-model-cost/product-model-cost.component';
 import { CostVariableComponent } from 'src/app/pages/cost-variable/cost-variable.component';
@@ -29,6 +26,8 @@ import { DataTableTestComponent } from 'src/app/pages/data-table-test/data-table
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FilterPipe } from 'src/app/pipes/filterPipe/filter.pipe';
 import { UserListComponent } from 'src/app/pages/user-list/user-list.component';
+import { SizeComponent } from 'src/app/pages/height-weight/size.component';
+import { SizeContentModalComponent } from 'src/app/pages/height-weight/size-content-modal/size-content-modal.component';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -41,15 +40,14 @@ import { UserListComponent } from 'src/app/pages/user-list/user-list.component';
         ModelCrudComponent,
         AccessoryCrudComponent,
         ElectronicCrudComponent,
-        AccessoryPackageCrudComponent,
-        PackageAccesoriesModalComponent,
-        ModelElectronicDetailModalComponent,
         InstallationCostComponent,
         ProductModelCostComponent,
         CostVariableComponent,
         DataTableTestComponent,
         FilterPipe,
-        UserListComponent
+        UserListComponent,
+        SizeComponent,
+        SizeContentModalComponent
     ],
     imports: [
         CommonModule,

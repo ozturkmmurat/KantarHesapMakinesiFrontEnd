@@ -5,4 +5,6 @@ export interface CostVariable{
     shateIron:number,
     fireShateIronAndIProfilePercentage:number,
     fireTotalPercentAge:number,
+    laborCostPerHourEuro:number,
+    overheadPercentage:number
 }

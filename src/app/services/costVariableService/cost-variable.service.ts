@@ -21,12 +21,12 @@ export class CostVariableService {
   }
 
   add(costVariable : CostVariable):Observable<ResponseModel>{
-    let newPath = environment.apiUrl + "api/costVariables/add?xValue=" + costVariable["xValue"] + "&yValue=" + costVariable["yValue"]
+    let newPath = environment.apiUrl + "api/costVariables/add"
     return this.httpClient.post<ResponseModel>(newPath,costVariable)
   }
 
   update(costVariable : CostVariable):Observable<ResponseModel>{
-    let newPath = environment.apiUrl + "api/costVariables/update?xValue=" + costVariable["xValue"] + "&yValue=" + costVariable["yValue"]
+    let newPath = environment.apiUrl + "api/costVariables/update"
     return this.httpClient.post<ResponseModel>(newPath,costVariable)
   }
 

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ListResponseModel } from 'src/app/models/listResponseModel';
-import { ProductModelCost } from 'src/app/models/productModelCost';
+import { ProductModelCost } from 'src/app/models/ProductModelCost/productModelCost';
 import { ProductModelCostDto } from 'src/app/models/Dtos/productModelCostDto';
 import { ResponseModel } from 'src/app/models/responseModel';
 import { SingleResponseModel } from 'src/app/models/singleResponseModel';
@@ -22,12 +22,12 @@ export class ProductModelCostService {
     return this.httpClient.get<SingleResponseModel<ProductModelCostDto>>(newPath);
   }
 
-  addProductModelCostDto(productModelCostDto : ProductModelCostDto):Observable<ResponseModel>{
+  add(productModelCostDto : ProductModelCostDto):Observable<ResponseModel>{
     console.log(productModelCostDto)
     let newPath = environment.apiUrl + "api/productModelCosts/addProductModelCost"
     return this.httpClient.post<ResponseModel>(newPath,productModelCostDto)
   }
-  updateProductModelCostDto(productModelCostDto : ProductModelCostDto):Observable<ResponseModel>{
+  update(productModelCostDto : ProductModelCostDto):Observable<ResponseModel>{
     console.log("update servis başladı",productModelCostDto)
     let newPath = environment.apiUrl + "api/productModelCosts/updateProductModelCost"
     return this.httpClient.post<ResponseModel>(newPath,productModelCostDto)

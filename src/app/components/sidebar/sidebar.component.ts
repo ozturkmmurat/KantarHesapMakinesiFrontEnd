@@ -10,10 +10,10 @@ declare interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     { path: '/user-profile', title: 'Profilim',  icon:'ni-single-02 text-yellow', class: '' },
     { path: '/userList', title: 'Kullanıcılar',  icon:'ni-single-02 text-yellow', class: '' },
+    { path: '/heightWeight', title: 'Ölçü',  icon:'ni-single-02 text-yellow', class: '' },
     { path: '/products', title: 'Ürünler',  icon:'ni-bullet-list-67 text-red', class: '' },
     { path: '/models', title: 'Modeller',  icon:'ni-bullet-list-67 text-red', class: '' },
-    { path: '/accessory', title: 'Aksesuarlar',  icon:'ni-bullet-list-67 text-red', class: '' },
-    { path: '/accessoryPackage', title: 'Aksesuar Paketi',  icon:'ni-bullet-list-67 text-red', class: '' },
+    { path: '/accessory', title: 'Aksesuarlar',  icon:'ni-bullet-list-67 text-red', class: '' },,
     { path: '/electronic', title: 'Elektronik',  icon:'ni-bullet-list-67 text-red', class: '' },
     { path: '/installationCost', title: 'Kurulum Ücretleri',  icon:'ni-bullet-list-67 text-red', class: '' },
     { path: '/costVariable', title: 'Maliyet Değişkenleri',  icon:'ni-circle-08 text-pink', class: '' },
