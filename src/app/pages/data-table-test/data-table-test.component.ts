@@ -24,12 +24,8 @@ export class DataTableTestComponent implements OnInit {
   }
 
   getAllModel(){
-    console.log("Başladı")
     this.modelService.getAllModel().subscribe(response => {
-      console.log("bAŞARILI")
       this.modelList = response.data
-      console.log(this.modelList)
-      console.log(response.data)
     })
   }
 

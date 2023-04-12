@@ -88,8 +88,6 @@ export class InstallationCostComponent implements OnInit {
   getAllInstallationCostDto() {
     this.installationCostService.getAllInstallationCostDto().subscribe(response => {
       this.installationCostDtoList = response.data
-      console.log("Response data", response.data)
-      console.log("List", this.installationCostDtoList)
     })
   }
 
@@ -100,7 +98,6 @@ export class InstallationCostComponent implements OnInit {
   }
 
   addInstallationCost() {
-    console.log(this._addInstallationCostForm.value)
     if (this._addInstallationCostForm.valid) {
       let installationCostModel = Object.assign({}, this._addInstallationCostForm.value)
       this.installationCostService.add(installationCostModel).pipe(
@@ -119,7 +116,6 @@ export class InstallationCostComponent implements OnInit {
   }
 
   updateInstallationCost() {
-    console.log("Update maliyetlere giriş yapıldı", this._updateInstallationCostForm)
     if (this._updateInstallationCostForm.valid) {
       let installationCostModel = Object.assign({}, this._updateInstallationCostForm.value)
       this.installationCostService.update(installationCostModel).pipe(

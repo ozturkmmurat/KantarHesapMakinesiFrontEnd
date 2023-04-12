@@ -47,21 +47,16 @@ export class UserService {
   }
 
   updateUser(userDto : UserDto):Observable<ResponseModel>{
-    console.log("Userdto service", userDto)
     return this.httpclient.post<ResponseModel>(environment.apiUrl + "api/users/updateUser", userDto)
   }
 
    setCurrentUser(): void {
     var url = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/"
-    console.log("SetCurrentUser Start")
-    console.log(this.getUserId(url,"nameidentifier"))
         this.getByUserId(this.getUserId(url, "nameidentifier")).pipe(
           catchError((err:HttpErrorResponse) => {
-            console.log("Set Current User Hatası", err)
             return EMPTY
           }))
           .subscribe(response => {
-            console.log("Set Current User Response", response.data)
             let user = {
               id: response.data.id,
               email: response.data.email,

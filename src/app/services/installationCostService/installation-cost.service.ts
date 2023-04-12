@@ -22,13 +22,12 @@ export class InstallationCostService {
     return this.httpClient.get<ListResponseModel<InstallationCostDto>>(newPath);
   }
 
-  getInstallationCostByLocationId(locationId:number):Observable<SingleResponseModel<InstallationCost>>{ // Kullanılmıyor
+  getInstallationCostByLocationId(locationId:number):Observable<SingleResponseModel<InstallationCost>>{ 
     let newPath = environment.apiUrl + "api/installationCosts/getInstallationCostByLocationId?locationId=" + locationId
     return this.httpClient.get<SingleResponseModel<InstallationCost>>(newPath)
   }
 
   add(installationCost:InstallationCost):Observable<ResponseModel>{
-    console.log("installationCost geldi service" ,installationCost)
     let newPath = environment.apiUrl + "api/installationCosts/add"
     return this.httpClient.post<ResponseModel>(newPath,installationCost)
   }

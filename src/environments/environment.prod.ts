@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl:'http://localhost:44363/'
+  hmr:false,
+   //apiUrl:'https://localhost:44363/'
+   apiUrl:'http://kantarhesapwebapi.esit.com.tr/'
 };

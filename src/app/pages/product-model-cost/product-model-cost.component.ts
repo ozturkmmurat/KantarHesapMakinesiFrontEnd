@@ -82,10 +82,8 @@ export class ProductModelCostComponent implements OnInit {
   }
 
   exportationStatus(exportationstate:boolean){
-    console.log("Parametre export state", exportationstate)
     this.exportationstate = exportationstate
     this.turkeyHtmlState = false
-    console.log("Genel exportation state ",  this.exportationstate)
   }
 
   addProductModelCostDtoForm() {
@@ -106,35 +104,27 @@ export class ProductModelCostComponent implements OnInit {
     this.productModelCostService.getProductModelCostDtoByModelId(modelId).subscribe(response => {
       this.productModelCostDto = response.data
       this.writeProductModelCostForm()
-      console.log("Data", response.data)
-      console.log("Dto data", this.productModelCostDto)
     })
   }
 
   getCalculate() {
-    console.log("Get Calculate durum",this.exportationstate)
     if(this.exportationstate == false){
-      console.log("Model ıd geldi ",this.modelId)
       this.productModelCostDetailService.getCalculate(this.modelId, 0, 0).subscribe(response => {
         this.productModelCostDetail = response.data
-        console.log("Detaylar başarıyla geldi", this.productModelCostDetail)
       })
 
     }
     else{
-      console.log("Else model ıd geldi",this.modelId,this.installationCostLocationId, this.accessoryId)
       this.productModelCostDetailService.getCalculate(this.modelId, this.installationCostLocationId, this.accessoryId).subscribe(response => {
         
         this.turkeyHtmlState = true
         this.productModelCostDetail = response.data
-        console.log("Else sonuçları",this.productModelCostDetail)
       })
     }
   }
 
   getAllInstallationLocation() {
     this.installationCostService.getAllInstallationCostDto().subscribe(response => {
-      console.log(response.data)
       this.installationCostDtoList = response.data
     })
   }
@@ -155,7 +145,6 @@ export class ProductModelCostComponent implements OnInit {
   }
 
   addProductModelCostDto() {
-    console.log("Check add", this._productModelCostDtoForm.value)
     if (this._productModelCostDtoForm.valid) {
       let productModelCostDto = Object.assign({}, this._productModelCostDtoForm.value)
       this.productModelCostService.add(productModelCostDto).pipe(
@@ -189,6 +178,27 @@ export class ProductModelCostComponent implements OnInit {
     }
   }
 
-
+  refreshProductModelCostDto(){
+    this.productModelCostService.getProductModelCostDtoByModelId(this.modelId)
+    .subscribe(response => {
+      let productModelCost: ProductModelCostDto ={
+        modelId:response.data.modelId,
+        productModelCostProfitPercentage:response.data.productModelCostProfitPercentage,
+        productModelCostAdditionalProfitPercentage:response.data.productModelCostAdditionalProfitPercentage
+      }
+      this.productModelCostService.update(productModelCost).pipe(
+        catchError((err:HttpErrorResponse) => {
+          this.errorService.checkError(err)
+          return EMPTY
+        }))
+        .subscribe(response => {
+          this.toastrService.success(response.message, "Başarılı")
+          this.activatedRoute.params.subscribe(params => {
+            this.getProductModelCostDtoByModelId(params["productModelCostId"])
+          })
+        })
+    })
+    
+  }
 
 }

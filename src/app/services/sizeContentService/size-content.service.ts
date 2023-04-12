@@ -22,7 +22,6 @@ export class SizeContentService {
     }
 
     add(sizeContent:SizeContent):Observable<ResponseModel>{
-      console.log("installationCost geldi service" ,sizeContent)
       let newPath = environment.apiUrl + "api/sizeContents/add"
       return this.httpClient.post<ResponseModel>(newPath,sizeContent)
     }

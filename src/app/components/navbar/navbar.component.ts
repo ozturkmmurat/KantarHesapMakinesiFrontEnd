@@ -57,9 +57,7 @@ export class NavbarComponent implements OnInit {
 
   loadingUser(){
     this.user$ = this.userService.currentUser$;
-    console.log("navbar", this.userService.currentUser$)
     this.user$.subscribe(response => {
-      console.log("Loading User", response)
     }).unsubscribe()
   }
 

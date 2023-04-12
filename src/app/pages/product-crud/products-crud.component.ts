@@ -7,7 +7,6 @@ import { catchError, of } from 'rxjs';
 import { Category } from 'src/app/models/category';
 import { Product } from 'src/app/models/product';
 import { ProductDto } from 'src/app/models/Dtos/productDto';
-import { CategoryService } from 'src/app/services/categoryService/category.service';
 import { ModalService } from 'src/app/services/modalService/modal.service';
 import { ProductService } from 'src/app/services/productService/product.service';
 import { ErrorService } from 'src/app/services/errorService/error.service';
@@ -35,7 +34,6 @@ export class ProductsCrudComponent implements OnInit {
   constructor(
     //Service Start
     private productService: ProductService,
-    private categoryService: CategoryService,
     private modalService: ModalService,
     private toastrService: ToastrService,
     private errorService: ErrorService,
@@ -46,7 +44,6 @@ export class ProductsCrudComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllProductDto()
-    this.getAllCategory()
     this.addProductForm()
     this.updateProductForm()
   }
@@ -72,14 +69,6 @@ export class ProductsCrudComponent implements OnInit {
   getAllProductDto() {
     this.productService.getAllProductDto().subscribe(response => {
       this.productList = response.data
-      console.log(response.data)
-    })
-  }
-
-  getAllCategory() {
-    this.categoryService.getAllCategory().subscribe(response => {
-      this.categoryList = response.data
-      console.log(this.categoryList)
     })
   }
 

@@ -13,9 +13,9 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
   constructor(
     private authService: AuthService,
     private localStorageService: LocalStorageService,
@@ -24,30 +24,38 @@ export class AuthInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    let newRequest: HttpRequest<any>;
+    let newRequest : HttpRequest<any>;
     let token = this.localStorageService.getToken();
+    if(token){
       newRequest = this.addTokenHeader(request, token);
       return next.handle(newRequest).pipe(
         catchError((error) => {
-          console.log(error)
+          console.log("İnterceptor error")
           if (error.status === 403) {
-            console.log("Refresh token deneniyor")
+            console.log("Refresh token işlemi başladı")
             return this.refreshToken(newRequest, next)
           }
           if (error.status === 401) {
             this.toastrService.error(error.error.Message)
           }
+  
           const err = error.error.message || error.statusText;
           if (err === "Unknown Error") {
-            this.toastrService.error(
-              "Sunucuya bağlanılamadı. Lütfen sistem yöneticiniz ile iletişime geçiniz."
-            );
+            // this.toastrService.error(
+            //   "Sunucuya bağlanılamadı. Lütfen sistem yöneticiniz ile iletişime geçiniz."
+            // );
             this.authService.logOut();
           }
           return throwError(error);
         })
-      )
-    return EMPTY
+      );
+    }
+    else{
+      console.log("Else düştü")
+       return next.handle(request);
+    }
+   
+    return EMPTY;
   }
 
   private addTokenHeader(request: HttpRequest<any>, token: string) {
@@ -61,11 +69,10 @@ export class AuthInterceptor implements HttpInterceptor {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
       var refreshToken = localStorage.getItem("refreshToken");
-      console.log(refreshToken);
       if (refreshToken) {
         return this.authService.refreshTokenLogin(refreshToken).pipe(
           switchMap((token: any) => {
-            //Refresh token git
+            console.log("Token yenilendi")
             this.isRefreshing = false;
             this.localStorageService.update("token", token.data.token)
             this.localStorageService.update("refreshToken", token.data.refreshToken)
@@ -76,7 +83,7 @@ export class AuthInterceptor implements HttpInterceptor {
             if (err.status === 410) {
               this.isRefreshing = false;
               this.localStorageService.signOut();
-              this.toastrService.error(err.error.Message);
+              // this.toastrService.error(err.error.Message);
               this.router.navigate(["login"]);
               return throwError(err);
             }
@@ -84,12 +91,12 @@ export class AuthInterceptor implements HttpInterceptor {
           })
         );
       }
-        return this.refreshTokenSubject.pipe(
-          filter((token) => token !== null),
-          take(1),
-          switchMap((token) => next.handle(this.addTokenHeader(request, token)))
-        );
-      }
-      return EMPTY
+      return this.refreshTokenSubject.pipe(
+        filter((token) => token !== null),
+        take(1),
+        switchMap((token) => next.handle(this.addTokenHeader(request, token)))
+      );
     }
+    return EMPTY
   }
+}

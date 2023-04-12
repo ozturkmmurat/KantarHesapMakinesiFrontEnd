@@ -28,7 +28,6 @@ export class SizeService {
   }
 
   add(heightWeight:Size):Observable<ResponseModel>{
-    console.log("installationCost geldi service" ,heightWeight)
     let newPath = environment.apiUrl + "api/sizes/add"
     return this.httpClient.post<ResponseModel>(newPath,heightWeight)
   }

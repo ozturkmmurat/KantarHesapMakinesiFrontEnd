@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { LoginModel } from 'src/app/models/loginModel';
+import { UserForLoginDto } from 'src/app/models/loginModel';
 import { RegisterModel } from 'src/app/models/registerModel';
 import { SingleResponseModel } from 'src/app/models/singleResponseModel';
 import { TokenModel } from 'src/app/models/tokenModel';
@@ -70,7 +70,7 @@ export class AuthService {
     return this.httpClient.post<SingleResponseModel<TokenModel>>(newPath, null)
   }
 
-  login(loginModel: LoginModel) {
+  login(loginModel: UserForLoginDto) {
     return this.httpClient.post<SingleResponseModel<TokenModel>>(environment.apiUrl + "api/auth/login", loginModel)
   }
 

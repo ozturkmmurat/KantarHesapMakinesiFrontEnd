@@ -22,7 +22,8 @@
               <h3 class="mb-0">Model Adı</h3>
             </div>
             <div class="col-4 text-right">
-              <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+              <a class="btn btn-sm btn-primary" (click)="refreshProductModelCostDto()">Yenile 
+                <i class="fa-solid fa-arrows-rotate" ></i></a>
             </div>
           </div>
         </div>
@@ -274,44 +275,44 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="form-group">
-                              <label class="form-control-label" for="input-username">Kurulum Dahil TL</label>
+                              <label class="form-control-label" for="input-username">Kurulum Dahil Euro</label>
                               <input type="text" id="input-email" class="form-control form-control-alternative" disabled
-                                value="{{productModelCostDetail.installationIncludedTl | number :'1.2'}}">
+                                value="{{productModelCostDetail.installationIncludedEuro | number :'1.2'}}">
                             </div>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="form-group">
-                              <label class="form-control-label" for="input-username">Satış Fiyatı TL</label>
+                              <label class="form-control-label" for="input-username">Satış Fiyatı Euro</label>
                               <input type="text" id="input-email" class="form-control form-control-alternative" disabled
-                                value="{{productModelCostDetail.turkeySalesPrice | number :'1.2-2' }}">
+                                value="{{productModelCostDetail.exportSalesPrice | number :'1.2-2' }}">
                             </div>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="form-group">
-                              <label class="form-control-label" for="input-email">Kar TL</label>
+                              <label class="form-control-label" for="input-email">Kar Euro</label>
                               <input type="text" id="input-email" class="form-control form-control-alternative" disabled
-                                value="{{productModelCostDetail.profitPriceTl | number :'1.2-2'}}">
+                                value="{{productModelCostDetail.profitPriceEuro | number :'1.2-2'}}">
                             </div>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="form-group">
-                              <label class="form-control-label" for="input-email">Son Fiyat TL</label>
+                              <label class="form-control-label" for="input-email">Son Fiyat Euro</label>
                               <input type="text" id="input-email" class="form-control form-control-alternative" disabled
-                                value="{{productModelCostDetail.turkeySalesDiscountPrice | number :'1.2-2' }}">
+                                value="{{productModelCostDetail.exportFinalDiscountPrice | number :'1.2-2' }}">
                             </div>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-lg-6">
-                            <label class="form-control-label" for="input-email">Teklif Fiyatı TL</label>
+                            <label class="form-control-label" for="input-email">Teklif Fiyatı Euro</label>
                             <input type="text" id="input-email" class="form-control form-control-alternative" disabled
-                              value="{{productModelCostDetail.offerPriceTl | number :'1.2-2' }}">
+                              value="{{productModelCostDetail.offerPriceEuro | number :'1.2-2' }}">
                           </div>
                         </div>
                     </ng-container>

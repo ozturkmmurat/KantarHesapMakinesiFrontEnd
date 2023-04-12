@@ -26,9 +26,7 @@ export class AccessoryService {
   }
 
   getByName(name:string):Observable<SingleResponseModel<Accessory>>{
-    console.log(name)
     let newPath = environment.apiUrl + "api/accessories/GetByName?name="+name;
-    console.log(newPath)
     return this.httpClient.get<SingleResponseModel<Accessory>>(newPath)
   }
 

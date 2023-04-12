@@ -23,12 +23,10 @@ export class ProductModelCostService {
   }
 
   add(productModelCostDto : ProductModelCostDto):Observable<ResponseModel>{
-    console.log(productModelCostDto)
     let newPath = environment.apiUrl + "api/productModelCosts/addProductModelCost"
     return this.httpClient.post<ResponseModel>(newPath,productModelCostDto)
   }
   update(productModelCostDto : ProductModelCostDto):Observable<ResponseModel>{
-    console.log("update servis başladı",productModelCostDto)
     let newPath = environment.apiUrl + "api/productModelCosts/updateProductModelCost"
     return this.httpClient.post<ResponseModel>(newPath,productModelCostDto)
   }

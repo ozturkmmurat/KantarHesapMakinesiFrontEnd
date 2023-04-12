@@ -47,7 +47,6 @@ export class UserProfileComponent implements OnInit {
     this.user$
       .subscribe(response => {
         this.loadingUser()
-        console.log("Form data", response)
         this._userForm = this.formBuilder.group({
             userId : [Number(response.id),Validators.required],
             firstName : [response.firstName, Validators.required],

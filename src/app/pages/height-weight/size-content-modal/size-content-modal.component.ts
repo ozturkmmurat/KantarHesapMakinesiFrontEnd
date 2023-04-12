@@ -68,8 +68,6 @@ export class SizeContentModalComponent implements OnInit {
 
   getAllSizeContent(){
     const input = this._sizeContentForm.value as any;
-    console.log("Get All İnput yazdırıldı",input)
-    console.log("input yazdırıldı başlangıç", input)
     this.sizeContentService
     .getAllSizeCtDtoBySizeId(input.sizeId)
     .subscribe(({ data }) => {
@@ -91,13 +89,11 @@ export class SizeContentModalComponent implements OnInit {
   getAllElectronic(){
     this.electronicService.getAllElectronic().subscribe(response => {
       this.electronicList = response.data
-      console.log("Elektronik listesi", this.electronicList)
     })
   }
 
 
   save(): void {
-    console.log("Size content add", this._sizeContentForm.value)
     if (this._sizeContentForm.invalid) {
       this.toastrService.error("Formu eksiksiz doldurun.", "Hata");
       return;
@@ -125,12 +121,10 @@ export class SizeContentModalComponent implements OnInit {
                 electronicEuroPrice:new FormControl(item.electronicEuroPrice),
                 electronicPcs:new FormControl(item.electronicPcs)
               })
-              console.log("Add pushlanan group",group)
               this.sizeContent.push(group)
             });
           })
           this.sizeContent.clear()
-          console.log("Reset başarılı mı ?",this.sizeContent)
         this.toastrService.success(response.message, "Başarılı")
       })
   }
@@ -138,7 +132,6 @@ export class SizeContentModalComponent implements OnInit {
 
 
   update(contact: any, index: number): void {
-    console.log("Update sizecontent form value ",this._sizeContentForm.value)
     if (this._sizeContentForm.invalid) {//Validate form
       this.toastrService.error("Formu eksiksiz doldurun.", "Hata")
       return;
@@ -149,7 +142,6 @@ export class SizeContentModalComponent implements OnInit {
       electronicId:parseInt(contact.controls.electronicId.value),
       electronicPcs:contact.controls.electronicPcs.value
     }
-    console.log("İnput yazdırıldı",input)
     this.sizeContentService.update(input).pipe(
       catchError((err: HttpErrorResponse) => {
         this.errorService.checkError(err)
@@ -169,7 +161,6 @@ export class SizeContentModalComponent implements OnInit {
       electronicId:contact.controls.electronicId.value,
       electronicPcs:contact.controls.electronicPcs.value
     }
-    console.log("Delete check ", contact);
     this.sizeContentService.delete(input).pipe(
       catchError((err: HttpErrorResponse) => {
         this.errorService.checkError(err)

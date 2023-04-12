@@ -73,12 +73,10 @@ export class ModelCrudComponent implements OnInit {
     for (let index = 0; index < this.productList.length; index++) {
       if (formName.value.modelProductId == this.productList[index].productId) {
         this.selectedValue = this.productList[index].productName
-        console.log("Seçilen veri", this.selectedValue)
       }
     }
   }
   writeModel(model: Model) {
-    console.log("Write model",model)
     this._updateModelForm.patchValue({
       modelId: model.id, costVariableId:model.costVariableId, modelSizeId:model.sizeId,  modelMostSizeKg: model.mostSizeKg, modelProductId: model.productId,
       modelProductionTime: model.productionTime, modelShateIronWeight: model.shateIronWeight, modelIProfilWeight: model.iProfilWeight
@@ -109,10 +107,14 @@ export class ModelCrudComponent implements OnInit {
   }
 
   getAllModel() {
-    this.modelService.getAllModel().subscribe(response => {
+    this.modelService.getAllModel().pipe(
+    catchError((err: HttpErrorResponse) => {
+      this.errorService.checkError(err)
+      return of();
+    }))
+    .subscribe(response => {
       this.modelList = response.data
     })
-
   }
 
   getAllProduct() {
@@ -144,18 +146,12 @@ export class ModelCrudComponent implements OnInit {
 
 
   addModel() {
-    console.log("Model add check", this._addModelForm.value)
     if (this._addModelForm.valid) {
-      console.log("Success model add", this._addModelForm.value)
-      console.log("Success add model  ", this._addModelForm.value)
-      console.log("Success add model sizeId ", this._addModelForm.value.sizeId)
       let sizeModel
       this.sizeService.getById(this._addModelForm.value.modelSizeId).subscribe(response => {
         sizeModel = response.data
         let model = Object.assign({}, this._addModelForm.value)
-        console.log("Size Model", sizeModel)
         model.modelMostSizeKg = sizeModel.aspect + " " + sizeModel.weight + " " + this.selectedValue
-        console.log("Model en boy son ad", model.modelMostSizeKg)
         this.modelService.add(model).pipe(
           catchError((err: HttpErrorResponse) => {
             this.errorService.checkError(err)
@@ -173,12 +169,13 @@ export class ModelCrudComponent implements OnInit {
   }
 
   updateModel() {
-    console.log("Model update check ", this._updateModelForm.value)
     if (this._updateModelForm.valid) {
       let model = Object.assign({}, this._updateModelForm.value)
       let sizeModel
       this.sizeService.getById(this._updateModelForm.value.modelSizeId).subscribe(response => {
         sizeModel = response.data
+        this.onSelected(this._updateModelForm)
+        let model = Object.assign({}, this._updateModelForm.value)
         model.modelMostSizeKg = sizeModel.aspect + " " + sizeModel.weight + " " + this.selectedValue
         this.modelService.update(model).pipe(
           catchError((err: HttpErrorResponse) => {

@@ -4,6 +4,7 @@ export interface ProductModelCostDetail{
     installationCostLocationId:number,
     accessoryTlPrice:number,
     installationIncludedTl:number,
+    installationIncludedEuro:number,
     salesPriceTl:number,
     salesPriceEuro:number
     turkeySalesPrice:number,

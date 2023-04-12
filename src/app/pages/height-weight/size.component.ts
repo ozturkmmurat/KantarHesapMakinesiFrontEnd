@@ -103,7 +103,6 @@ export class SizeComponent implements OnInit {
   }
 
   addSize(){
-    console.log("Check add weight ",this._addHeightWeightForm.value)
     if (this._addHeightWeightForm.valid) {
       let heightWeightModel = Object.assign({},this._addHeightWeightForm.value)
       this.sizeService.add(heightWeightModel).pipe(
@@ -119,7 +118,6 @@ export class SizeComponent implements OnInit {
   }
 
   updateSize(){
-    console.log("Check update size", this._updateHeightWeightForm.value)
     if (this._updateHeightWeightForm.valid) {
       let heightWeightModel = Object.assign({},this._updateHeightWeightForm.value)
       this.sizeService.update(heightWeightModel).pipe(

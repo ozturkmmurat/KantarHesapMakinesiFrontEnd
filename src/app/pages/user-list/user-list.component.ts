@@ -68,7 +68,6 @@ export class UserListComponent implements OnInit {
   getAllUser(){
     this.userService.getAllUserDto().subscribe(response => {
       this.userDtoList = response.data
-      console.log("Kullanıcı listesi",this.userDtoList)
     })
   }
 

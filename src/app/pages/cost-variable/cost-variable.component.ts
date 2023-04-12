@@ -78,12 +78,10 @@ export class CostVariableComponent implements OnInit {
   getAllCostVariable() {
     this.costVariableService.getAllCostVariable().subscribe(response => {
       this.costVariableList = response.data
-      console.log(response.data)
     })
   }
 
   writeUpdateCostVariableForm(costVariable: CostVariable) {
-    console.log("update form", this._updateCostVariableForm)
     this._updateCostVariableForm.patchValue({
       id: costVariable.id, costVariableName:costVariable.costVariableName,  iProfile: costVariable.iProfile, shateIron:costVariable.shateIron, fireShateIronAndIProfilePercentage: costVariable.fireShateIronAndIProfilePercentage,
       fireTotalPercentAge: costVariable.fireTotalPercentAge, laborCostPerHourEuro:costVariable.laborCostPerHourEuro, overheadPercentage:costVariable.overheadPercentage
@@ -91,7 +89,6 @@ export class CostVariableComponent implements OnInit {
   }
 
   addCostVariable() {
-    console.log("Add costVariable check", this._addCostVariableForm.value)
     if (this._addCostVariableForm.valid) {
       let costVariableModel = Object.assign({}, this._addCostVariableForm.value)
       this.costVariableService.add(costVariableModel).pipe(
@@ -110,7 +107,6 @@ export class CostVariableComponent implements OnInit {
   }
 
   updateCostVariable() {
-    console.log(this._updateCostVariableForm.value)
     if (this._updateCostVariableForm.valid) {
       let costVariableModel = Object.assign({}, this._updateCostVariableForm.value)
       this.costVariableService.update(costVariableModel).pipe(

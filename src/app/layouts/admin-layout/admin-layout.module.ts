@@ -28,6 +28,7 @@ import { FilterPipe } from 'src/app/pipes/filterPipe/filter.pipe';
 import { UserListComponent } from 'src/app/pages/user-list/user-list.component';
 import { SizeComponent } from 'src/app/pages/height-weight/size.component';
 import { SizeContentModalComponent } from 'src/app/pages/height-weight/size-content-modal/size-content-modal.component';
+
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({

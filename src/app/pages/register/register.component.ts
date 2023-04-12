@@ -49,6 +49,8 @@ export class RegisterComponent implements OnInit {
         .subscribe(response => {
           this.toastrService.success(response.message)
         })
+    }else{
+      this.toastrService.error("Formu eksiksiz doldurun.")
     }
   }
 

@@ -21,7 +21,6 @@ export class ModelService {
 
   getAllModelByProductId(productId:number):Observable<ListResponseModel<Model>>{
     let newPath = environment.apiUrl + "api/models/getAllByProductId?productId="+ productId
-    console.log("Service path",newPath)
     return this.httpClient.get<ListResponseModel<Model>>(newPath)
   }
 
@@ -36,7 +35,6 @@ export class ModelService {
   }
 
   update(model:ModelDto):Observable<ResponseModel>{
-    console.log("Update model service model", model)
     let newPath = environment.apiUrl + "api/models/update";
     return this.httpClient.post<ResponseModel>(newPath, model)
   }
