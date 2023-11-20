@@ -29,12 +29,17 @@ export class ModelService {
     return this.httpClient.get<ListResponseModel<ModelDto>>(newPath)
   }
 
-  add(model:ModelDto):Observable<ResponseModel>{
-    let newPath = environment.apiUrl + "api/models/add";
-    return this.httpClient.post<ResponseModel>(newPath, model)
+  addDto(modelDto:ModelDto):Observable<ResponseModel>{
+    let newPath = environment.apiUrl + "api/models/addDto";
+    return this.httpClient.post<ResponseModel>(newPath, modelDto)
   }
 
-  update(model:ModelDto):Observable<ResponseModel>{
+  updateDto(modelDto:ModelDto):Observable<ResponseModel>{
+    let newPath = environment.apiUrl + "api/models/updateDto";
+    return this.httpClient.post<ResponseModel>(newPath, modelDto)
+  }
+
+  update(model:Model):Observable<ResponseModel>{
     let newPath = environment.apiUrl + "api/models/update";
     return this.httpClient.post<ResponseModel>(newPath, model)
   }

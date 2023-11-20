@@ -21,6 +21,7 @@ import { id } from '@swimlane/ngx-datatable';
 import { ProductModelCostDetail } from 'src/app/models/ProductModelCost/productModelCostDetail';
 import { AccessoryService } from 'src/app/services/accessoryService/accessory.service';
 import { Accessory } from 'src/app/models/accessory';
+import { ModelService } from 'src/app/services/modelService/model.service';
 
 @Component({
   selector: 'app-product-model-cost',
@@ -54,6 +55,7 @@ export class ProductModelCostComponent implements OnInit {
 
   //Form Start
   _productModelCostDtoForm: FormGroup;
+  _modelForm : FormGroup;
   // Form End
 
   constructor(
@@ -62,7 +64,6 @@ export class ProductModelCostComponent implements OnInit {
     private productModelCostDetailService: ProductModelCostDetailService,
     private installationCostService: InstallationCostService,
     private accessoryService : AccessoryService,
-    private modalService: ModalService,
     private toastrService: ToastrService,
     private errorService: ErrorService,
     //Service End
@@ -72,11 +73,12 @@ export class ProductModelCostComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       if (params["productModelCostId"]) {
-        this.getProductModelCostDtoByModelId(params["productModelCostId"])
+        this.getProductModelCostDtoByModelIdCurrency(params["productModelCostId"])
         this.modelId = params["productModelCostId"]
         this.getAllInstallationLocation()
         this.getAllAccessory()
         this.addProductModelCostDtoForm()
+        this.updateModelForm()
       }
     })
   }
@@ -89,19 +91,25 @@ export class ProductModelCostComponent implements OnInit {
   addProductModelCostDtoForm() {
     this._productModelCostDtoForm = this.formBuilder.group({
       modelId: [Number(this.modelId)],
-      productModelCostProfitPercentage: [0, Validators.required],
-      productModelCostAdditionalProfitPercentage : [0, Validators.required]
+    })
+  }
+
+  updateModelForm(){
+    this._modelForm = this.formBuilder.group({
+      id: [Number(this.modelId)],
+      profitPercentage: [0, Validators.required],
+      additionalProfitPercentage : [0, Validators.required]
     })
   }
 
   writeProductModelCostForm() {
-    this._productModelCostDtoForm.patchValue({
-      productModelCostProfitPercentage:this.productModelCostDto.productModelCostProfitPercentage, productModelCostAdditionalProfitPercentage: this.productModelCostDto.productModelCostAdditionalProfitPercentage
+    this._modelForm.patchValue({
+      profitPercentage:this.productModelCostDto.profitPercentage, additionalProfitPercentage: this.productModelCostDto.additionalProfitPercentage
     })
   }
 
-  getProductModelCostDtoByModelId(modelId: number) {
-    this.productModelCostService.getProductModelCostDtoByModelId(modelId).subscribe(response => {
+  getProductModelCostDtoByModelIdCurrency(modelId: number) {
+    this.productModelCostService.getProductModelCostDtoByModelIdCurrency(modelId, "EUR").subscribe(response => {
       this.productModelCostDto = response.data
       this.writeProductModelCostForm()
     })
@@ -109,14 +117,19 @@ export class ProductModelCostComponent implements OnInit {
 
   getCalculate() {
     if(this.exportationstate == false){
-      this.productModelCostDetailService.getCalculate(this.modelId, 0, 0).subscribe(response => {
+      const productModelCostDetail: any =  {
+        modelId:this.modelId, installationCostLocationId:0, accessoryId:0, exportState:false, currencyName:"EUR"
+      }
+      this.productModelCostDetailService.getCalculate(productModelCostDetail).subscribe(response => {
         this.productModelCostDetail = response.data
       })
 
     }
     else{
-      this.productModelCostDetailService.getCalculate(this.modelId, this.installationCostLocationId, this.accessoryId).subscribe(response => {
-        
+      const productModelCostDetail: any =  {
+        modelId:this.modelId, installationCostLocationId:this.installationCostLocationId, accessoryId:this.accessoryId, exportState:true, currencyName:"TRY"
+      }
+      this.productModelCostDetailService.getCalculate(productModelCostDetail).subscribe(response => {
         this.turkeyHtmlState = true
         this.productModelCostDetail = response.data
       })
@@ -144,47 +157,13 @@ export class ProductModelCostComponent implements OnInit {
     })
   }
 
-  addProductModelCostDto() {
-    if (this._productModelCostDtoForm.valid) {
-      let productModelCostDto = Object.assign({}, this._productModelCostDtoForm.value)
-      this.productModelCostService.add(productModelCostDto).pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.errorService.checkError(err)
-          return EMPTY
-        }))
-        .subscribe(response => {
-          this.toastrService.success(response.message, "Başarılı")
-          this.activatedRoute.params.subscribe(params => {
-            this.getProductModelCostDtoByModelId(params["productModelCostId"])
-          })
-        })
-    }
-  }
-
-  updateProductModelCostDto() {
-    if (this._productModelCostDtoForm.valid) {
-      let productModelCostDto = Object.assign({}, this._productModelCostDtoForm.value)
-      this.productModelCostService.update(productModelCostDto).pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.errorService.checkError(err)
-          return EMPTY
-        }))
-        .subscribe(response => {
-          this.toastrService.success(response.message, "Başarılı")
-          this.activatedRoute.params.subscribe(params => {
-            this.getProductModelCostDtoByModelId(params["productModelCostId"])
-          })
-        })
-    }
-  }
-
   refreshProductModelCostDto(){
-    this.productModelCostService.getProductModelCostDtoByModelId(this.modelId)
+    this.productModelCostService.getProductModelCostDtoByModelIdCurrency(this.modelId, "TRY")
     .subscribe(response => {
       let productModelCost: ProductModelCostDto ={
         modelId:response.data.modelId,
-        productModelCostProfitPercentage:response.data.productModelCostProfitPercentage,
-        productModelCostAdditionalProfitPercentage:response.data.productModelCostAdditionalProfitPercentage
+        profitPercentage:response.data.profitPercentage,
+        additionalProfitPercentage:response.data.additionalProfitPercentage
       }
       this.productModelCostService.update(productModelCost).pipe(
         catchError((err:HttpErrorResponse) => {
@@ -194,7 +173,7 @@ export class ProductModelCostComponent implements OnInit {
         .subscribe(response => {
           this.toastrService.success(response.message, "Başarılı")
           this.activatedRoute.params.subscribe(params => {
-            this.getProductModelCostDtoByModelId(params["productModelCostId"])
+            this.getProductModelCostDtoByModelIdCurrency(params["productModelCostId"])
           })
         })
     })

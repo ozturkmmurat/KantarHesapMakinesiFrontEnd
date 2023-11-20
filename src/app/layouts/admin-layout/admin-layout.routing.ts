@@ -18,19 +18,15 @@ import { UserListComponent } from 'src/app/pages/user-list/user-list.component';
 import { SizeComponent } from 'src/app/pages/height-weight/size.component';
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'user-profile',   component: UserProfileComponent, canActivate:[LoginGuard] },
-    { path: 'userList',      component:UserListComponent, canActivate:[LoginGuard]},
-    { path: 'tables',         component: TablesComponent },
-    { path: 'icons',          component: IconsComponent },
-    { path: 'maps',           component: MapsComponent },
-    { path: 'dataTableTest',           component: DataTableTestComponent },
-    { path: 'products',           component: ProductsCrudComponent, canActivate:[LoginGuard] },
-    { path: 'models',           component: ModelCrudComponent, canActivate:[LoginGuard] },
-    { path: 'accessory',      component:AccessoryCrudComponent, canActivate:[LoginGuard]},
-    { path: 'electronic',      component:ElectronicCrudComponent, canActivate:[LoginGuard]},
-    { path: 'installationCost',      component:InstallationCostComponent, canActivate:[LoginGuard]},
-    { path: 'costVariable',      component:CostVariableComponent, canActivate:[LoginGuard]},
-    { path: 'models/productModelCost/:productModelCostId',      component:ProductModelCostComponent, canActivate:[LoginGuard]},
-    { path: 'heightWeight',           component: SizeComponent, canActivate:[LoginGuard] },
+    { path: 'user-profile',   component: UserProfileComponent, canActivate:[LoginGuard], data: { roles: ['user', 'admin', 'official'] } },
+    { path: 'userList',      component:UserListComponent, canActivate:[LoginGuard], data: { roles: ['admin'] }},
+    { path: 'products',           component: ProductsCrudComponent, canActivate:[LoginGuard], data: { roles: ['admin'] } },
+    { path: 'models',           component: ModelCrudComponent, canActivate:[LoginGuard], data: { roles: ['admin'] } },
+    { path: 'accessory',      component:AccessoryCrudComponent, canActivate:[LoginGuard], data: { roles: ['admin'] }},
+    { path: 'electronic',      component:ElectronicCrudComponent, canActivate:[LoginGuard], data: { roles: ['admin'] }},
+    { path: 'installationCost',      component:InstallationCostComponent, canActivate:[LoginGuard], data: { roles: ['admin'] }},
+    { path: 'costVariable',      component:CostVariableComponent, canActivate:[LoginGuard], data: { roles: ['admin'] }},
+    { path: 'models/productModelCost/:productModelCostId',      component:ProductModelCostComponent, canActivate:[LoginGuard], data: { roles: ['admin'] }},
+    { path: 'heightWeight',           component: SizeComponent, canActivate:[LoginGuard], data: { roles: ['admin'] } },
 
 ];

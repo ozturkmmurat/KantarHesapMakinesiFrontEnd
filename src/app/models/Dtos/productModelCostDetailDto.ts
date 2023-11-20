@@ -1,12 +1,15 @@
 export interface ProductModelCostDetailDto{
-    productModelCostDetailId:number,
-    productModelCostDetailInstallationCostId:number,
-    productModelCostDetailProductModelCostId:number,
-    productModelCostDetailInstallationIncluded:number,
-    productModelCostDetailSalesPrice:number,
-    productModelCostDetailTurkeySalesPrice:number,
-    productModelCostProfitPercentage:number,
-    productModelCostDetailProfitPrice:number,
+    //pmc --> ProductModelCostDetail
+    pmcId:number,
+    pmcInstallationCostId:number,
+    pmcProductModelCostId:number,
+    pmcInstallationIncluded:number,
+    pmcSalesPrice:number,
+    pmcCountrySalesPrice:number,
+
+    //pm --> ProductModeLCost
+    pmProfitPercentage:number,
+    pmDetailProfitPrice:number,
 
     installationCostId:number,
     installationCostLocationId:number,

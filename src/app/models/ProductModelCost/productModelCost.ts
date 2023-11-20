@@ -1,17 +1,15 @@
 export interface ProductModelCost{
     id:number,
+    modelId:number,
+    currencyName:string,
     shateIronEuroPrice:number,
     iProfileEuroPrice:number
-    materialTlAmount:number,
-    materialEuroAmount:number,
+    materialAmount:number,
     totalLaborCost:number,
     totalAmount:number,
     generalExpenseAmount:number,
     overheadIncluded:number,
-    electronicTlAmount:number,
-    electronicEuroAmount:number,
-    accessoriesTlAmount:number,
-    accessoriesEuroAmount:number
+    electronicAmount:number,
     profitPercentage:number
     additionalProfitPercentage:number
 }

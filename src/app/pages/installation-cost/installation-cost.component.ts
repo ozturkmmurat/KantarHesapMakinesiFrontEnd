@@ -81,7 +81,7 @@ export class InstallationCostComponent implements OnInit {
 
   writeUpdateInstallationCostForm(installationCostDto: InstallationCostDto) {
     this._updateInstallationCostForm.patchValue({
-      id: installationCostDto.installationCostId, locationId: installationCostDto.locationId, installationEuroPrice: installationCostDto.installationTlPrice
+      id: installationCostDto.installationCostId, locationId: installationCostDto.locationId, installationEuroPrice: installationCostDto.installationEuroPrice
     })
   }
 

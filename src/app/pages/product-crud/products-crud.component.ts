@@ -50,15 +50,19 @@ export class ProductsCrudComponent implements OnInit {
 
   addProductForm() {
     this._addProductForm = this.formBuilder.group({
-      productName: ["", Validators.required]
+      productName: ["", Validators.required],
+      profitPercentage:[0, Validators.required],
+      additionalProfitPercentage:[0, Validators.required]
     })
   }
 
   updateProductForm() {
     this._updateProductForm = this.formBuilder.group({
-      id: ["", Validators.required],
-      categoryId: ["", Validators.required],
-      productName: ["", Validators.required]
+      productId: ["", Validators.required],
+      productProfitId:["", Validators.required],
+      productName: ["", Validators.required],
+      profitPercentage:[0, Validators.required],
+      additionalProfitPercentage:[0, Validators.required]
     })
   }
 
@@ -74,14 +78,14 @@ export class ProductsCrudComponent implements OnInit {
 
   writeProduct(product: ProductDto) {
     this._updateProductForm.patchValue({
-      id: product.productId,  productName: product.productName
+      productId: product.productId, productProfitId:product.productProfitId,  productName: product.productName, profitPercentage:product.profitPercentage, additionalProfitPercentage:product.additionalProfitPercentage
     })
   }
 
   addProduct() {
     if (this._addProductForm.valid) {
       let productModel = Object.assign({}, this._addProductForm.value)
-      this.productService.add(productModel).pipe(
+      this.productService.tsaAdd(productModel).pipe(
         catchError((err: HttpErrorResponse) => {
           this.errorService.checkError(err)
           return of();
@@ -99,7 +103,7 @@ export class ProductsCrudComponent implements OnInit {
   updateProduct() {
     if (this._updateProductForm.valid) {
       let productModel = Object.assign({}, this._updateProductForm.value)
-      this.productService.update(productModel).pipe(
+      this.productService.tsaUpdate(productModel).pipe(
         catchError((err: HttpErrorResponse) => {
           this.errorService.checkError(err)
           return of();

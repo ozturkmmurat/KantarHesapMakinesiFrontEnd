@@ -5,12 +5,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PublicLayoutRoutes } from './public-layout.routing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { LoginComponent } from '../../pages/login/login.component';
-import { RegisterComponent } from '../../pages/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CalculateOfferComponent } from 'src/app/pages/calculate-offer/calculate-offer.component';
+import { SharedModule } from 'src/shared.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,6 +20,7 @@ import { CalculateOfferComponent } from 'src/app/pages/calculate-offer/calculate
     ClipboardModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+    SharedModule
   ],
   declarations: [
     CalculateOfferComponent

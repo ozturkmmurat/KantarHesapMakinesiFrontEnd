@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.localStorageService.setTokenExpiration(response.data.expiration)
             this.localStorageService.setRefreshToken(response.data.refreshToken)
             this.userService.setCurrentUser()
-            this.router.navigate(["models"]);
+            this.router.navigate(["user-profile"]);
         })
     }
   }

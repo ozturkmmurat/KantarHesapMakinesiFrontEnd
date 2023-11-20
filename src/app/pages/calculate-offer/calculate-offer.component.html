@@ -13,15 +13,16 @@
 <div class="container">
   <div class="row">
     <div class="mb-3">
-      <a _ngcontent-ojw-c109="" routerlinkactive="active" class="navbar-brand pt-0" ng-reflect-router-link-active="active"
-      ng-reflect-router-link="/login" href="#/login"><img _ngcontent-ojw-c109="" style="max-height: 2.5rem;"
-        src="assets/img/website/logo/esit.png" alt="..." class="navbar-brand-img"></a>
+      <a _ngcontent-ojw-c109="" routerlinkactive="active" class="navbar-brand pt-0"
+        ng-reflect-router-link-active="active" ng-reflect-router-link="/login" href="#/login"><img
+          _ngcontent-ojw-c109="" style="max-height: 2.5rem;" src="assets/img/website/logo/esit.png" alt="..."
+          class="navbar-brand-img"></a>
     </div>
   </div>
 </div>
 <form class="container">
   <div class="d-flex justify-content-center">
-    <span class="mb-4 mainText" >
+    <span class="mb-4 mainText">
       KANTAR HESAP MAKİNESİ
     </span>
   </div>
@@ -32,7 +33,9 @@
       <select id="productId" name="productId" class="form-control" [(ngModel)]="productId"
         (ngModelChange)="getAllModelProductId()">
         <option value="0" selected>Ürün Seçiniz</option>
-        <option *ngFor="let product of productList" [ngValue]="product.id">{{product.productName}}</option>
+        <option *ngFor="let product of productList | alphabetical: 'productName'" [ngValue]="product.id">
+          {{ product.productName }}
+        </option>
       </select>
     </div>
     <div class="form-group col-md-5">
@@ -48,7 +51,8 @@
     <div class="col-md-1"></div>
     <div class="form-group col-md-5">
       <button type="button" class="btn btn-primary" (click)="exportationStatus(true)">Yurt İçi</button>
-      <button type="button" class="btn btn-primary" (click)="exportationStatus(false)" (click)="getCalculate()">İhraç</button>
+      <button type="button" class="btn btn-primary" (click)="exportationStatus(false)"
+        (click)="getCalculate()">İhraç</button>
     </div>
   </div>
 
@@ -82,11 +86,19 @@
         <div class="form-row">
           <div class="col-md-1"></div>
           <div class="col-md-5">
-            <p class="font-weight-bold d-inline-flex">Son Fiyat : {{productModelCostDetail.exportFinalDiscountPrice | number
-              :'1.2-2'}} ₺</p>
-              <br>
-              <p class="font-weight-bold d-inline-flex">Teklif Fiyatı : {{productModelCostDetail.offerPriceTl | number
-                :'1.2-2'}} ₺</p>
+            <p class="font-weight-bold d-inline-flex">Son Fiyat : {{productModelCostDetail.finalDiscountPrice | number
+              :'1.2-2'}} €</p>
+            <br>
+            <p class="font-weight-bold d-inline-flex">Teklif Fiyatı : {{productModelCostDetail.offerPrice | number
+              :'1.2-2'}} €</p>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-5">
+            <p class="font-weight-bold d-inline-flex">Kurulum Ücreti : {{productModelCostDetail.installationPrice| number
+              :'1.2-2'}} €</p>
+            <br>
+            <p class="font-weight-bold d-inline-flex">Aksesuar Ücreti : {{productModelCostDetail.accessoryPrice| number
+              :'1.2-2'}} €</p>
           </div>
         </div>
       </div>
@@ -97,11 +109,11 @@
         <div class="form-row">
           <div class="col-md-1"></div>
           <div class="col-md-5">
-            <p class="font-weight-bold d-inline-flex">Son Fiyat : {{productModelCostDetail.exportFinalDiscountPrice | number
-              :'1.2-3'}}$ </p>
-              <br>
-              <p class="font-weight-bold d-inline-flex">Teklif Fiyatı : {{productModelCostDetail.offerPriceEuro | number
-                :'1.2-2'}}$ </p>
+            <p class="font-weight-bold d-inline-flex">Son Fiyat : {{productModelCostDetail.finalDiscountPrice | number
+              :'1.2-3'}}€ </p>
+            <br>
+            <p class="font-weight-bold d-inline-flex">Teklif Fiyatı : {{productModelCostDetail.offerPrice | number
+              :'1.2-2'}}€ </p>
           </div>
         </div>
       </div>

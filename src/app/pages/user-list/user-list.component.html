@@ -12,7 +12,7 @@
       <div class="col">
         <div class="card shadow">
           <div class="card-header border-0">
-            <h3 class="mb-0">Ürün Tablosu</h3>
+            <h3 class="mb-0">Kullanıcı Tablosu</h3>
           </div>
           <form _ngcontent-bti-c110="" 
           class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
@@ -27,7 +27,7 @@
        
       <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2"
       [rows]="userDtoList | filter:filterText" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50"
-      [limit]="5" [footerHeight]="50" [rowHeight]="60">
+      [limit]="20" [footerHeight]="50" [rowHeight]="60">
       <ngx-datatable-column name="ID" prop="userId">
       </ngx-datatable-column>
       <ngx-datatable-column name="Ad Soyad">

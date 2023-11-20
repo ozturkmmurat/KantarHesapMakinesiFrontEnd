@@ -29,7 +29,7 @@
         </form>
         <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2"
           [rows]="installationCostDtoList | filter:filterText" [scrollbarH]="true" [columnMode]="'force'"
-          [headerHeight]="50" [limit]="5" [footerHeight]="50" [rowHeight]="60">
+          [headerHeight]="50" [limit]="20" [footerHeight]="50" [rowHeight]="60">
           <ngx-datatable-column name="ID" prop="installationCostId">
           </ngx-datatable-column>
           <ngx-datatable-column name="Lokasyon" prop="cityName">
@@ -79,7 +79,7 @@
                   <label for="inputState">Şehir Adı</label>
                   <select id="locationId" name="locationId" class="form-control" formControlName="locationId">
                     <option selected disabled value="">Şehir Seçiniz</option>
-                    <option *ngFor="let location of locationList" [ngValue]="location.id" selected>
+                    <option *ngFor="let location of locationList | alphabetical: 'cityName'" [ngValue]="location.id" selected>
                       {{location.cityName}}
                     </option>
                   </select>

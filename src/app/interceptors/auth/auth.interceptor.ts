@@ -41,9 +41,6 @@ export class AuthInterceptor implements HttpInterceptor {
   
           const err = error.error.message || error.statusText;
           if (err === "Unknown Error") {
-            // this.toastrService.error(
-            //   "Sunucuya bağlanılamadı. Lütfen sistem yöneticiniz ile iletişime geçiniz."
-            // );
             this.authService.logOut();
           }
           return throwError(error);

@@ -10,7 +10,6 @@ import { RegisterComponent } from '../../pages/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { CalculateOfferComponent } from 'src/app/pages/calculate-offer/calculate-offer.component';
 @NgModule({
   imports: [
     CommonModule,

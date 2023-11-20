@@ -28,6 +28,7 @@ import { FilterPipe } from 'src/app/pipes/filterPipe/filter.pipe';
 import { UserListComponent } from 'src/app/pages/user-list/user-list.component';
 import { SizeComponent } from 'src/app/pages/height-weight/size.component';
 import { SizeContentModalComponent } from 'src/app/pages/height-weight/size-content-modal/size-content-modal.component';
+import { SharedModule } from 'src/shared.module';
 
 // import { ToastrModule } from 'ngx-toastr';
 
@@ -48,7 +49,7 @@ import { SizeContentModalComponent } from 'src/app/pages/height-weight/size-cont
         FilterPipe,
         UserListComponent,
         SizeComponent,
-        SizeContentModalComponent
+        SizeContentModalComponent,
     ],
     imports: [
         CommonModule,
@@ -59,7 +60,8 @@ import { SizeContentModalComponent } from 'src/app/pages/height-weight/size-cont
         ClipboardModule,
         ReactiveFormsModule,
         NgxPaginationModule,
-        NgxDatatableModule
+        NgxDatatableModule,
+        SharedModule
     ],
     providers: [{
         provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true

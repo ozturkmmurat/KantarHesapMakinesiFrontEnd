@@ -27,10 +27,20 @@
        
       <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2"
       [rows]="productList | filter:filterText" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50"
-      [limit]="5" [footerHeight]="50" [rowHeight]="60">
+      [limit]="20" [footerHeight]="50" [rowHeight]="60">
       <ngx-datatable-column name="ID" prop="productId">
       </ngx-datatable-column>
       <ngx-datatable-column name="Ürün Adı" prop="productName">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Ürün Kar Yüzdesi" prop="profitPercentage">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          {{ value | number :'1.2-2' }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Ürün Ek Kar Yüzdesi" prop="additionalProfitPercentage">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          {{ value | number :'1.2-2' }}
+        </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="İşlemler" [sortable]="false">
         <ng-template let-row="row" ngx-datatable-cell-template>
@@ -74,7 +84,20 @@
                           formControlName="productName" class="form-control form-control-alternative">
                       </div>
                     </div>
-
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Kar Yüzdesi</label>
+                        <input _ngcontent-bya-c115="" type="number" id="input-username" id="profitPercentage"
+                          formControlName="profitPercentage" class="form-control form-control-alternative">
+                      </div>
+                    </div>
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Ek Kar Yüzdesi</label>
+                        <input _ngcontent-bya-c115="" type="number" id="input-username" id="additionalProfitPercentage"
+                          formControlName="additionalProfitPercentage" class="form-control form-control-alternative">
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -104,17 +127,20 @@
                           formControlName="productName" class="form-control form-control-alternative">
                       </div>
                     </div>
-  
-  
-                  <div _ngcontent-bya-c115="" class="col-lg-12">
-                    <label for="inputState">Kategori</label>
-                    <select id="categoryId" name="categoryId" class="form-control" formControlName="categoryId">
-                      <option selected disabled value="">Kategori Seçiniz</option>
-                       <option *ngFor="let category of categoryList" [ngValue]="category.id" selected>
-                        {{category.categoryName}}
-                      </option>
-                    </select>
-                  </div>
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Kar Yüzdesi</label>
+                        <input _ngcontent-bya-c115="" type="number" id="input-username" id="profitPercentage"
+                          formControlName="profitPercentage" class="form-control form-control-alternative">
+                      </div>
+                    </div>
+                    <div _ngcontent-bya-c115="" class="col-lg-12">
+                      <div _ngcontent-bya-c115="" class="form-group">
+                        <label _ngcontent-bya-c115="" for="input-username" class="form-control-label">Ek Kar Yüzdesi</label>
+                        <input _ngcontent-bya-c115="" type="number" id="input-username" id="additionalProfitPercentage"
+                          formControlName="additionalProfitPercentage" class="form-control form-control-alternative">
+                      </div>
+                    </div>
   
                   </div>
                 </div>

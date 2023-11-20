@@ -85,6 +85,7 @@ export class UserListComponent implements OnInit {
   }
 
   updateUser(){
+    console.log(this._updateUserForm)
     if (this._updateUserForm.valid) {
       let userModel = Object.assign({}, this._updateUserForm.value)
       this.userService.updateUser(userModel).pipe(

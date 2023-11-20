@@ -17,8 +17,8 @@ export class ProductModelCostService {
     private httpClient:HttpClient
   ) { }
 
-  getProductModelCostDtoByModelId(modelId : number):Observable<SingleResponseModel<ProductModelCostDto>>{
-    let newPath = environment.apiUrl + "api/productModelCosts/getProductModelCostDtoByModelId?modelId=" + modelId
+  getProductModelCostDtoByModelIdCurrency(modelId : number, currencyName : string):Observable<SingleResponseModel<ProductModelCostDto>>{
+    let newPath = environment.apiUrl + "api/productModelCosts/GetProductModelCostDtoByModelIdCurrency?modelId=" + modelId + "&currencyName=" + currencyName
     return this.httpClient.get<SingleResponseModel<ProductModelCostDto>>(newPath);
   }
 

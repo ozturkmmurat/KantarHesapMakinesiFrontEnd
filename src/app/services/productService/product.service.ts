@@ -6,6 +6,7 @@ import { Product } from 'src/app/models/product';
 import { ProductDto } from 'src/app/models/Dtos/productDto';
 import { ResponseModel } from 'src/app/models/responseModel';
 import { environment } from 'src/environments/environment';
+import { CRUDProductDto } from 'src/app/models/Dtos/crudProductDto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,18 +21,18 @@ export class ProductService {
   }
 
   getAllProductDto():Observable<ListResponseModel<ProductDto>>{
-    let newPath = environment.apiUrl + "api/products/GetAllDto";
+    let newPath = environment.apiUrl + "api/products/getAllDto";
     return this.httpclient.get<ListResponseModel<ProductDto>>(newPath)
   }
 
-  add(product:Product):Observable<ResponseModel>{
-    let newPath = environment.apiUrl + "api/products/add";
-    return this.httpclient.post<ResponseModel>(newPath, product)
+  tsaAdd(crudPorductDto:CRUDProductDto):Observable<ResponseModel>{
+    let newPath = environment.apiUrl + "api/products/tsaAdd";
+    return this.httpclient.post<ResponseModel>(newPath, crudPorductDto)
   }
 
-  update(product:Product):Observable<ResponseModel>{
-    let newPath = environment.apiUrl + "api/products/update"
-    return this.httpclient.post<ResponseModel>(newPath, product)
+  tsaUpdate(crudPorductDto:CRUDProductDto):Observable<ResponseModel>{
+    let newPath = environment.apiUrl + "api/products/tsaUpdate"
+    return this.httpclient.post<ResponseModel>(newPath, crudPorductDto)
   }
 
   delete(product:Product):Observable<ResponseModel>{

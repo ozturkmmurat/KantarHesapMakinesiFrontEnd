@@ -1,4 +1,4 @@
-export interface ProductDto{
+export interface CRUDProductDto{
     productId:number,
     productProfitId:number,
     productName:string,

@@ -13,7 +13,7 @@ export class AppComponent {
   title = 'KantarHesapMakinesiFrontend';
 
 
-  allowedIps = ["212.156.50.182"];
+  allowedIps = ["212.156.50.182", "88.249.1.198", "95.9.250.14", "213.14.164.200", "188.59.171.1"];
   userIp : any;
 
   constructor(

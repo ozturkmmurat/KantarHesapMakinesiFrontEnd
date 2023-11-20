@@ -19,8 +19,13 @@ export class ProductModelCostDetailService {
     ) { }
 
 
-    getCalculate(modelId:number, installationCostLocationId:number, accessoryId:number):Observable<SingleResponseModel<ProductModelCostDetail>>{
-      let newPath = environment.apiUrl + "api/productModelCostDetails/getCalculate?modelId="+ modelId +"&installationCostLocationId="+ installationCostLocationId +"&accessoryId="+ accessoryId
-      return this.httpClient.get<SingleResponseModel<ProductModelCostDetail>>(newPath);
+    // getCalculate(modelId:number, installationCostLocationId:number, accessoryId:number, exportState:boolean, currencyName:string):Observable<SingleResponseModel<ProductModelCostDetail>>{
+    //   let newPath = environment.apiUrl + "api/productModelCostDetails/getCalculate?modelId="+ modelId +"&installationCostLocationId="+ installationCostLocationId +"&accessoryId="+ accessoryId + "&currencyName=" + currencyName + "&exportState=" + (exportState ? 'true' : 'false')
+    //   return this.httpClient.get<SingleResponseModel<ProductModelCostDetail>>(newPath);
+    // }
+
+    getCalculate(productModelCostDetail:ProductModelCostDetail):Observable<SingleResponseModel<ProductModelCostDetail>>{
+      let newPath = environment.apiUrl + "api/productModelCostDetails/getCalculate"
+      return this.httpClient.get<SingleResponseModel<ProductModelCostDetail>>(newPath, {params:{...productModelCostDetail}});
     }
 }

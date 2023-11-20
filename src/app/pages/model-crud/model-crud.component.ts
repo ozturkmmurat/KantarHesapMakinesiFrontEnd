@@ -152,7 +152,7 @@ export class ModelCrudComponent implements OnInit {
         sizeModel = response.data
         let model = Object.assign({}, this._addModelForm.value)
         model.modelMostSizeKg = sizeModel.aspect + " " + sizeModel.weight + " " + this.selectedValue
-        this.modelService.add(model).pipe(
+        this.modelService.addDto(model).pipe(
           catchError((err: HttpErrorResponse) => {
             this.errorService.checkError(err)
             return of();
@@ -177,7 +177,7 @@ export class ModelCrudComponent implements OnInit {
         this.onSelected(this._updateModelForm)
         let model = Object.assign({}, this._updateModelForm.value)
         model.modelMostSizeKg = sizeModel.aspect + " " + sizeModel.weight + " " + this.selectedValue
-        this.modelService.update(model).pipe(
+        this.modelService.updateDto(model).pipe(
           catchError((err: HttpErrorResponse) => {
             this.errorService.checkError(err)
             return of();

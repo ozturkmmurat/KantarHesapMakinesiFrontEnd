@@ -80,14 +80,19 @@ export class CalculateOfferComponent implements OnInit {
 
   getCalculate() {
     if(this.exportationState == false){
-      this.productModelCostDetailService.getCalculate(this.modelId, 0, 0).subscribe(response => {
+      const productModelCostDetail: any =  {
+        modelId:this.modelId, installationCostLocationId:0, accessoryId:0, exportState:false, currencyName:"EUR"
+      }
+      this.productModelCostDetailService.getCalculate(productModelCostDetail).subscribe(response => {
         this.productModelCostDetail = response.data
       })
 
     }
     else{
-      this.productModelCostDetailService.getCalculate(this.modelId, this.installationCostLocationId, this.accessoryId).subscribe(response => {
-        
+      const productModelCostDetail: any =  {
+        modelId:this.modelId, installationCostLocationId:this.installationCostLocationId, accessoryId:this.accessoryId, exportState:true, currencyName:"TRY"
+      }
+      this.productModelCostDetailService.getCalculate(productModelCostDetail).subscribe(response => {
         this.turkeyHtmlState = true
         this.productModelCostDetail = response.data
       })

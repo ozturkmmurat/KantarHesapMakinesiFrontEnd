@@ -1,19 +1,15 @@
 export interface ProductModelCostDetail{
     modelId:number,
     accessoryId:number, 
+    currencyName:string,
     installationCostLocationId:number,
-    accessoryTlPrice:number,
-    installationIncludedTl:number,
-    installationIncludedEuro:number,
-    salesPriceTl:number,
-    salesPriceEuro:number
-    turkeySalesPrice:number,
-    exportSalesPrice:number,
-    profitPriceTl:number,
-    profitPriceEuro:number
+    accessoryPrice:number,
+    installationPrice:number
+    installationIncluded:number,
+    salesPrice:number,
+    profitPrice:number,
     additionalProfitPercentage:number,
-    offerPriceTl:number,
-    offerPriceEuro:number,
-    turkeySalesDiscountPrice:number,
-    exportFinalDiscountPrice:number
+    offerPrice:number,
+    finalDiscountPrice:number,
+    exportState:boolean
 }

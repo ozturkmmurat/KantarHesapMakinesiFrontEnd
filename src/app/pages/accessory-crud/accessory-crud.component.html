@@ -29,7 +29,7 @@
         </form>
         <ngx-datatable style="width:100%;" #table class="material whitespace-nowrap single-selection pt-2"
           [rows]="accessoryList | filter:filterText" [scrollbarH]="true" [columnMode]="'force'" [headerHeight]="50"
-          [limit]="5" [footerHeight]="50" [rowHeight]="60">
+          [limit]="20" [footerHeight]="50" [rowHeight]="60">
           <ngx-datatable-column name="ID" prop="id">
           </ngx-datatable-column>
           <ngx-datatable-column name="Aksesuar Adı" prop="accessoryName">

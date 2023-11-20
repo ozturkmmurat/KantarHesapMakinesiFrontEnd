@@ -3,20 +3,18 @@ import { ProductModelCostDetailDto } from "./productModelCostDetailDto"
 export interface ProductModelCostDto{
 
     // Product Model Cost Propertyleri
+    currencyName?:string,
     productModelCostId?:number,
-    productModelCostShateIronEuroPrice?:number,
-    productModelCostIProfileEuroPrice?:number,
-    productModelCostMaterialTlAmount?:number,
-    productModelCostMaterialEuroAmount?:number,
-    productModelCostTotalLaborCostEuro?:number,
-    productModelCostTotalLaborCostTl?:number,
-    productModelCostTotalAmount?:number,
-    productModelCostGeneralExpenseAmount?:number,
-    productModelCostOverheadIncluded?:number,
-    productModelCostElectronicTlAmount?:number,
-    productModelCostElectronicEuroAmount?:number,
-    productModelCostProfitPercentage:number,
-    productModelCostAdditionalProfitPercentage:number
+    shateIronPrice?:number,
+    iProfilePrice?:number,
+    materialAmount?:number,
+    totalLaborCost?:number,
+    totalAmount?:number,
+    generalExpenseAmount?:number,
+    overheadIncluded?:number,
+    electronicAmount?:number,
+    profitPercentage:number,
+    additionalProfitPercentage:number
 
     //Model Propertyleri
     modelId:number,
